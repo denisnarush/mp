@@ -1,0 +1,266 @@
+html, body, .state{
+	height: 100%;
+}
+
+/*
+ * TEMP RULLES START
+*/
+
+g{
+	/*background: url('states/Now Playing.png') top center no-repeat;*/
+}
+.state{
+	/*width: 360px; height: 640px;*/
+}
+g{
+	position: absolute;
+
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	z-index: -1;
+}
+g{
+	background-size: 360px 640px;
+}
+.state{
+	margin: 0 auto;
+}
+
+/*
+ * TEMP RULLES END
+*/
+
+
+
+body{
+	background-color: black;
+	margin: 0;
+}
+
+
+
+/*
+ * ICONS START
+*/
+
+.icon{
+	display: inline-block;
+	vertical-align: middle;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+.icon.icon__arrow-bottom-right{
+	background-image: url('img/interface/icon-arrow-bottom-right.png');
+	width: 14px;
+	height: 13px;
+}
+.icon.icon__equalizer{
+	background-image: url('img/interface/icon-equalizer.png');
+	width: 24px;
+	height: 20px;
+}
+.icon.icon__menu{
+	background-image: url('img/interface/icon-menu.png');
+	width: 4px;
+	height: 26px;
+}
+.icon.icon__shuffle{
+	background-image: url('img/interface/icon-shuffle.png');
+	width: 23px;
+	height: 20px;
+}
+.icon.icon__prev{
+	background-image: url('img/interface/icon-prev.png');
+	width: 27px;
+	height: 16px;
+}
+.icon.icon__play{
+	background-image: url('img/interface/icon-play.png');
+	width: 30px;
+	height: 35px;
+}
+.icon.icon__next{
+	background-image: url('img/interface/icon-next.png');
+	width: 27px;
+	height: 16px;
+}
+.icon.icon__repeat{
+	background-image: url('img/interface/icon-repeat.png');
+	width: 23px;
+	height: 18px;
+}
+
+/*
+ * ICONS END
+*/
+
+
+
+.state{
+	position: relative;
+}
+
+.bg{
+	background-size: cover;
+	background-position: center center;
+
+	position: absolute;
+
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	z-index: -1;
+
+	filter: blur(10px);
+	-webkit-filter: blur(10px);
+}
+
+/*
+ * TOP START
+*/
+
+.top{
+	font-size: 0;
+	padding: 17px 0;
+
+	position: absolute;
+	left: 0;
+	right: 0;
+
+	z-index: 1;
+}
+.top-title{
+	font-size: 0;
+}
+.top-title-text{
+	color: rgba(255, 255, 255, 0.8);
+	font-family: 'Roboto';
+	font-size: 20px;
+	font-weight: 400;
+
+	vertical-align: middle;
+	margin-left: .7em;
+}
+.top-equalizer,
+.top-menu{
+	cursor: pointer;
+	display: inline-block;
+}
+.top-equalizer{
+	padding: 3px 1px;
+	margin-right: 20px;
+}
+.top-menu{
+	padding: 0 3px 0 11px;
+	margin-left: 20px;
+}
+.top-s{
+	display: inline-block;
+	vertical-align: bottom;
+	width: 45%;
+}
+.top-s__left{
+	margin-left: 5%;
+}
+.top-s__right{
+	text-align: right;
+	margin-right: 5%;
+}
+
+/*
+ * TOP END
+*/
+
+
+
+/*
+ * PLAYER START
+*/
+
+.player{
+	padding: 90px 0 0 0;
+
+	position: relative;
+	height: 100%;
+	box-sizing: border-box;
+}
+.player-cover{
+	display: block;
+	margin: 0 auto;
+}
+.player-trackbar{
+	width: 75%;
+	margin: 0 auto 30px auto;
+}
+.player-trackbar-bar{
+	display: block;
+	position: relative;
+	height: 10px;
+	background-color: #ff5252;
+}
+.player-trackbar-time{
+	color: rgba(254, 95, 89, 0.9);
+
+	font-family: 'Roboto';
+	font-size: 16px;
+	font-weight: 400;
+
+	margin-top: .4em;
+
+	position: absolute;
+	right: 0;
+	top: 100%;
+}
+.player-title{
+	color: rgba(235, 235, 250, 0.9);
+
+	font-size: 33.3px;
+	font-family: 'Roboto';
+	font-weight: 300;
+
+	text-align: center;
+
+	padding: .570570584em 0 .210210215em 0;
+	margin: 0;
+}
+.player-author{
+	color:  #ff5252;
+
+	font-size: 16.6667px;
+	font-family: 'Roboto';
+	font-weight: 300;
+
+	text-align: center;
+
+	margin: 0;
+}
+.player-actions{
+	font-size: 0;
+	margin: 0 auto;
+
+	position: absolute;
+	right: 0;
+	bottom: 85px;
+	left: 0;
+
+	width: 92%;
+}
+.player-actions-button{
+	cursor: pointer;
+
+	display: inline-block;
+
+	vertical-align: middle;
+	text-align: center;
+
+	width: 20%;
+}
+
+/*
+ * PLAYER END
+*/
