@@ -7,13 +7,14 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
-	<div class="state">
-		<div class="bg" style="background-image: url(img/tmp/album-cover.png);"></div>
+	<div class="bg" style="background-image: url(img/tmp/album-cover.png);"></div>
+	<!-- Now Playing -->
+	<div class="state" style="top: 0%" data-state="player">
 		<div class="top">
 			<div class="top-s top-s__left">
 				<p class="top-title">
 					<i class="icon icon__arrow-bottom-right"></i>
-					<span class="top-title-text">Now Playing</span>
+					<span class="top-title-text top-title-text__with-icon">Now Playing</span>
 				</p>
 			</div>
 			<div class="top-s top-s__right">
@@ -39,5 +40,113 @@
 			</div>
 		</div>
 	</div>
+	<!-- Playlist -->
+	<div class="state" style="top: 100%; margin-top: -60px;" data-state="playlist">
+		<div class="top top__bg">
+			<p class="top-title top-title__center top-title__swipe">
+				<span class="top-title-text top-title-text__small">Playlist</span>
+			</p>
+		</div>
+		<div class="playlist">
+			<div class="playlist-scroll" style="top: 30%"></div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title">Deep Roots</p>
+					<p class="playlist-item-author">Bad Salad - Uncivilized</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right">
+					<p class="playlist-item-time">3.30</p>
+					<p class="playlist-item-active"><i class="icon icon__bars"></i></p>
+				</div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title">Knights of Cyndonia</p>
+					<p class="playlist-item-author">Blackhole and Revelations - Muse</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right">
+					<p class="playlist-item-time">3.30</p>
+				</div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title">Nemo</p>
+					<p class="playlist-item-author">Dark Passion Pray - Nightwish</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right">
+					<p class="playlist-item-time">3.30</p>
+				</div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title">Welcome to Black Parade</p>
+					<p class="playlist-item-author">The Black Parade - My Chemical Romances</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right">
+					<p class="playlist-item-time">3.30</p>
+				</div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title">Nemo</p>
+					<p class="playlist-item-author">Dark Passion Pray - Nightwish</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right">
+					<p class="playlist-item-time">3.30</p>
+				</div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title">Numb</p>
+					<p class="playlist-item-author">Meteora - Linkin Park</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right">
+					<p class="playlist-item-time">3.30</p>
+				</div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title">Omen</p>
+					<p class="playlist-item-author">Invader Must Die - The Prodigy</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right">
+					<p class="playlist-item-time">3.30</p>
+				</div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title">Welcome to Black Parade</p>
+					<p class="playlist-item-author">The Black Parade - My Chemical Romances</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right">
+					<p class="playlist-item-time">3.30</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<!-- TMP SCRIPT -->
+	<script type="text/javascript">
+		var v = 0,
+			player = document.querySelector('[data-state="player"]'),
+			playlist = document.querySelector('[data-state="playlist"]');
+
+		document.body.addEventListener('keydown', function (e) {
+			(e.keyCode === 38 ? v += 10 : v -= 10);
+
+			if (v > 100) {
+				v = 100;
+			}
+
+			if (v < 0) {
+				v = 0;
+			}
+
+			player.style.top = 0 - v + '%';
+			playlist.style.top = 100 - v + '%';
+			playlist.style.marginTop = -60 * (1 - (v / 100)) + 'px';
+		})
+	</script>
 </body>
 </html>
