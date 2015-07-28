@@ -24,7 +24,7 @@ g{
 
 g {background-size: 360px 640px;}
 
-.state {margin: 0 auto;}
+.state {margin: 0 auto; transition: top .2s, margin .2s;}
 
 [hidden] {display: none !important;}
 

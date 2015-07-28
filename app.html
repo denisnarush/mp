@@ -133,7 +133,13 @@
 			playlist = document.querySelector('[data-state="playlist"]');
 
 		document.body.addEventListener('keydown', function (e) {
-			(e.keyCode === 38 ? v += 10 : v -= 10);
+			if (e.keyCode === 38) {
+				v += 100;
+			}
+
+			if (e.keyCode === 40) {
+				v -= 100;
+			}
 
 			if (v > 100) {
 				v = 100;
