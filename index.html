@@ -1,15 +1,17 @@
 <!doctype html>
 <html>
 <head>
-	<title></title>
+	<title>Mp</title>
 	<link rel="stylesheet" type="text/css" href="app.css">
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,100,300' rel='stylesheet' type='text/css'>
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="viewport" content="width=device-width">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
 	<div class="bg" style="background-image: url(img/tmp/album-cover.png);"></div>
 	<!-- Now Playing -->
-	<div class="state" style="top: 0%" data-state="player">
+	<div class="state" data-state="player">
 		<div class="top">
 			<div class="top-s top-s__left">
 				<p class="top-title">
@@ -19,7 +21,7 @@
 			</div>
 			<div class="top-s top-s__right">
 				<span class="top-equalizer"><i class="icon icon__equalizer"></i></span>
-				<span class="top-menu"><i class="icon icon__menu"></i></span>
+				<span class="top-menu" data-menu="toggle"><i class="icon icon__menu"></i></span>
 			</div>
 		</div>
 		<div class="player">
@@ -41,7 +43,7 @@
 		</div>
 	</div>
 	<!-- Playlist -->
-	<div class="state" style="top: 100%; margin-top: -60px;" data-state="playlist">
+	<div class="state" style="margin-top: -60px; -webkit-transform: translateY(100%);" data-state="playlist">
 		<div class="top top__bg">
 			<p class="top-title top-title__center top-title__swipe">
 				<span class="top-title-text top-title-text__small">Playlist</span>
@@ -124,35 +126,178 @@
 			</div>
 		</div>
 	</div>
+	<!-- Browse -->
+	<div class="state" style="-webkit-transform: translateY(-100%);" data-state="browse">
+		<div class="menu">
+			<div class="menu-nav">
+				<span class="menu-nav-item menu-nav-item__active">Artists</span>
+				<span class="menu-nav-item">Albums</span>
+				<span class="menu-nav-item">Songs</span>
+			</div>
+			<span class="menu-hide" data-menu="toggle"><span class="menu-hide-button"><i class="icon icon__menu"></i></span></span>
+			<form class="menu-search">
+				<span class="menu-search-submit"><i class="icon icon__search"></i></span>
+				<span class="menu-search-field"><input type="text" name="search" autocorrect="off" spellcheck="false"></span>
+				<span class="menu-search-refresh"><i class="icon icon__refresh"></i></span>
+			</form>
+		</div>
+		<div class="playlist" style="margin-top: 128px; height: calc(100% - 128px)">
+			<div class="playlist-scroll" style="top: 30%"></div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.pitch.com/imager/avenged-sevenfold/b/original/2180977/8010/2e0e_16469.0.jpeg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Avenged Sevenfold
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://photos1.blogger.com/blogger/197/470/320/sf8xba0kygf.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Bad Salad
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.savingcountrymusic.com/wp-content/uploads/2013/08/shakey-graves.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Black Light Burns
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://vignette4.wikia.nocookie.net/fairytail/images/8/86/Surprise_Guest_From_Behind.jpg/revision/latest/scale-to-width-down/185?cb=20120116014827" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Bodyslam
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://vignette3.wikia.nocookie.net/deadspace/images/7/71/MD-SecurityStation1.png/revision/latest/scale-to-width-down/185?cb=20100822153408" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Breaking Benjamin
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.ojaiworldmusic.org/images/owmf2014/JaymeStone_gs185.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Cocktail
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://media.jrn.com/images/185*148/testarosa010104.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Omen
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.ojaiworldmusic.org/images/on-ensemble185.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Welcome to Black Parade
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+		</div>
+	</div>
 
 
-<!-- TMP SCRIPT -->
+	<!-- TMP SCRIPT -->
 	<script type="text/javascript">
-		var v = 0,
+		var i = 0,
 			player = document.querySelector('[data-state="player"]'),
-			playlist = document.querySelector('[data-state="playlist"]');
+			playlist = document.querySelector('[data-state="playlist"]'),
+			browse = document.querySelector('[data-state="browse"]'),
+			playlistTop = document.querySelector('[data-state="playlist"] .top'),
+			menuToggles = document.querySelectorAll('[data-menu="toggle"]'),
 
-		document.body.addEventListener('keydown', function (e) {
-			if (e.keyCode === 38) {
-				v += 100;
+			togglePlaylist = function () {
+				playlist.style.webkitTransform = playlist.style.webkitTransform ? '' : 'translateY(100%)';
+				playlist.style.marginTop = playlist.style.marginTop ? '' : '-60px';
+			},
+
+			togglePlayerDown = function () {
+				player.style.webkitTransform = player.style.webkitTransform ? '' : 'translateY(100%)';
+			},
+
+			togglePlayerUp = function () {
+				player.style.webkitTransform = player.style.webkitTransform ? '' : 'translateY(-100%)';
+			},
+
+			toggleMenu = function () {
+				browse.style.webkitTransform = browse.style.webkitTransform ? '' : 'translateY(-100%)';
+				playlist.style.marginTop = playlist.style.marginTop ? '' : '-60px';
+
+				togglePlayerDown();
+			};
+
+		document.body.addEventListener('touchstart', function (e) {
+			if (e.target.tagName === 'INPUT') {
+				return;
 			}
+			/*
+			 * remove focus (and keyboard iOS)
+			*/
+			document.activeElement.blur();
 
-			if (e.keyCode === 40) {
-				v -= 100;
-			}
+			/*
+			 * prevent overscrolling on iOS
+			*/ 
+			e.preventDefault();
+		});
 
-			if (v > 100) {
-				v = 100;
-			}
+		playlistTop.addEventListener('click', function (e) {
+			togglePlayerUp();
+			togglePlaylist();
+		});
 
-			if (v < 0) {
-				v = 0;
-			}
-
-			player.style.top = 0 - v + '%';
-			playlist.style.top = 100 - v + '%';
-			playlist.style.marginTop = -60 * (1 - (v / 100)) + 'px';
-		})
+		playlistTop.addEventListener('touchstart', function () {
+			togglePlayerUp();
+			togglePlaylist();
+		});
+		
+		
+		for (i = 0; i < menuToggles.length; i++ ) {
+			menuToggles[i].addEventListener('touchstart', toggleMenu);
+			menuToggles[i].addEventListener('click', toggleMenu);
+		}
 	</script>
 </body>
 </html>
