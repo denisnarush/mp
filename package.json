@@ -1,0 +1,27 @@
+{
+  "name": "mp",
+  "version": "1.0.0",
+  "description": "musical player",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "resizable": false,
+    "width": 360,
+    "height": 640
+  },
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denisnarush/mp.git"
+  },
+  "keywords": [
+    "music"
+  ],
+  "author": "Denis Narush (me@dennarush.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/denisnarush/mp/issues"
+  },
+  "homepage": "https://github.com/denisnarush/mp#readme"
+}
