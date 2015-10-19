@@ -8,7 +8,7 @@ html, body{
  * TEMP RULLES START
 */
 
-/*g {background: url('states/Now Playing.png') top center no-repeat;}*/
+g {background: url('states/Now Playing.png') top center no-repeat;}
 /*g {background: url('states/Playlist.png') top center no-repeat;}*/
 /*g {background: url('states/Browser - Artists.png') top center no-repeat;}*/
 g{
@@ -25,7 +25,8 @@ g {background-size: 360px 640px;}
 
 .state {margin: 0 auto; background-color: rgba(0,0,0,.5);}
 .state,
-.menu
+.menu,
+.tab-item
 {transition: -webkit-transform .2s; transition-timing-function: linear;}
 
 [hidden] {display: none !important;}
@@ -292,6 +293,31 @@ body{
 
 /*
  * MENU END
+*/
+
+
+
+
+/*
+ * TABS START
+*/
+
+.tabs{
+	font-size: 0;
+	white-space: nowrap;
+}
+.tab-item{
+	display: inline-block;
+	vertical-align: top;
+	width: 100%;
+}
+
+.tabs .menu {
+	white-space: normal;
+}
+
+/*
+ * TABS END
 */
 
 

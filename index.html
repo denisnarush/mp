@@ -9,6 +9,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
+	<g></g>
 	<div class="bg" style="background-image: url(img/tmp/album-cover.png);"></div>
 	<!-- Now Playing -->
 	<div class="state" data-state="player">
@@ -127,12 +128,13 @@
 		</div>
 	</div>
 	<!-- Browse -->
-	<div class="state" style="-webkit-transform: translateY(-100%);" data-state="browse">
+	<div class="state tabs" style="-webkit-transform: translateY(-100%);" data-state="browse">
+		<!-- Menu -->
 		<div class="menu">
 			<div class="menu-nav">
-				<span class="menu-nav-item menu-nav-item__active">Artists</span>
-				<span class="menu-nav-item">Albums</span>
-				<span class="menu-nav-item">Songs</span>
+				<span data-tab-toggle="0" class="menu-nav-item menu-nav-item__active">Artists</span>
+				<span data-tab-toggle="1" class="menu-nav-item">Albums</span>
+				<span data-tab-toggle="2" class="menu-nav-item">Songs</span>
 			</div>
 			<span class="menu-hide" data-menu="toggle"><span class="menu-hide-button"><i class="icon icon__menu"></i></span></span>
 			<form class="menu-search">
@@ -141,7 +143,200 @@
 				<span class="menu-search-refresh"><i class="icon icon__refresh"></i></span>
 			</form>
 		</div>
-		<div class="playlist" style="margin-top: 128px; height: calc(100% - 128px)">
+		<!-- Artists -->
+		<div class="playlist tab-item" style="margin-top: 128px; height: calc(100% - 128px)" data-tab="artists">
+			<div class="playlist-scroll" style="top: 30%"></div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.pitch.com/imager/avenged-sevenfold/b/original/2180977/8010/2e0e_16469.0.jpeg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Avenged Sevenfold
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://photos1.blogger.com/blogger/197/470/320/sf8xba0kygf.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Bad Salad
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.savingcountrymusic.com/wp-content/uploads/2013/08/shakey-graves.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Black Light Burns
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://vignette4.wikia.nocookie.net/fairytail/images/8/86/Surprise_Guest_From_Behind.jpg/revision/latest/scale-to-width-down/185?cb=20120116014827" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Bodyslam
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://vignette3.wikia.nocookie.net/deadspace/images/7/71/MD-SecurityStation1.png/revision/latest/scale-to-width-down/185?cb=20100822153408" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Breaking Benjamin
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.ojaiworldmusic.org/images/owmf2014/JaymeStone_gs185.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Cocktail
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://media.jrn.com/images/185*148/testarosa010104.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Omen
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.ojaiworldmusic.org/images/on-ensemble185.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Welcome to Black Parade
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+		</div>
+		<!-- Albums -->
+		<div class="playlist tab-item" style="margin-top: 128px; height: calc(100% - 128px)" data-tab="albums">
+			<div class="playlist-scroll" style="top: 30%"></div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.pitch.com/imager/avenged-sevenfold/b/original/2180977/8010/2e0e_16469.0.jpeg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Avenged Sevenfold
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://photos1.blogger.com/blogger/197/470/320/sf8xba0kygf.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Bad Salad
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.savingcountrymusic.com/wp-content/uploads/2013/08/shakey-graves.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Black Light Burns
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://vignette4.wikia.nocookie.net/fairytail/images/8/86/Surprise_Guest_From_Behind.jpg/revision/latest/scale-to-width-down/185?cb=20120116014827" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Bodyslam
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://vignette3.wikia.nocookie.net/deadspace/images/7/71/MD-SecurityStation1.png/revision/latest/scale-to-width-down/185?cb=20100822153408" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Breaking Benjamin
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.ojaiworldmusic.org/images/owmf2014/JaymeStone_gs185.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Cocktail
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://media.jrn.com/images/185*148/testarosa010104.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Omen
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+			<div class="playlist-item">
+				<div class="playlist-item-s playlist-item-s__left">
+					<p class="playlist-item-title playlist-item-title__with-cover">
+						<img src="http://www.ojaiworldmusic.org/images/on-ensemble185.jpg" width="62" height="49">
+						<span class="playlist-item-title-text">
+							Welcome to Black Parade
+							<span class="playlist-item-title-follow">Following</span>
+						</span>
+					</p>
+				</div>
+				<div class="playlist-item-s playlist-item-s__right"></div>
+			</div>
+		</div>
+		<!-- Songs -->
+		<div class="playlist tab-item" style="margin-top: 128px; height: calc(100% - 128px)" data-tab="songs">
 			<div class="playlist-scroll" style="top: 30%"></div>
 			<div class="playlist-item">
 				<div class="playlist-item-s playlist-item-s__left">
@@ -244,9 +439,18 @@
 		var i = 0,
 			player = document.querySelector('[data-state="player"]'),
 			playlist = document.querySelector('[data-state="playlist"]'),
-			browse = document.querySelector('[data-state="browse"]'),
 			playlistTop = document.querySelector('[data-state="playlist"] .top'),
+			browse = document.querySelector('[data-state="browse"]'),
+
+
 			menuToggles = document.querySelectorAll('[data-menu="toggle"]'),
+
+			activeTab = 0,
+			tabToggles = document.querySelectorAll('[data-tab-toggle]'),
+			artistsTab = document.querySelector('[data-tab="artists"]'),
+			albumsTab = document.querySelector('[data-tab="albums"]'),
+			songsTab = document.querySelector('[data-tab="songs"]'),
+
 
 			togglePlaylist = function () {
 				playlist.style.webkitTransform = playlist.style.webkitTransform ? '' : 'translateY(100%)';
@@ -266,6 +470,18 @@
 				playlist.style.marginTop = playlist.style.marginTop ? '' : '-60px';
 
 				togglePlayerDown();
+			},
+
+			setActiveTab = function (id) {
+				activeTab = id;
+				var v = activeTab * 100;
+				v = -v;
+				artistsTab.style.webkitTransform = 'translateX('+v+'%)';
+				albumsTab.style.webkitTransform = 'translateX('+v+'%)';
+				songsTab.style.webkitTransform = 'translateX('+v+'%)';
+
+				document.querySelector(".menu-nav-item__active").className = document.querySelector(".menu-nav-item__active").className.replace(/\bmenu-nav-item__active\b/,'');
+				document.querySelector('[data-tab-toggle="'+activeTab+'"]').className += ' menu-nav-item__active';
 			};
 
 		document.body.addEventListener('touchstart', function (e) {
@@ -292,11 +508,15 @@
 			togglePlayerUp();
 			togglePlaylist();
 		});
-		
-		
+
 		for (i = 0; i < menuToggles.length; i++ ) {
 			menuToggles[i].addEventListener('touchstart', toggleMenu);
 			menuToggles[i].addEventListener('click', toggleMenu);
+		}
+
+		for (i = 0; i < tabToggles.length; i++ ) {
+			tabToggles[i].addEventListener('touchstart', setActiveTab.bind(null, tabToggles[i].getAttribute('data-tab-toggle')));
+			tabToggles[i].addEventListener('click', setActiveTab.bind(null, tabToggles[i].getAttribute('data-tab-toggle')));
 		}
 	</script>
 </body>
