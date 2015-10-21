@@ -89,7 +89,7 @@ body{
 }
 .icon__pause{
 	background-image: url('img/interface/icon-pause.png');
-	width: 11px;
+	width: 23px;
 	height: 35px;
 }
 .icon__next{
@@ -400,7 +400,7 @@ body{
 }
 .top-equalizer{
 	padding: 3px 1px;
-	margin-right: 20px;
+	margin-right: 10px;
 }
 .top-menu{
 	padding: 0 11px;
@@ -449,14 +449,16 @@ body{
 	visibility: inherit;
 }
 .player-trackbar{
+	background-color: rgba(255, 82, 82, .07);
 	width: 75%;
-	margin: 0 auto 30px auto;
+	margin: 0 auto 0 auto;
 }
 .player-trackbar-bar{
+	transition: width .05s; transition-timing-function: linear;
 	display: block;
 	position: relative;
 	height: 10px;
-	background-color: #ff5252;
+	background-color: rgb(255, 82, 82);
 }
 .player-trackbar-time{
 	color: rgba(254, 95, 89, 0.9);
@@ -495,15 +497,19 @@ body{
 	margin: 0;
 }
 .player-actions{
+	box-sizing: border-box;
 	font-size: 0;
+
+	padding: 10px 4%;
 	margin: 0 auto;
 
 	position: absolute;
 	right: 0;
-	bottom: 110px;
+	bottom: 80px;
 	left: 0;
 
-	width: 92%;
+	width: 100%;
+	max-width: 500px;
 }
 .player-actions-button{
 	cursor: pointer;

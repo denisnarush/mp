@@ -29,8 +29,8 @@
 		<div class="player">
 			<img width="75%" title="Lea Michele - Louder" alt="Lea Michele - Louder" class="player-cover" id="streamArtwork">
 			<div class="player-trackbar">
-				<span class="player-trackbar-bar" style="width: 65%">
-					<span class="player-trackbar-time">2.50</span>
+				<span class="player-trackbar-bar" id="streamTrackbar">
+					<span class="player-trackbar-time" hidden>2.50</span>
 				</span>
 			</div>
 			<p class="player-title">Cannonballs</p>
@@ -246,33 +246,7 @@
 			tabToggles[i].addEventListener('click', setActiveTab.bind(null, tabToggles[i].getAttribute('data-tab-toggle')));
 		}
 	</script>
-<script>
-
-var stream;
-
-SC.initialize({
-  client_id: '7172aa9d8184ed052cf6148b4d6b8ae6'
-});
-
-SC.get('/tracks/207738557').then(function(track){
-	var artworkUrl = track.artwork_url.replace(new RegExp("large",'g'),"t500x500");
-	streamArtwork.src = artworkUrl;
-	streamBgArtwork.style.backgroundImage = "url('"+track.artwork_url.replace(new RegExp("large",'g'),"t500x500")+"')";
-});
-
-
-SC.stream('/tracks/207738557').then(function(player){
-	stream = player;
-});
-
-actionPlay.addEventListener('touchstart', function () {
-	if (!stream.isPlaying()){
-		stream.play();
-	} else {
-		stream.pause();
-	}
-});
-</script>
+<script src='js/soundcloud.js'></script>
 
 </body>
 </html>
