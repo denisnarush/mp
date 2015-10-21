@@ -9,10 +9,11 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
-	<g></g>
-	<div class="bg" style="background-image: url(img/tmp/album-cover.png);"></div>
+	<!--<g></g>-->
+	<div class="bg" id="streamBgArtwork"></div>
 	<!-- Now Playing -->
 	<div class="state" data-state="player">
+		<div id="sCloud"></div>
 		<div class="top">
 			<div class="top-s top-s__left">
 				<p class="top-title">
@@ -26,7 +27,7 @@
 			</div>
 		</div>
 		<div class="player">
-			<img src="img/tmp/album-cover.png" width="75%" title="Lea Michele - Louder" alt="Lea Michele - Louder" class="player-cover">
+			<img width="75%" title="Lea Michele - Louder" alt="Lea Michele - Louder" class="player-cover" id="streamArtwork">
 			<div class="player-trackbar">
 				<span class="player-trackbar-bar" style="width: 65%">
 					<span class="player-trackbar-time">2.50</span>
@@ -37,7 +38,8 @@
 			<div class="player-actions">
 				<span class="player-actions-button"><i class="icon icon__shuffle"></i></span>
 				<span class="player-actions-button"><i class="icon icon__prev"></i></span>
-				<span class="player-actions-button"><i class="icon icon__play"></i></span>
+				<span id="actionPlay" class="player-actions-button"><i class="icon icon__play"></i></span>
+				<span id="actionPause" class="player-actions-button" hidden><i class="icon icon__pause"></i></span>
 				<span class="player-actions-button"><i class="icon icon__next"></i></span>
 				<span class="player-actions-button"><i class="icon icon__repeat"></i></span>
 			</div>
@@ -158,8 +160,9 @@
 	</div>
 
 
+	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
 	<!-- TMP SCRIPT -->
-	<script type="text/javascript">
+<script type="text/javascript">
 		var i = 0,
 			player = document.querySelector('[data-state="player"]'),
 			playlist = document.querySelector('[data-state="playlist"]'),
@@ -243,5 +246,33 @@
 			tabToggles[i].addEventListener('click', setActiveTab.bind(null, tabToggles[i].getAttribute('data-tab-toggle')));
 		}
 	</script>
+<script>
+
+var stream;
+
+SC.initialize({
+  client_id: '7172aa9d8184ed052cf6148b4d6b8ae6'
+});
+
+SC.get('/tracks/207738557').then(function(track){
+	var artworkUrl = track.artwork_url.replace(new RegExp("large",'g'),"t500x500");
+	streamArtwork.src = artworkUrl;
+	streamBgArtwork.style.backgroundImage = "url('"+track.artwork_url.replace(new RegExp("large",'g'),"t500x500")+"')";
+});
+
+
+SC.stream('/tracks/207738557').then(function(player){
+	stream = player;
+});
+
+actionPlay.addEventListener('touchstart', function () {
+	if (!stream.isPlaying()){
+		stream.play();
+	} else {
+		stream.pause();
+	}
+});
+</script>
+
 </body>
 </html>

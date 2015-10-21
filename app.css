@@ -87,6 +87,11 @@ body{
 	width: 30px;
 	height: 35px;
 }
+.icon__pause{
+	background-image: url('img/interface/icon-pause.png');
+	width: 11px;
+	height: 35px;
+}
 .icon__next{
 	background-image: url('img/interface/icon-next.png');
 	width: 27px;
@@ -425,7 +430,7 @@ body{
 */
 
 .player{
-	padding: 90px 0 0 0;
+	padding: 70px 0 0 0;
 
 	position: relative;
 	height: 100%;
@@ -433,8 +438,15 @@ body{
 	box-sizing: border-box;
 }
 .player-cover{
+	min-width: 75%;
+	padding-top: 75%;
 	display: block;
 	margin: 0 auto;
+	visibility: hidden;
+}
+.player-cover[src^="http"]{
+	padding-top: 0;
+	visibility: inherit;
 }
 .player-trackbar{
 	width: 75%;
