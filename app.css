@@ -27,7 +27,7 @@ g {background-size: 360px 640px;}
 .state,
 .menu,
 .tab-item
-{transition: -webkit-transform .2s; transition-timing-function: linear;}
+{transition: transform .2s; transition-timing-function: linear;}
 
 [hidden] {display: none !important;}
 /*[data-state="player"]{display: none;}*/
@@ -333,7 +333,7 @@ body{
 
 .top{
 	font-size: 0;
-	padding: 17px 5%;
+	padding: 18px 5%;
 
 	position: absolute;
 	left: 0;
@@ -428,7 +428,6 @@ body{
 /*
  * PLAYER START
 */
-
 .player{
 	padding: 70px 0 0 0;
 
@@ -438,8 +437,7 @@ body{
 	box-sizing: border-box;
 }
 .player-cover{
-	min-width: 75%;
-	padding-top: 75%;
+	min-width: 70%;
 	display: block;
 	margin: 0 auto;
 	visibility: hidden;
@@ -450,7 +448,7 @@ body{
 }
 .player-trackbar{
 	background-color: rgba(255, 82, 82, .07);
-	width: 75%;
+	width: 70%;
 	margin: 0 auto 0 auto;
 }
 .player-trackbar-bar{
@@ -531,7 +529,11 @@ body{
 /*
  * PLAYLIST START
 */
-
+#playlist{
+	height: 100%;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
 .playlist{
 	background-color: rgba(29, 39, 44, 0.5);
 	box-sizing: border-box;
@@ -551,6 +553,7 @@ body{
 
 	margin-bottom: -2px;
 	position: relative;
+	overflow: hidden;
 }
 .playlist-item:after{
 	background: url('img/interface/playlist-item-sort.png') center center no-repeat;

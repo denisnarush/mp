@@ -3,7 +3,7 @@
 <head>
 	<title>Mp</title>
 	<link rel="stylesheet" type="text/css" href="app.css">
-	<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,100,300' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500' rel='stylesheet' type='text/css'>
 	<meta name="viewport" content="width=device-width">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,7 +13,6 @@
 	<div class="bg" id="streamBgArtwork"></div>
 	<!-- Now Playing -->
 	<div class="state" data-state="player">
-		<div id="sCloud"></div>
 		<div class="top">
 			<div class="top-s top-s__left">
 				<p class="top-title">
@@ -27,14 +26,15 @@
 			</div>
 		</div>
 		<div class="player">
-			<img width="75%" title="Lea Michele - Louder" alt="Lea Michele - Louder" class="player-cover" id="streamArtwork">
+			<img width="70%" title="Lea Michele - Louder" alt="Lea Michele - Louder" class="player-cover" id="streamArtwork">
+			<audio id="stream" controls preload="auto" autoplay hidden></audio>
 			<div class="player-trackbar">
 				<span class="player-trackbar-bar" id="streamTrackbar">
-					<span class="player-trackbar-time" hidden>2.50</span>
+					<span class="player-trackbar-time" id="streamCurrentTime"></span>
 				</span>
 			</div>
-			<p class="player-title">Cannonballs</p>
-			<p class="player-author">Louder - Lea Michele</p>
+			<p class="player-title" id="streamGenre"></p>
+			<p class="player-author" id="streamTitle"></p>
 			<div class="player-actions">
 				<span class="player-actions-button"><i class="icon icon__shuffle"></i></span>
 				<span class="player-actions-button"><i class="icon icon__prev"></i></span>
@@ -46,39 +46,29 @@
 		</div>
 	</div>
 	<!-- Playlist -->
-	<div class="state" style="margin-top: -60px; -webkit-transform: translateY(100%);" data-state="playlist">
+	<div class="state" style="margin-top: -60px; transform: translateY(100%);" data-state="playlist">
 		<div class="top top__bg">
 			<p class="top-title top-title__center top-title__swipe">
 				<span class="top-title-text top-title-text__small">Playlist</span>
 			</p>
 		</div>
 		<div class="playlist playlist__line">
-			<div class="playlist-scroll" style="top: 30%"></div>
-			<div class="playlist-item">
-				<div class="playlist-item-s playlist-item-s__left">
-					<p class="playlist-item-title">Deep Roots<span class="playlist-item-author">Bad Salad - Uncivilized</span></p>
-				</div>
-				<div class="playlist-item-s playlist-item-s__right">
-					<p class="playlist-item-time">3.30</p>
-					<p class="playlist-item-active"><i class="icon icon__bars"></i></p>
-				</div>
+			<div class="playlist-scroll" style="top: 30%" hidden></div>
+			<div id="playlist">
+				<!--<div class="playlist-item">-->
+				<!--	<div class="playlist-item-s playlist-item-s__left">-->
+				<!--		<p class="playlist-item-title">Deep Roots<span class="playlist-item-author">Bad Salad - Uncivilized</span></p>-->
+				<!--	</div>-->
+				<!--	<div class="playlist-item-s playlist-item-s__right">-->
+				<!--		<p class="playlist-item-time">3.30</p>-->
+				<!--		<p class="playlist-item-active"><i class="icon icon__bars"></i></p>-->
+				<!--	</div>-->
+				<!--</div>-->
 			</div>
-			<div class="playlist-item">
-				<div class="playlist-item-s playlist-item-s__left">
-					<p class="playlist-item-title">Knights of Cyndonia<span class="playlist-item-author">Blackhole and Revelations - Muse</span></p>
-				</div>
-				<div class="playlist-item-s playlist-item-s__right">
-					<p class="playlist-item-time">3.31</p>
-				</div>
-			</div>
-
-
-
-
 		</div>
 	</div>
 	<!-- Browse -->
-	<div class="state tabs" style="-webkit-transform: translateY(-100%);" data-state="browse">
+	<div class="state tabs" style="transform: translateY(-100%);" data-state="browse">
 		<!-- Menu -->
 		<div class="menu">
 			<div class="menu-nav">
@@ -165,7 +155,7 @@
 <script type="text/javascript">
 		var i = 0,
 			player = document.querySelector('[data-state="player"]'),
-			playlist = document.querySelector('[data-state="playlist"]'),
+			playlistContainer = document.querySelector('[data-state="playlist"]'),
 			playlistTop = document.querySelector('[data-state="playlist"] .top'),
 			browse = document.querySelector('[data-state="browse"]'),
 
@@ -180,8 +170,8 @@
 
 
 			togglePlaylist = function () {
-				playlist.style.webkitTransform = playlist.style.webkitTransform ? '' : 'translateY(100%)';
-				playlist.style.marginTop = playlist.style.marginTop ? '' : '-60px';
+				playlistContainer.style.webkitTransform = playlistContainer.style.webkitTransform ? '' : 'translateY(100%)';
+				playlistContainer.style.marginTop = playlistContainer.style.marginTop ? '' : '-60px';
 			},
 
 			togglePlayerDown = function () {
@@ -194,7 +184,7 @@
 
 			toggleMenu = function () {
 				browse.style.webkitTransform = browse.style.webkitTransform ? '' : 'translateY(-100%)';
-				playlist.style.marginTop = playlist.style.marginTop ? '' : '-60px';
+				playlistContainer.style.marginTop = playlistContainer.style.marginTop ? '' : '-60px';
 
 				togglePlayerDown();
 			},
@@ -246,7 +236,7 @@
 			tabToggles[i].addEventListener('click', setActiveTab.bind(null, tabToggles[i].getAttribute('data-tab-toggle')));
 		}
 	</script>
-<script src='js/soundcloud.js'></script>
+<script src='/js/soundcloud.js?v=1'></script>
 
 </body>
 </html>
