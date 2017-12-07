@@ -44,7 +44,9 @@ body{
 	background-color: black;
 	margin: 0;
 }
-
+span{
+	user-select: none;
+}
 
 
 /*
@@ -236,19 +238,19 @@ body{
 	z-index: 1;
 }
 .menu-search-field{
-	background: url('img/interface/search-bg.png');
-	background-size: 1px 100%;
+	background: rgba(217, 202, 239, 0.29);
+    border-radius: 500px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.75) inset, -1px -1px 1px rgba(255, 255, 255, 0.7) inset;
 
 	display: block;
 
-	padding: 0 24px;
-	
-	margin: 0 70px 0 19px;
+	padding: 0 94px 0 43px;
 
 	position: relative;
 }
 .menu-search-field:before,
 .menu-search-field:after{
+	/*
 	content: '';
 	background: inherit;
 	background-size: auto 100%;
@@ -258,6 +260,7 @@ body{
 	top: 0;
 	height: 44px;
 	width: 19px;
+	*/
 }
 .menu-search-field:before{
 	right: 100%;
@@ -290,7 +293,7 @@ body{
 }
 .menu-search-refresh{
 	cursor: pointer;
-	margin: -12px 0 0 0;
+	margin: -12px 8px 0 0;
 	position: absolute;
 	right: 6%;
 	top: 50%;
@@ -437,7 +440,7 @@ body{
 	box-sizing: border-box;
 }
 .player-cover{
-	min-width: 70%;
+	max-width: 500px;
 	display: block;
 	margin: 0 auto;
 	visibility: hidden;
@@ -449,6 +452,7 @@ body{
 .player-trackbar{
 	background-color: rgba(255, 82, 82, .07);
 	width: 70%;
+	max-width: 500px;
 	margin: 0 auto 0 auto;
 }
 .player-trackbar-bar{

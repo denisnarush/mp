@@ -7,21 +7,24 @@
 
     const actionPlay = document.getElementById("actionPlay");
     const actionPause = document.getElementById("actionPause");
-    const streamTrackbar = document.getElementById("streamTrackbar");
+
     const streamCurrentTime = document.getElementById("streamCurrentTime");
     const streamBgArtwork = document.getElementById("streamBgArtwork");
+    const streamTrackbar = document.getElementById("streamTrackbar");
     const streamArtwork = document.getElementById("streamArtwork");
     const streamGenre = document.getElementById("streamGenre");
     const streamTitle = document.getElementById("streamTitle");
+    const stream = document.getElementById("stream");
+
     const playlist = document.getElementById("playlist");
+    
 
-
-    var stream = document.getElementById("stream"),
-        // default artwork bg
+    var // default artwork bg
         artworkUrl = "img/tmp/album-cover.png",
 
         // soundcloud id
         CLIENT_ID = "7172aa9d8184ed052cf6148b4d6b8ae6",
+        REDIRECT_URI = "http://www.player-denisnarush.c9.io",
 
         // soundcloud search params
         OFFSET = Math.floor(Math.random() * (5000 - 0)) + 0,
@@ -33,7 +36,7 @@
     // init
     SC.initialize({
         client_id: CLIENT_ID,
-        redirect_uri: "http://www.player-denisnarush.c9.io"
+        redirect_uri: REDIRECT_URI
     });
 
 
