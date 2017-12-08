@@ -212,6 +212,22 @@
     //
     //
 
-
+    window.addEventListener("keydown", function (event) {
+        switch (event.code) {
+        case "Space":
+            if(stream.paused) {
+                onPLay();
+            } else {
+                onPause();
+            }
+            break;
+        case "ArrowRight":
+            stream.currentTime += 5;
+            break;
+        case "ArrowLeft":
+            stream.currentTime -= 5;
+            break;
+        }
+    });
 
 })(SC);
