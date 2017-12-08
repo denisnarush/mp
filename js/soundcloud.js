@@ -106,9 +106,9 @@
     window.getTrack = getTrack;
 
     function getTracks(){
-        let offset = Math.floor(Math.random() * (5000 - 0)) + 0;
+        let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
         // search query
-        SC.get("/tracks", {limit: LIMIT, tags: GENRE, offset: offset, client_id: CLIENT_ID,}).then(function(tracks) {
+        SC.get("/tracks", {limit: LIMIT, genres: GENRE, offset: offset, client_id: CLIENT_ID,}).then(function(tracks) {
         
             var html = "";
         
