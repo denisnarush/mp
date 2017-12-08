@@ -441,6 +441,8 @@ span{
 }
 .player-cover{
 	max-width: 500px;
+	max-height: 50%;
+	width: auto;
 	display: block;
 	margin: 0 auto;
 	visibility: hidden;

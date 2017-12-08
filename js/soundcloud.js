@@ -227,6 +227,12 @@
         case "ArrowLeft":
             stream.currentTime -= 5;
             break;
+        case "ArrowUp":
+            (stream.volume >= 1 ? stream.volume = 1 : stream.volume += 0.05);
+            break;
+        case "ArrowDown":
+            (stream.volume < 0.05 ? stream.volume = 0.00 : stream.volume -= 0.05);
+            break;
         }
     });
 
