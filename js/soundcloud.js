@@ -103,6 +103,8 @@
         });
     }
 
+    window.getTrack = getTrack;
+
     function getTracks(){
         let offset = Math.floor(Math.random() * (5000 - 0)) + 0;
         // search query
