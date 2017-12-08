@@ -53,6 +53,11 @@
         onNext();
     });
 
+    stream.addEventListener("load", function () {
+        stream.pause();
+        stream.play();
+    });
+
 
     stream.addEventListener("timeupdate", function () {
         var s;
@@ -75,6 +80,7 @@
     function getTrack (trackID) {
         SC.get("/tracks/" + trackID).then(function(data){
 
+            stream.pause();
             // set src url to soundcloud stream
             stream.src = data.stream_url + "?client_id=" + CLIENT_ID;
 
@@ -89,7 +95,7 @@
             streamGenre.innerHTML = data.genre;
             streamTitle.innerHTML = data.title;
 
-            stream.play();
+            // stream.play();
         });
     }
 
