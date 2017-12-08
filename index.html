@@ -38,10 +38,10 @@
 			<p class="player-author" id="streamTitle"></p>
 			<div class="player-actions">
 				<span class="player-actions-button"><i class="icon icon__shuffle"></i></span>
-				<span class="player-actions-button"><i class="icon icon__prev"></i></span>
+				<span id="actionPrev" class="player-actions-button"><i class="icon icon__prev"></i></span>
 				<span id="actionPlay" class="player-actions-button"><i class="icon icon__play"></i></span>
 				<span id="actionPause" class="player-actions-button" hidden><i class="icon icon__pause"></i></span>
-				<span class="player-actions-button"><i class="icon icon__next"></i></span>
+				<span id="actionNext" class="player-actions-button"><i class="icon icon__next"></i></span>
 				<span class="player-actions-button"><i class="icon icon__repeat"></i></span>
 			</div>
 		</div>
@@ -201,21 +201,6 @@
 				document.querySelector(".menu-nav-item__active").className = document.querySelector(".menu-nav-item__active").className.replace(/\bmenu-nav-item__active\b/,'');
 				document.querySelector('[data-tab-toggle="'+activeTab+'"]').className += ' menu-nav-item__active';
 			};
-
-		document.body.addEventListener('touchstart', function (e) {
-			if (e.target.tagName === 'INPUT') {
-				return;
-			}
-			/*
-			 * remove focus (and keyboard iOS)
-			*/
-			document.activeElement.blur();
-
-			/*
-			 * prevent overscrolling on iOS
-			*/ 
-			e.preventDefault();
-		});
 
 		playlistTop.addEventListener('click', function (e) {
 			togglePlayerUp();

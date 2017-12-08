@@ -7,6 +7,8 @@
 
     const actionPlay = document.getElementById("actionPlay");
     const actionPause = document.getElementById("actionPause");
+    const actionNext = document.getElementById("actionNext");
+    const actionPrev = document.getElementById("actionPrev");
 
     const streamCurrentTime = document.getElementById("streamCurrentTime");
     const streamBgArtwork = document.getElementById("streamBgArtwork");
@@ -47,6 +49,9 @@
         actionPause.removeAttribute("hidden");
     });
 
+    stream.addEventListener("ended", function () {
+        onNext();
+    });
 
 
     stream.addEventListener("timeupdate", function () {
@@ -99,6 +104,8 @@
         var html = "";
 
 
+        playlist.tracks = tracks;
+        playlist.current = 0;
 
         // preload first track
         getTrack(tracks[0].id);
@@ -151,6 +158,20 @@
 
 
 
+    function onNext(){
+        ( playlist.current + 1 === playlist.tracks.length ?  playlist.current = 0 :  playlist.current++ );
+        getTrack(playlist.tracks[playlist.current].id);
+    }
+
+
+
+    function onPrev(){
+        ( playlist.current === 0 ?  playlist.current = playlist.tracks.length - 1 : playlist.current-- );
+        getTrack(playlist.tracks[playlist.current].id);
+    }
+
+
+
     // play tap
     actionPlay.addEventListener("touchstart", onPLay);
     actionPlay.addEventListener("click", onPLay);
@@ -164,13 +185,13 @@
 
 
     // next tap
-    //
+    actionNext.addEventListener("click", onNext);
     //
 
 
 
     // prev tap
-    //
+    actionPrev.addEventListener("click", onPrev);
     //
 
 
