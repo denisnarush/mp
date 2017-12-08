@@ -9,8 +9,7 @@
     const actionPause = document.getElementById("actionPause");
     const actionNext = document.getElementById("actionNext");
     const actionPrev = document.getElementById("actionPrev");
-
-    const searchRefresh = document.getElementById("searchRefresh");
+    const actionRepeat = document.getElementById("actionRepeat");
 
     const streamCurrentTime = document.getElementById("streamCurrentTime");
     const streamBgArtwork = document.getElementById("streamBgArtwork");
@@ -45,9 +44,10 @@
     streamBgArtwork.style.backgroundImage = "url('"+artworkUrl+"')";
 
     stream.addEventListener("canplaythrough", function () {
-        stream.play();
-        actionPlay.setAttribute("hidden", "");
-        actionPause.removeAttribute("hidden");
+        if (!stream.paused) {
+            actionPlay.setAttribute("hidden", "");
+            actionPause.removeAttribute("hidden");
+        }
     });
 
     stream.addEventListener("ended", function () {
@@ -76,7 +76,7 @@
         streamCurrentTime.innerHTML = (stream.currentTime / 60).toString().split(".")[0] + "."+ s;
     });
 
-    searchRefresh.addEventListener("click", function () {
+    actionRepeat.addEventListener("click", function () {
         getTracks();
     });
     

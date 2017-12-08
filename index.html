@@ -4,6 +4,7 @@
 	<title>Mp</title>
 	<link rel="stylesheet" type="text/css" href="app.css">
 	<link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -22,27 +23,29 @@
 				</p>
 			</div>
 			<div class="top-s top-s__right">
-				<span class="top-equalizer"><i class="icon icon__equalizer"></i></span>
-				<span class="top-menu" data-menu="toggle"><i class="icon icon__menu"></i></span>
+				<span hidden class="top-equalizer"><i class="icon icon__equalizer"></i></span>
+				<span hidden class="top-menu" data-menu="toggle"><i class="icon icon__menu"></i></span>
 			</div>
 		</div>
 		<div class="player">
-			<img width="70%" title="Lea Michele - Louder" alt="Lea Michele - Louder" class="player-cover" id="streamArtwork">
+			<div class="player-cover">
+				<img title="Lea Michele - Louder" alt="Lea Michele - Louder" id="streamArtwork">
+			</div>
 			<audio id="stream" controls preload="auto" autoplay hidden></audio>
+			<p class="player-title" id="streamGenre"></p>
+			<p class="player-author" id="streamTitle"></p>
 			<div class="player-trackbar">
-				<span class="player-trackbar-bar" id="streamTrackbar">
+				<span class="player-trackbar-bar" id="streamTrackbar" style="width: 0">
 					<span class="player-trackbar-time" id="streamCurrentTime"></span>
 				</span>
 			</div>
-			<p class="player-title" id="streamGenre"></p>
-			<p class="player-author" id="streamTitle"></p>
 			<div class="player-actions">
-				<span class="player-actions-button"><i class="icon icon__shuffle"></i></span>
-				<span id="actionPrev" class="player-actions-button"><i class="icon icon__prev"></i></span>
-				<span id="actionPlay" class="player-actions-button"><i class="icon icon__play"></i></span>
-				<span id="actionPause" class="player-actions-button" hidden><i class="icon icon__pause"></i></span>
-				<span id="actionNext" class="player-actions-button"><i class="icon icon__next"></i></span>
-				<span class="player-actions-button"><i class="icon icon__repeat"></i></span>
+				<span class="player-actions-button"><i class="fa fa-random"></i></span>
+				<span id="actionPrev" class="player-actions-button"><i class="fa fa-fast-backward"></i></span>
+				<span id="actionPlay" class="player-actions-button"><i class="fa fa-play"></i></span>
+				<span id="actionPause" class="player-actions-button" hidden><i class="fa fa-pause"></i></span>
+				<span id="actionNext" class="player-actions-button"><i class="fa fa-fast-forward"></i></span>
+				<span id="actionRepeat" class="player-actions-button"><i class="fa fa-retweet"></i></span>
 			</div>
 		</div>
 	</div>

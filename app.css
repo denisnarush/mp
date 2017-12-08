@@ -432,30 +432,47 @@ span{
  * PLAYER START
 */
 .player{
-	padding: 70px 0 0 0;
+	padding: 70px 0 60px 0;
 
 	position: relative;
 	height: 100%;
 	z-index: 1;
 	box-sizing: border-box;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 .player-cover{
-	max-width: 500px;
+	flex: 1;
+}
+
+.player-cover{
+	/* max-width: 500px; */
 	max-height: 50%;
-	width: auto;
-	display: block;
-	margin: 0 auto;
+	/* width: auto; */
+	/* display: block; */
+	/* margin: 0 auto; */
+	position: relative;
+	text-align: center;
+}
+.player-cover img{
 	visibility: hidden;
 }
-.player-cover[src^="http"]{
+.player-cover img[src^="http"]{
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    transform: translateX(-50%);
 	padding-top: 0;
-	visibility: inherit;
+	visibility: initial;
 }
 .player-trackbar{
 	background-color: rgba(255, 82, 82, .07);
 	width: 70%;
 	max-width: 500px;
-	margin: 0 auto 0 auto;
+	margin: 3% auto;
 }
 .player-trackbar-bar{
 	transition: width .05s; transition-timing-function: linear;
@@ -476,6 +493,7 @@ span{
 	position: absolute;
 	right: 0;
 	top: 100%;
+	transform: translateX(50%);
 }
 .player-title{
 	color: rgba(235, 235, 250, 0.9);
@@ -486,8 +504,8 @@ span{
 
 	text-align: center;
 
-	padding: .570570584em 0 .210210215em 0;
-	margin: 0;
+	/* padding: .570570584em 0 .210210215em 0; */
+	margin: auto 0 0 0;
 }
 .player-author{
 	color:  #ff5252;
@@ -498,16 +516,16 @@ span{
 
 	text-align: center;
 
-	margin: 0 6%;
+	margin: 0 6% auto 6%;
 }
 .player-actions{
 	box-sizing: border-box;
 	font-size: 0;
 
-	padding: 10px 4%;
-	margin: 0 auto;
+	/* padding: 10px 4%; */
+	margin: 3% auto;
 
-	position: absolute;
+	/* position: absolute; */
 	right: 0;
 	bottom: 80px;
 	left: 0;
@@ -524,8 +542,20 @@ span{
 	text-align: center;
 
 	width: 20%;
+	color: #ebebfa;
+	font-size: 27px;
+	font-weight: normal;
 }
-
+.player-actions-button .fa-play,
+.player-actions-button .fa-pause{
+	color: #ff5252;
+	font-size: 2.5em;
+}
+.player-actions-button .fa-fast-forward,
+.player-actions-button .fa-fast-backward{
+	color: #fff;
+	font-size: 1.25em;
+}
 /*
  * PLAYER END
 */
