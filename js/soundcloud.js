@@ -20,6 +20,8 @@
     const stream = document.getElementById("stream");
 
     const playlist = document.getElementById("playlist");
+
+    playlist.currentTrackIndcicator = "<p class=\"playlist-item-active\"><i class=\"icon icon__bars\"></i></p>";
     
 
     var // default artwork bg
@@ -41,6 +43,7 @@
         redirect_uri: REDIRECT_URI
     });
 
+    stream.volume = 0.75;
     streamBgArtwork.style.backgroundImage = "url('"+artworkUrl+"')";
 
     stream.addEventListener("canplaythrough", function () {
@@ -83,6 +86,7 @@
     getTracks();
 
     function getTrack (trackID) {
+        document.querySelector(".playlist-item-active").remove();
         SC.get("/tracks/" + trackID).then(function(data){
     
             stream.pause();
@@ -94,12 +98,13 @@
             } else {
                 artworkUrl = "https://s-media-cache-ak0.pinimg.com/736x/18/82/0d/18820da64d8732ca79f9161157549b0b.jpg";
             }
-    
+            
             streamArtwork.src = artworkUrl;
             streamBgArtwork.style.backgroundImage = "url('"+artworkUrl+"')";
             streamGenre.innerHTML = data.genre;
             streamTitle.innerHTML = data.title;
-    
+
+            playlist.children[playlist.current].querySelector(".playlist-item-s__right").innerHTML += playlist.currentTrackIndcicator;
         });
     }
 
@@ -117,7 +122,7 @@
             playlist.current = 0;
         
             // preload first track
-            getTrack(tracks[0].id);
+            getTrack(tracks[playlist.current].id);
         
         
         
