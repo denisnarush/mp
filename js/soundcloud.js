@@ -10,7 +10,8 @@
     const actionNext = document.getElementById("actionNext");
     const actionPrev = document.getElementById("actionPrev");
     const actionRepeat = document.getElementById("actionRepeat");
-
+    const actionShuffle = document.getElementById("actionShuffle");
+    
     const streamCurrentTime = document.getElementById("streamCurrentTime");
     const streamBgArtwork = document.getElementById("streamBgArtwork");
     const streamTrackbar = document.getElementById("streamTrackbar");
@@ -21,6 +22,8 @@
 
     const playlist = document.getElementById("playlist");
 
+    playlist.shuffled = false;
+    playlist.repeated = false;
     playlist.currentTrackIndcicator = "<p class=\"playlist-item-active\"><i class=\"icon icon__bars\"></i></p>";
     
 
@@ -78,10 +81,6 @@
         // current track time
         streamCurrentTime.innerHTML = (stream.currentTime / 60).toString().split(".")[0] + "."+ s;
     });
-
-    actionRepeat.addEventListener("click", function () {
-        getTracks();
-    });
     
     getTracks();
 
@@ -131,7 +130,7 @@
                 var time = new Date();
                 time.setTime(itm.duration);
                 html += "";
-                html += "<div class=\"playlist-item\"  data-trackid=\""+itm.id+"\" onclick=\"getTrack("+itm.id+")\" ontouchstart=\"getTrack("+itm.id+")\">";
+                html += "<div class=\"playlist-item\"  data-trackid=\""+itm.id+"\" onclick=\"getTrack("+itm.id+")\">";
                 html += "<div class=\"playlist-item-s playlist-item-s__left\">";
                 html += "<p class=\"playlist-item-title\">"+itm.user.username+"<span class=\"playlist-item-author\">"+itm.title+"</span></p>";
                 html += "</div>";
@@ -140,9 +139,7 @@
                 html += "</div>";
                 html += "</div>";
             });
-        
-        
-        
+
             // past to the DOM
             playlist.innerHTML = html;
         });
@@ -172,17 +169,47 @@
 
 
     function onNext(){
-        ( playlist.current + 1 === playlist.tracks.length ?  playlist.current = 0 :  playlist.current++ );
+        if (playlist.shuffled) {
+            let i = Math.floor(Math.random() * (playlist.tracks.length - 0)) + 0;
+            ( playlist.current === i ? playlist.current++ : playlist.current = i );
+        } else {
+            playlist.current++;
+        }
+
+        ( playlist.current === playlist.tracks.length ?  playlist.current = 0 :  playlist.current );
+
         getTrack(playlist.tracks[playlist.current].id);
     }
 
 
 
     function onPrev(){
-        ( playlist.current === 0 ?  playlist.current = playlist.tracks.length - 1 : playlist.current-- );
+        if (playlist.shuffled) {
+            let i = Math.floor(Math.random() * (playlist.tracks.length - 0)) + 0;
+            ( playlist.current === i ? playlist.current-- : playlist.current = i );
+        } else {
+            playlist.current--;
+        }
+
+        ( playlist.current === 0 ?  playlist.current = playlist.tracks.length - 1 : playlist.current );
+
         getTrack(playlist.tracks[playlist.current].id);
     }
 
+
+
+    function onShuffle(){
+        playlist.shuffled = !playlist.shuffled;
+        actionShuffle.style.opacity = (playlist.shuffled ? 1 : 0.5);
+    }
+
+    function onRepeat(){
+        playlist.repeated = !playlist.repeated;
+        actionRepeat.style.opacity = (playlist.repeated ? 1 : 0.5);
+
+        // remove then repeat action will be done
+        getTracks();
+    }
 
 
     // play tap
@@ -210,13 +237,13 @@
 
 
     // shuffle tap
-    //
+    actionShuffle.addEventListener("click", onShuffle);
     //
 
 
 
     // repeat tap
-    //
+    actionRepeat.addEventListener("click", onRepeat);
     //
 
     window.addEventListener("keydown", function (event) {

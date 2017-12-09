@@ -40,12 +40,12 @@
 				</span>
 			</div>
 			<div class="player-actions">
-				<span class="player-actions-button"><i class="fa fa-random"></i></span>
+				<span id="actionShuffle" class="player-actions-button" style="opacity: 0.5"><i class="fa fa-random"></i></span>
 				<span id="actionPrev" class="player-actions-button"><i class="fa fa-fast-backward"></i></span>
 				<span id="actionPlay" class="player-actions-button"><i class="fa fa-play"></i></span>
 				<span id="actionPause" class="player-actions-button" hidden><i class="fa fa-pause"></i></span>
 				<span id="actionNext" class="player-actions-button"><i class="fa fa-fast-forward"></i></span>
-				<span id="actionRepeat" class="player-actions-button"><i class="fa fa-retweet"></i></span>
+				<span id="actionRepeat" class="player-actions-button" style="opacity: 0.5"><i class="fa fa-retweet"></i></span>
 			</div>
 		</div>
 	</div>
@@ -156,7 +156,7 @@
 
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
 	<!-- TMP SCRIPT -->
-<script type="text/javascript">
+	<script type="text/javascript">
 		var i = 0,
 			player = document.querySelector('[data-state="player"]'),
 			playlistContainer = document.querySelector('[data-state="playlist"]'),
@@ -225,7 +225,7 @@
 			tabToggles[i].addEventListener('click', setActiveTab.bind(null, tabToggles[i].getAttribute('data-tab-toggle')));
 		}
 	</script>
-<script src='js/soundcloud.js?v=1'></script>
+	<script src='js/soundcloud.js?v=1'></script>
 
 </body>
 </html>
