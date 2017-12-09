@@ -111,12 +111,12 @@
 
     function getTracks(){
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
+
         // search query
         SC.get("/tracks", {limit: LIMIT, genres: GENRE, offset: offset, client_id: CLIENT_ID,}).then(function(tracks) {
-        
+
             var html = "";
-        
-        
+
             playlist.tracks = tracks;
             playlist.current = 0;
         
@@ -144,6 +144,7 @@
             playlist.innerHTML = html;
         });
     }
+
 
 
     function onPLay(){
@@ -203,6 +204,8 @@
         actionShuffle.style.opacity = (playlist.shuffled ? 1 : 0.5);
     }
 
+
+
     function onRepeat(){
         playlist.repeated = !playlist.repeated;
         actionRepeat.style.opacity = (playlist.repeated ? 1 : 0.5);
@@ -213,14 +216,14 @@
 
 
     // play tap
-    actionPlay.addEventListener("touchstart", onPLay);
     actionPlay.addEventListener("click", onPLay);
+    //
 
 
 
     // pause tap
-    actionPause.addEventListener("touchstart", onPause);
     actionPause.addEventListener("click", onPause);
+    //
 
 
 
@@ -247,6 +250,8 @@
     //
 
     window.addEventListener("keydown", function (event) {
+        event.preventDefault();
+
         switch (event.code) {
         case "Space":
             if(stream.paused) {
