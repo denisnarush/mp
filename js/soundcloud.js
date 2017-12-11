@@ -57,7 +57,7 @@
     });
 
     stream.addEventListener("ended", function () {
-        if (stream.repeated){
+        if (playlist.repeated){
             getTrack(playlist.tracks[playlist.current].id);
         } else {
             onNext();
