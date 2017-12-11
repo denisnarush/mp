@@ -87,6 +87,7 @@ span{
 .icon-arrow-down-right{
 	color: #ff5252;
 	font-size: 24px;
+	font-weight: 700;
 	vertical-align: middle;
 }
 /*
@@ -487,12 +488,16 @@ span{
 .player-actions-button .icon-play,
 .player-actions-button .icon-pause{
 	color: #ff5252;
-	font-size: 2.5em;
+	font-size: 2.7em;
+	display: inline-block;
+	transform: scaleY(0.8);
 }
 .player-actions-button .icon-forward3,
 .player-actions-button .icon-backward2{
 	color: #fff;
-	font-size: 2em;
+	font-size: 2.2em;
+	display: inline-block;
+	transform: scaleY(0.7);
 }
 /*
  * PLAYER END
