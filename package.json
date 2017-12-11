@@ -1,6 +1,6 @@
 {
   "name": "mp",
-  "version": "1.0.0",
+  "version": "0.037.0",
   "description": "musical player",
   "main": "index.html",
   "window": {
