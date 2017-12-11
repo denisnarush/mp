@@ -59,11 +59,6 @@ span{
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 }
-.icon__arrow-bottom-right{
-	background-image: url('img/interface/icon-arrow-bottom-right.png');
-	width: 14px;
-	height: 13px;
-}
 .icon__equalizer{
 	background-image: url('img/interface/icon-equalizer.png');
 	width: 24px;
@@ -73,36 +68,6 @@ span{
 	background-image: url('img/interface/icon-menu.png');
 	width: 4px;
 	height: 26px;
-}
-.icon__shuffle{
-	background-image: url('img/interface/icon-shuffle.png');
-	width: 23px;
-	height: 20px;
-}
-.icon__prev{
-	background-image: url('img/interface/icon-prev.png');
-	width: 27px;
-	height: 16px;
-}
-.icon__play{
-	background-image: url('img/interface/icon-play.png');
-	width: 30px;
-	height: 35px;
-}
-.icon__pause{
-	background-image: url('img/interface/icon-pause.png');
-	width: 23px;
-	height: 35px;
-}
-.icon__next{
-	background-image: url('img/interface/icon-next.png');
-	width: 27px;
-	height: 16px;
-}
-.icon__repeat{
-	background-image: url('img/interface/icon-repeat.png');
-	width: 23px;
-	height: 18px;
 }
 .icon__bars{
 	background-image: url('img/interface/icon-bars.png');
@@ -119,7 +84,11 @@ span{
 	width: 30px;
 	height: 24px;
 }
-
+.icon-arrow-down-right{
+	color: #ff5252;
+	font-size: 24px;
+	vertical-align: middle;
+}
 /*
  * ICONS END
 */
@@ -331,6 +300,7 @@ span{
 .top-title{
 	font-size: 0;
 	position: relative;
+	white-space: nowrap;
 }
 .top-title.top-title__center{
 	text-align: center;
@@ -514,15 +484,15 @@ span{
 	font-size: 27px;
 	font-weight: normal;
 }
-.player-actions-button .fa-play,
-.player-actions-button .fa-pause{
+.player-actions-button .icon-play,
+.player-actions-button .icon-pause{
 	color: #ff5252;
 	font-size: 2.5em;
 }
-.player-actions-button .fa-fast-forward,
-.player-actions-button .fa-fast-backward{
+.player-actions-button .icon-forward3,
+.player-actions-button .icon-backward2{
 	color: #fff;
-	font-size: 1.25em;
+	font-size: 2em;
 }
 /*
  * PLAYER END

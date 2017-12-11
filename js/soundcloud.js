@@ -57,7 +57,11 @@
     });
 
     stream.addEventListener("ended", function () {
-        onNext();
+        if (stream.repeated){
+            getTrack(playlist.tracks[playlist.current].id);
+        } else {
+            onNext();
+        }
     });
 
     stream.addEventListener("load", function () {
@@ -209,9 +213,6 @@
     function onRepeat(){
         playlist.repeated = !playlist.repeated;
         actionRepeat.style.opacity = (playlist.repeated ? 1 : 0.5);
-
-        // remove then repeat action will be done
-        getTracks();
     }
 
 
@@ -250,8 +251,6 @@
     //
 
     window.addEventListener("keydown", function (event) {
-        event.preventDefault();
-
         switch (event.code) {
         case "Space":
             if(stream.paused) {
