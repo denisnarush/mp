@@ -44,11 +44,9 @@ body{
 	background-color: black;
 	margin: 0;
 }
-span{
+*{
 	user-select: none;
 }
-
-
 /*
  * ICONS START
 */
