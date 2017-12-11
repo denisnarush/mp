@@ -9,7 +9,7 @@
     const actionPause = document.getElementById("actionPause");
     const actionNext = document.getElementById("actionNext");
     const actionPrev = document.getElementById("actionPrev");
-    const actionRepeat = document.getElementById("actionRepeat");
+    const actionLoop = document.getElementById("actionLoop");
     const actionShuffle = document.getElementById("actionShuffle");
     
     const streamCurrentTime = document.getElementById("streamCurrentTime");
@@ -23,8 +23,28 @@
     const playlist = document.getElementById("playlist");
 
     playlist.shuffled = false;
-    playlist.repeated = false;
-    playlist.currentTrackIndcicator = "<p class=\"playlist-item-active\"><i class=\"icon icon__bars\"></i></p>";
+    playlist.looped = false;
+
+    playlist.addEventListener("click", function (event) {
+        let path = event.path,
+            i = 0;
+
+        while (playlist !== path[i]) {
+            i++;
+        }
+        let item = path[i - 1],
+            trackIndex;
+
+        if (!item) {
+            return;
+        }
+
+        clean();
+        trackIndex = item.getAttribute("data-trackindex");
+        playlist.current = trackIndex;
+
+        getTrack(playlist.tracks[playlist.current].id);
+    });
     
 
     var // default artwork bg
@@ -57,7 +77,7 @@
     });
 
     stream.addEventListener("ended", function () {
-        if (playlist.repeated){
+        if (playlist.looped){
             getTrack(playlist.tracks[playlist.current].id);
         } else {
             onNext();
@@ -71,10 +91,11 @@
 
 
     stream.addEventListener("timeupdate", function () {
-        var s;
+        var s, w;
 
+        w = (stream.currentTime*100/stream.duration).toFixed(1)+ "%";
         // trackbar moving
-        streamTrackbar.style.width = (stream.currentTime*100/stream.duration).toFixed(1)+ "%";
+        streamTrackbar.style.width = w;
 
         // sec
         s = (stream.currentTime % 60).toString().split(".")[0];
@@ -84,12 +105,13 @@
 
         // current track time
         streamCurrentTime.innerHTML = (stream.currentTime / 60).toString().split(".")[0] + "."+ s;
+
+        playlist.children[playlist.current].style.backgroundSize = `${w} 100%`;
     });
     
     getTracks();
 
     function getTrack (trackID) {
-        document.querySelector(".playlist-item-active").remove();
         SC.get("/tracks/" + trackID).then(function(data){
     
             stream.pause();
@@ -107,7 +129,7 @@
             streamGenre.innerHTML = data.genre;
             streamTitle.innerHTML = data.title;
 
-            playlist.children[playlist.current].querySelector(".playlist-item-s__right").innerHTML += playlist.currentTrackIndcicator;
+            playlist.children[playlist.current].classList.toggle("playlist-item__current");
         });
     }
 
@@ -119,7 +141,8 @@
         // search query
         SC.get("/tracks", {limit: LIMIT, genres: GENRE, offset: offset, client_id: CLIENT_ID,}).then(function(tracks) {
 
-            var html = "";
+            let html = "",
+                i = 0;
 
             playlist.tracks = tracks;
             playlist.current = 0;
@@ -128,20 +151,20 @@
             getTrack(tracks[playlist.current].id);
         
         
-        
+
             // generate playlist
             tracks.forEach(function (itm) {
                 var time = new Date();
                 time.setTime(itm.duration);
-                html += "";
-                html += "<div class=\"playlist-item\"  data-trackid=\""+itm.id+"\" onclick=\"getTrack("+itm.id+")\">";
-                html += "<div class=\"playlist-item-s playlist-item-s__left\">";
-                html += "<p class=\"playlist-item-title\">"+itm.user.username+"<span class=\"playlist-item-author\">"+itm.title+"</span></p>";
-                html += "</div>";
-                html += "<div class=\"playlist-item-s playlist-item-s__right\">";
-                html += "<p class=\"playlist-item-time\">"+time.getMinutes()+"."+(time.getSeconds() < 10 ? "0"+time.getSeconds() : time.getSeconds())+"</p>";
-                html += "</div>";
-                html += "</div>";
+
+                html += `<div class="playlist-item" data-trackindex="${i++}">
+                            <div class="playlist-item-s playlist-item-s__left">
+                                <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
+                            </div>
+                            <div class="playlist-item-s playlist-item-s__right">
+                                <p class="playlist-item-time">${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}</p>
+                            </div>
+                        </div>`;
             });
 
             // past to the DOM
@@ -149,6 +172,10 @@
         });
     }
 
+    function clean(){
+        playlist.children[playlist.current].style.backgroundSize = "";
+        playlist.children[playlist.current].classList.remove("playlist-item__current");
+    }
 
 
     function onPLay(){
@@ -174,6 +201,8 @@
 
 
     function onNext(){
+        clean();
+
         if (playlist.shuffled) {
             let i = Math.floor(Math.random() * (playlist.tracks.length - 0)) + 0;
             ( playlist.current === i ? playlist.current++ : playlist.current = i );
@@ -189,6 +218,8 @@
 
 
     function onPrev(){
+        clean();
+
         if (playlist.shuffled) {
             let i = Math.floor(Math.random() * (playlist.tracks.length - 0)) + 0;
             ( playlist.current === i ? playlist.current-- : playlist.current = i );
@@ -204,15 +235,23 @@
 
 
     function onShuffle(){
+        // turn off loop
+        playlist.looped = false;
+        actionLoop.style.opacity = 0.5;
+
         playlist.shuffled = !playlist.shuffled;
         actionShuffle.style.opacity = (playlist.shuffled ? 1 : 0.5);
     }
 
 
 
-    function onRepeat(){
-        playlist.repeated = !playlist.repeated;
-        actionRepeat.style.opacity = (playlist.repeated ? 1 : 0.5);
+    function onLoop(){
+        // turn off shuffle
+        playlist.shuffled = false;
+        actionShuffle.style.opacity = 0.5;
+
+        playlist.looped = !playlist.looped;
+        actionLoop.style.opacity = (playlist.looped ? 1 : 0.5);
     }
 
 
@@ -247,7 +286,7 @@
 
 
     // repeat tap
-    actionRepeat.addEventListener("click", onRepeat);
+    actionLoop.addEventListener("click", onLoop);
     //
 
     window.addEventListener("keydown", function (event) {
