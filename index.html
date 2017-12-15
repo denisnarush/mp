@@ -52,7 +52,7 @@
 		</div>
 	</div>
 	<!-- Playlist -->
-	<div class="state" style="margin-top: -60px; transform: translateY(100%);" data-state="playlist">
+	<div class="state" style="transform: translateY(calc(100% - 60px));" data-state="playlist">
 		<div class="top top__bg">
 			<p class="top-title top-title__center top-title__swipe">
 				<span class="top-title-text top-title-text__small">Playlist</span>
@@ -157,76 +157,7 @@
 
 
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
-	<!-- TMP SCRIPT -->
-	<script type="text/javascript">
-		var i = 0,
-			player = document.querySelector('[data-state="player"]'),
-			playlistContainer = document.querySelector('[data-state="playlist"]'),
-			playlistTop = document.querySelector('[data-state="playlist"] .top'),
-			browse = document.querySelector('[data-state="browse"]'),
-
-
-			menuToggles = document.querySelectorAll('[data-menu="toggle"]'),
-
-			activeTab = 0,
-			tabToggles = document.querySelectorAll('[data-tab-toggle]'),
-			artistsTab = document.querySelector('[data-tab="artists"]'),
-			albumsTab = document.querySelector('[data-tab="albums"]'),
-			songsTab = document.querySelector('[data-tab="songs"]'),
-
-
-			togglePlaylist = function () {
-				playlistContainer.style.webkitTransform = playlistContainer.style.webkitTransform ? '' : 'translateY(100%)';
-				playlistContainer.style.marginTop = playlistContainer.style.marginTop ? '' : '-60px';
-			},
-
-			togglePlayerDown = function () {
-				player.style.webkitTransform = player.style.webkitTransform ? '' : 'translateY(100%)';
-			},
-
-			togglePlayerUp = function () {
-				player.style.webkitTransform = player.style.webkitTransform ? '' : 'translateY(-100%)';
-			},
-
-			toggleMenu = function () {
-				browse.style.webkitTransform = browse.style.webkitTransform ? '' : 'translateY(-100%)';
-				playlistContainer.style.marginTop = playlistContainer.style.marginTop ? '' : '-60px';
-
-				togglePlayerDown();
-			},
-
-			setActiveTab = function (id) {
-				activeTab = id;
-				var v = activeTab * 100;
-				v = -v;
-				artistsTab.style.webkitTransform = 'translateX('+v+'%)';
-				albumsTab.style.webkitTransform = 'translateX('+v+'%)';
-				songsTab.style.webkitTransform = 'translateX('+v+'%)';
-
-				document.querySelector(".menu-nav-item__active").className = document.querySelector(".menu-nav-item__active").className.replace(/\bmenu-nav-item__active\b/,'');
-				document.querySelector('[data-tab-toggle="'+activeTab+'"]').className += ' menu-nav-item__active';
-			};
-
-		playlistTop.addEventListener('click', function (e) {
-			togglePlayerUp();
-			togglePlaylist();
-		});
-
-		playlistTop.addEventListener('touchstart', function () {
-			togglePlayerUp();
-			togglePlaylist();
-		});
-
-		for (i = 0; i < menuToggles.length; i++ ) {
-			menuToggles[i].addEventListener('touchstart', toggleMenu);
-			menuToggles[i].addEventListener('click', toggleMenu);
-		}
-
-		for (i = 0; i < tabToggles.length; i++ ) {
-			tabToggles[i].addEventListener('touchstart', setActiveTab.bind(null, tabToggles[i].getAttribute('data-tab-toggle')));
-			tabToggles[i].addEventListener('click', setActiveTab.bind(null, tabToggles[i].getAttribute('data-tab-toggle')));
-		}
-	</script>
+	<script src="main.js" type="module"></script>
 	<script src='js/soundcloud.js?v=0.037'></script>
 
 </body>

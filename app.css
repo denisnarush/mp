@@ -8,7 +8,7 @@ html, body{
  * TEMP RULLES START
 */
 
-g {background: url('states/Now Playing.png') top center no-repeat;}
+/* g {background: url('states/Now Playing.png') top center no-repeat;} */
 /*g {background: url('states/Playlist.png') top center no-repeat;}*/
 /*g {background: url('states/Browser - Artists.png') top center no-repeat;}*/
 g{
@@ -30,6 +30,7 @@ g {background-size: 360px 640px;}
 {transition: transform .2s; transition-timing-function: linear;}
 
 [hidden] {display: none !important;}
+* {user-select: none;}
 /*[data-state="player"]{display: none;}*/
 /*[data-state="playlist"]{display: none;}*/
 /*[data-state="browse"]{display: none;}*/
@@ -43,9 +44,6 @@ g {background-size: 360px 640px;}
 body{
 	background-color: black;
 	margin: 0;
-}
-*{
-	user-select: none;
 }
 /*
  * ICONS START
