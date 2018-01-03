@@ -18,47 +18,48 @@
     const streamArtwork = document.getElementById("streamArtwork");
     const streamGenre = document.getElementById("streamGenre");
     const streamTitle = document.getElementById("streamTitle");
-    const stream = document.getElementById("stream");
 
+    // default artwork bg
+    const DEFAULT_TRACK_COVER = "img/tmp/album-cover.png";
+    // SC settings
+    const CLIENT_ID = "7172aa9d8184ed052cf6148b4d6b8ae6";
+    const REDIRECT_URI = "http://www.player-denisnarush.c9.io";
+    // SC search params
+    const LIMIT = 30;
+    const GENRE = "Chillout";
+    // playlist
     const playlist = document.getElementById("playlist");
-
     playlist.shuffled = false;
     playlist.looped = false;
+    // stream
+    const stream = document.getElementById("stream");
+    stream.volume = 0.75;
+    streamBgArtwork.style.backgroundImage = "url('" + DEFAULT_TRACK_COVER + "')";
 
-    playlist.addEventListener("click", function (event) {
-        let path = event.path,
-            i = 0;
-
-        while (playlist !== path[i]) {
-            i++;
-        }
-        let item = path[i - 1],
-            trackIndex;
-
-        if (!item) {
-            return;
-        }
-
-        clean();
-        trackIndex = item.getAttribute("data-trackindex");
-        playlist.current = trackIndex;
-
-        getTrack(playlist.tracks[playlist.current].id);
-    });
-    
-
-    var // default artwork bg
-        artworkUrl = "img/tmp/album-cover.png",
-
-        // soundcloud id
-        CLIENT_ID = "7172aa9d8184ed052cf6148b4d6b8ae6",
-        REDIRECT_URI = "http://www.player-denisnarush.c9.io",
-
-        // soundcloud search params
-        LIMIT = 30,
-        GENRE = "Chillout";
-
-
+    // stream ended
+    stream.addEventListener("ended", onEnded);
+    // stream can play
+    stream.addEventListener("canplaythrough", onCanPlayThrough);
+    // stream load
+    stream.addEventListener("load", onLoad);
+    // time update
+    stream.addEventListener("timeupdate", onTimeUpdate);
+    // play tap
+    actionPlay.addEventListener("click", onPLay);
+    // pause tap
+    actionPause.addEventListener("click", onPause);
+    // next tap
+    actionNext.addEventListener("click", onNext);
+    // prev tap
+    actionPrev.addEventListener("click", onPrev);
+    // shuffle tap
+    actionShuffle.addEventListener("click", onShuffle);
+    // repeat tap
+    actionLoop.addEventListener("click", onLoop);
+    // keydown
+    window.addEventListener("keydown", onKeydown);
+    // playlist tap
+    playlist.addEventListener("click", onPlaylist);
 
     // init
     SC.initialize({
@@ -66,66 +67,28 @@
         redirect_uri: REDIRECT_URI
     });
 
-    stream.volume = 0.75;
-    streamBgArtwork.style.backgroundImage = "url('"+artworkUrl+"')";
-
-    stream.addEventListener("canplaythrough", function () {
-        if (!stream.paused) {
-            actionPlay.setAttribute("hidden", "");
-            actionPause.removeAttribute("hidden");
-        }
-    });
-
-    stream.addEventListener("ended", function () {
-        if (playlist.looped){
-            getTrack(playlist.tracks[playlist.current].id);
-        } else {
-            onNext();
-        }
-    });
-
-    stream.addEventListener("load", function () {
-        stream.pause();
-        stream.play();
-    });
-
-
-    stream.addEventListener("timeupdate", function () {
-        var s, w;
-
-        w = (stream.currentTime*100/stream.duration).toFixed(1)+ "%";
-        // trackbar moving
-        streamTrackbar.style.width = w;
-
-        // sec
-        s = (stream.currentTime % 60).toString().split(".")[0];
-
-        // append 0 if number lower than 10 (00-09)
-        s = (s < 10 ? "0"+s : s);
-
-        // current track time
-        streamCurrentTime.innerHTML = (stream.currentTime / 60).toString().split(".")[0] + "."+ s;
-
-        playlist.children[playlist.current].style.backgroundSize = `${w} 100%`;
-    });
-    
     getTracks();
 
     function getTrack (trackID) {
-        SC.get("/tracks/" + trackID).then(function(data){
-    
+        if (playlist.querySelector(".playlist-item__current")) {
+            playlist.querySelector(".playlist-item__current").classList.remove("playlist-item__current");
+        }
+
+        SC.get("/tracks/" + trackID).then(function(data) {
+            let cover;
+
             stream.pause();
-            // set src url to soundcloud stream
+            // set audio src url to soundcloud stream
             stream.src = data.stream_url + "?client_id=" + CLIENT_ID;
-    
+            // track artwork
             if (data.artwork_url !== null) {
-                artworkUrl = data.artwork_url.replace(new RegExp("large","g"),"t500x500");
+                cover = data.artwork_url.replace(new RegExp("large","g"),"t500x500");
             } else {
-                artworkUrl = "https://s-media-cache-ak0.pinimg.com/736x/18/82/0d/18820da64d8732ca79f9161157549b0b.jpg";
+                cover = DEFAULT_TRACK_COVER;
             }
             
-            streamArtwork.src = artworkUrl;
-            streamBgArtwork.style.backgroundImage = "url('"+artworkUrl+"')";
+            streamArtwork.src = cover;
+            streamBgArtwork.style.backgroundImage = "url('"+cover+"')";
             streamGenre.innerHTML = data.genre;
             streamTitle.innerHTML = data.title;
 
@@ -133,9 +96,7 @@
         });
     }
 
-    window.getTrack = getTrack;
-
-    function getTracks(){
+    function getTracks() {
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
 
         // search query
@@ -149,14 +110,12 @@
         
             // preload first track
             getTrack(tracks[playlist.current].id);
-        
-        
-
             // generate playlist
             tracks.forEach(function (itm) {
-                var time = new Date();
+                let time = new Date();
+                // track time
                 time.setTime(itm.duration);
-
+                // template
                 html += `<div class="playlist-item" data-trackindex="${i++}">
                             <div class="playlist-item-s playlist-item-s__left">
                                 <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
@@ -166,20 +125,18 @@
                             </div>
                         </div>`;
             });
-
             // past to the DOM
             playlist.innerHTML = html;
         });
     }
 
-    function clean(){
-        playlist.children[playlist.current].style.backgroundSize = "";
-        playlist.children[playlist.current].classList.remove("playlist-item__current");
-    }
 
 
-    function onPLay(){
-        if(!stream.paused){
+    /**
+     * Play handler
+     */
+    function onPLay() {
+        if(!stream.paused) {
             return;
         }
         stream.play();
@@ -189,8 +146,11 @@
 
 
 
-    function onPause(){
-        if(stream.paused){
+    /**
+     * Pause handler
+     */
+    function onPause() {
+        if(stream.paused) {
             return;
         }
         stream.pause();
@@ -200,9 +160,10 @@
 
 
 
-    function onNext(){
-        clean();
-
+    /**
+     * Next handler
+     */
+    function onNext() {
         if (playlist.shuffled) {
             let i = Math.floor(Math.random() * (playlist.tracks.length - 0)) + 0;
             ( playlist.current === i ? playlist.current++ : playlist.current = i );
@@ -217,9 +178,10 @@
 
 
 
-    function onPrev(){
-        clean();
-
+    /**
+     * Prev handler
+     */
+    function onPrev() {
         if (playlist.shuffled) {
             let i = Math.floor(Math.random() * (playlist.tracks.length - 0)) + 0;
             ( playlist.current === i ? playlist.current-- : playlist.current = i );
@@ -234,7 +196,10 @@
 
 
 
-    function onShuffle(){
+    /**
+     * Shuffle handler
+     */
+    function onShuffle() {
         // turn off loop
         playlist.looped = false;
         actionLoop.style.opacity = 0.5;
@@ -245,7 +210,10 @@
 
 
 
-    function onLoop(){
+    /**
+     * Loop handler
+     */
+    function onLoop() {
         // turn off shuffle
         playlist.shuffled = false;
         actionShuffle.style.opacity = 0.5;
@@ -255,41 +223,12 @@
     }
 
 
-    // play tap
-    actionPlay.addEventListener("click", onPLay);
-    //
 
-
-
-    // pause tap
-    actionPause.addEventListener("click", onPause);
-    //
-
-
-
-    // next tap
-    actionNext.addEventListener("click", onNext);
-    //
-
-
-
-    // prev tap
-    actionPrev.addEventListener("click", onPrev);
-    //
-
-
-
-    // shuffle tap
-    actionShuffle.addEventListener("click", onShuffle);
-    //
-
-
-
-    // repeat tap
-    actionLoop.addEventListener("click", onLoop);
-    //
-
-    window.addEventListener("keydown", function (event) {
+    /**
+     * Keyboard handler
+     * @param {Event} event 
+     */
+    function onKeydown(event) {
         switch (event.code) {
         case "Space":
             if(stream.paused) {
@@ -316,6 +255,80 @@
             }
             break;
         }
-    });
+    }
 
+
+
+    /**
+     * Playlist handler
+     * @param {Event} event 
+     */
+    function onPlaylist(event) {
+        let path = event.path, i = 0;
+
+        while (playlist !== path[i]) {
+            i++;
+        }
+        let item = path[i - 1];
+
+        if (!item) {
+            return;
+        }
+
+        playlist.current = item.getAttribute("data-trackindex");
+        getTrack(playlist.tracks[playlist.current].id);
+    }
+
+
+
+    /**
+     * Stream time update handler
+     */
+    function onTimeUpdate() {
+        let w, time;
+        time = new Date(stream.currentTime * 1000);
+        // trackbar width
+        w = (stream.currentTime * 100 / stream.duration).toFixed(1) + "%";
+        // trackbar moving
+        streamTrackbar.style.width = w;
+        // current track time
+        streamCurrentTime.innerHTML = `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
+        // playlist item bg with
+        // playlist.children[playlist.current].style.backgroundSize = `${w} 100%`;
+    }
+
+
+
+    /**
+     * Stream load handler
+     */
+    function onLoad() {
+        stream.pause();
+        stream.play();
+    }
+
+
+
+    /**
+     * Stream can play through handler
+     */
+    function onCanPlayThrough() {
+        if (!stream.paused) {
+            actionPlay.setAttribute("hidden", "");
+            actionPause.removeAttribute("hidden");
+        }
+    }
+
+
+
+    /**
+     * Stream ended handler
+     */
+    function onEnded() {
+        if (playlist.looped) {
+            getTrack(playlist.tracks[playlist.current].id);
+        } else {
+            onNext();
+        }
+    }
 })(SC);
