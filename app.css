@@ -8,22 +8,7 @@ html, body{
  * TEMP RULLES START
 */
 
-/* g {background: url('states/Now Playing.png') top center no-repeat;} */
-/*g {background: url('states/Playlist.png') top center no-repeat;}*/
-/*g {background: url('states/Browser - Artists.png') top center no-repeat;}*/
-g{
-	position: absolute;
 
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-
-	z-index: 1;
-}
-g {background-size: 360px 640px;}
-
-.state {margin: 0 auto; background-color: rgba(0,0,0,.5);}
 .state,
 .menu,
 .tab-item
@@ -31,9 +16,6 @@ g {background-size: 360px 640px;}
 
 [hidden] {display: none !important;}
 * {user-select: none;}
-/*[data-state="player"]{display: none;}*/
-/*[data-state="playlist"]{display: none;}*/
-/*[data-state="browse"]{display: none;}*/
 
 /*
  * TEMP RULLES END
@@ -45,6 +27,7 @@ body{
 	background-color: black;
 	margin: 0;
 }
+
 /*
  * ICONS START
 */
@@ -88,8 +71,10 @@ body{
 
 
 .state{
-	position: absolute;
+	background-color: rgba(0,0,0,.5);
+	margin: 0 auto; 
 
+	position: absolute;
 
 	width: 100%;
 	height: 100%;
@@ -558,8 +543,8 @@ body{
 	height: 15px;
 }
 	.playlist__line .playlist-item{
-		background: url('img/interface/playlist-item-bg.png') 0 0 no-repeat;
-		background-size: 100% 100%;
+		background: url('img/interface/playlist-item-bg.png') 5% 0 no-repeat;
+		background-size: 110% 100%;
 		height: 78px;
 	}
 	.playlist__line .playlist-item-cover{
