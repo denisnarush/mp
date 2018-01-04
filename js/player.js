@@ -1,5 +1,11 @@
 /* global SC */
+/**
+ * Class representing a player
+ */
 class Player {
+    /**
+     * Create a player
+     */
     constructor() {
         this.LIMIT = 30,
         this.GENRE = "Chillout",
@@ -25,7 +31,9 @@ class Player {
 
         this.init();
     }
-
+    /**
+     * Play button handler
+     */
     onPLay() {
         if(!this.stream.paused) {
             return;
@@ -34,7 +42,9 @@ class Player {
         this.actionPlay.setAttribute("hidden", "");
         this.actionPause.removeAttribute("hidden");
     }
-
+    /**
+     * Pause button handler
+     */
     onPause() {
         if(this.stream.paused) {
             return;
@@ -43,7 +53,9 @@ class Player {
         this.actionPlay.removeAttribute("hidden");
         this.actionPause.setAttribute("hidden", "");
     }
-
+    /**
+     * Next button handler
+     */
     onNext() {
         if (this.playlist.shuffled) {
             let i = Math.floor(Math.random() * (this.playlist.tracks.length - 0)) + 0;
@@ -56,7 +68,9 @@ class Player {
 
         this.getTrack(this.playlist.tracks[this.playlist.current].id);
     }
-
+    /**
+     * Prev button handler
+     */
     onPrev() {
         if (this.playlist.shuffled) {
             let i = Math.floor(Math.random() * (this.playlist.tracks.length - 0)) + 0;
@@ -69,28 +83,35 @@ class Player {
 
         this.getTrack(this.playlist.tracks[this.playlist.current].id);
     }
-
+    /**
+     * Stream can play handler
+     */
     onCanPlayThrough() {
         if (!this.stream.paused) {
             this.actionPlay.setAttribute("hidden", "");
             this.actionPause.removeAttribute("hidden");
         }
     }
-
+    /**
+     * Stream ends handler
+     */
     onEnded() {
         if (this.playlist.looped) {
-            /* TODO: change to this.stream.position = 0 */
-            this.getTrack(this.playlist.tracks[this.playlist.current].id);
+            this.stream.currentTime = 0;
         } else {
             this.onNext();
         }
     }
-
+    /**
+     * Stream loaded handler
+     */
     onLoad() {
         this.stream.pause();
         this.stream.play();
     }
-
+    /**
+     * Shuffle button handler
+     */
     onShuffle() {
         // turn off loop
         this.playlist.looped = false;
@@ -99,7 +120,9 @@ class Player {
         this.playlist.shuffled = !this.playlist.shuffled;
         this.actionShuffle.style.opacity = (this.playlist.shuffled ? 1 : 0.5);
     }
-
+    /**
+     * Loop button handler
+     */
     onLoop() {
         // turn off shuffle
         this.playlist.shuffled = false;
@@ -108,7 +131,9 @@ class Player {
         this.playlist.looped = !this.playlist.looped;
         this.actionLoop.style.opacity = (this.playlist.looped ? 1 : 0.5);
     }
-
+    /**
+     * Stream time updates handler
+     */
     onTimeUpdate() {
         let w, time;
         time = new Date(this.stream.currentTime * 1000);
@@ -197,6 +222,7 @@ class Player {
             this.playlist.children[this.playlist.current].classList.toggle("playlist-item__current");
         });
     }
+
     getTracks() {
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
 
@@ -216,6 +242,7 @@ class Player {
             this.generatePlaylist();
         });
     }
+
     generatePlaylist() {
         let html = "";
         this.playlist.tracks.forEach(function (itm, i) {
@@ -235,6 +262,9 @@ class Player {
         // past to the DOM
         this.playlist.innerHTML = html;
     }
+    /**
+     * Initialization
+     */
     init() {
         this.playlist.shuffled = false;
         this.playlist.looped = false;
