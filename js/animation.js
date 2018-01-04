@@ -1,7 +1,9 @@
-export default class {
+class Animation {
     constructor() {
         this.player = document.querySelector("[data-state=\"player\"]");
         this.playlist = document.querySelector("[data-state=\"playlist\"]");
+
+        this.init();
     }
 
     applyHandlers() {
@@ -28,3 +30,5 @@ export default class {
         this.applyHandlers();
     }
 }
+
+export default new Animation();

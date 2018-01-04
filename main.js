@@ -1,5 +1,2 @@
-import Animation from "./js/animation.js";
-
-const inst = new Animation();
-
-inst.init();
+import "./js/animation.js";
+import "./js/player.js";
