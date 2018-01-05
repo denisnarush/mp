@@ -1,4 +1,6 @@
 /* global SC */
+import { getSearchParameters } from "./utils.js";
+const params = getSearchParameters();
 /**
  * Class representing a player
  */
@@ -8,8 +10,8 @@ class Player {
      */
     constructor() {
         this.LIMIT = 30,
-        this.GENRE = "Chillout",
-        this.CLIENT_ID = "7172aa9d8184ed052cf6148b4d6b8ae6",
+        this.GENRE = params.genre || "Chillout";
+        this.CLIENT_ID = "7172aa9d8184ed052cf6148b4d6b8ae6";
         this.REDIRECT_URI = "http://www.player-denisnarush.c9.io";
         this.DEFAULT_TRACK_COVER = "img/tmp/album-cover.png";
         this.actionPlay = document.getElementById("actionPlay");
@@ -183,10 +185,10 @@ class Player {
             this.stream.currentTime -= 5;
             break;
         case "ArrowUp":
-            (this.stream.volume >= 1 ? this.stream.volume = 1 : this.stream.volume += 0.05);
+            (100 * this.stream.volume >= 95 ? this.stream.volume = 1 : this.stream.volume = (100 * this.stream.volume + 5) / 100);
             break;
         case "ArrowDown":
-            (this.stream.volume < 0.05 ? this.stream.volume = 0.00 : this.stream.volume -= 0.05);
+            (100 * this.stream.volume <= 5 ? this.stream.volume = 0 : this.stream.volume = (100 * this.stream.volume - 5) / 100);
             break;
         case "KeyR":
             if (event.metaKey || event.ctrlKey) {

@@ -38,10 +38,9 @@ body{
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 }
-.icon__equalizer{
-	background-image: url('img/interface/icon-equalizer.png');
-	width: 24px;
-	height: 20px;
+.icon-equalizer{
+	color: #ff5252;
+	font-size: 24px;
 }
 .icon__menu{
 	background-image: url('img/interface/icon-menu.png');
@@ -64,6 +63,14 @@ body{
 	font-weight: 700;
 	vertical-align: middle;
 }
+.icon-arrow-left{
+	color: #ff5252;
+	font-size: 24px;
+	font-weight: 700;
+	vertical-align: middle;
+	padding: 3px;
+	margin-left: -3px;
+}
 /*
  * ICONS END
 */
@@ -80,8 +87,9 @@ body{
 	height: 100%;
 
 	z-index: 1;
+	overflow: hidden;
 
-	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
 }
 .bg{
 	background-size: cover;
@@ -185,8 +193,8 @@ body{
 }
 .menu-search-field{
 	background: rgba(217, 202, 239, 0.29);
-    border-radius: 500px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.75) inset, -1px -1px 1px rgba(255, 255, 255, 0.7) inset;
+	border-radius: 500px;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.75) inset, -1px -1px 1px rgba(255, 255, 255, 0.7) inset;
 
 	display: block;
 
@@ -262,12 +270,6 @@ body{
 .top{
 	font-size: 0;
 	padding: 18px 5%;
-
-	position: absolute;
-	left: 0;
-	right: 0;
-
-	z-index: 2;
 }
 .top__bg{
 	background: url('img/interface/playlist-item-bg.png') 0 0 no-repeat, rgba(29, 39, 44, 0.8);
@@ -275,13 +277,17 @@ body{
 	background-position: 5% -5%;
 	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
+.top-back .icon-arrow-left{
+	cursor: pointer;
+}
 .top-title{
-	font-size: 0;
-	position: relative;
 	white-space: nowrap;
 }
 .top-title.top-title__center{
 	text-align: center;
+}
+.top-title__swipe{
+	position: relative;
 }
 .top-title__swipe:before,
 .top-title__swipe:after{
@@ -327,16 +333,14 @@ body{
 .top-menu{
 	cursor: pointer;
 	display: inline-block;
+	vertical-align: middle;
 }
 .top-equalizer{
-	padding: 3px 1px;
-	margin-right: 10px;
+	padding: 3px;
 }
 .top-menu{
-	padding: 0 11px;
-	margin-left: 20px;
-	position: relative;
-	left: 8px;
+	padding: 2px 20px;
+	margin-right: -20px;
 }
 .top-s{
 	display: inline-block;
@@ -353,29 +357,64 @@ body{
  * TOP END
 */
 
+/*
+ * BOT START
+*/
+.bot{
+	display: flex;
+	/* background: url(img/interface/playlist-item-bg.png) 0 0 no-repeat, rgba(29, 39, 44, 0.8);*/
+	background-size: 110% 110%;
+}
+.bot-s{
+	flex: 1 0 auto;
+	width: 1px;
+	padding: 5% 10%;
+	text-align: center;
+}
+.bot-title{
+	text-align: center;
+}
+.bot-title-text{
+	color: rgba(255, 255, 255, 0.8);
+	display: inline-block;
+
+	font-family: 'Roboto';
+	font-size: 18px;
+	font-weight: 100;
+
+	padding: 1px 0;
+}
+.bot-title-text em{
+	font-weight: 300;
+	font-size: 20px;
+	margin-left: 0.25em;
+	font-style: normal;
+}
+/*
+ * BOP END
+*/
+
+
 
 
 /*
  * PLAYER START
 */
-.player{
-	padding: 70px 0 60px 0;
-
-	position: relative;
-	height: 100%;
-	z-index: 1;
-	box-sizing: border-box;
-
+[data-state="player"]{
 	display: flex;
+	flex-direction: column;
+}
+.player{
+	box-sizing: border-box;
+	display: flex;
+	flex: 1 0 auto;
+	padding: 0 0 60px 0;
 	flex-direction: column;
 	justify-content: space-between;
 }
 .player-cover{
 	flex: 1;
-}
-
-.player-cover{
-	max-height: 50%;
+	height: 1px;
 	position: relative;
 	text-align: center;
 }
@@ -384,10 +423,10 @@ body{
 }
 .player-cover img[src^="http"]{
 	position: absolute;
-    top: 0;
-    bottom: 0;
-    height: 100%;
-    transform: translateX(-50%);
+	top: 0;
+	bottom: 0;
+	height: 100%;
+	transform: translateX(-50%);
 	padding-top: 0;
 	visibility: initial;
 }
@@ -430,7 +469,7 @@ body{
 	margin: auto 0 0 0;
 }
 .player-author{
-	color:  #ff5252;
+	color: #ff5252;
 
 	font-size: 16.6667px;
 	font-family: 'Roboto';
@@ -485,6 +524,9 @@ body{
 /*
  * PLAYLIST START
 */
+[data-state="playlist"]{
+	transform: translateY(calc(100% - 60px)) translateX(0);
+}
 #playlist{
 	height: 100%;
 	overflow-y: scroll;
@@ -493,7 +535,6 @@ body{
 .playlist{
 	background-color: rgba(29, 39, 44, 0.5);
 	box-sizing: border-box;
-	margin-top: 58px;
 	height: calc(100% - 58px);
 	overflow: hidden;
 	position: relative;
@@ -521,8 +562,8 @@ body{
 	top: 39px;
 	right: 40px;
 
-    width: 19px;
-    height: 22px;
+	width: 19px;
+	height: 22px;
 }
 .playlist-item:after{
 	background: url('img/interface/playlist-item-sort.png') center center no-repeat;
@@ -567,7 +608,7 @@ body{
 		top: 8px;
 	}
 .playlist-scroll{
-	background-color:  #ff5252;
+	background-color: #ff5252;
 	border-radius: 500px;
 
 	position: absolute;
@@ -608,7 +649,7 @@ body{
 	max-height: 2.4em;
 }
 .playlist-item-title-follow{
-	color:  rgba(23, 172, 195, 0.8);
+	color: rgba(23, 172, 195, 0.8);
 	display: block;
 
 	line-height: 16px;
@@ -658,3 +699,84 @@ body{
 /*
  * PLAYLIST END
 */
+
+
+/*
+ * EQ START
+*/
+
+.state[data-state="eq"]{
+	transform: translateX(100%);
+	display: flex;
+	flex-direction: column;
+}
+.eq{
+	flex: 1 0 auto;
+}
+.roller{
+	padding: 25%;
+	display: inline-block;
+	position: relative;
+}
+.roller .d{
+	display: inline-block;
+	border-radius: 1000px;
+	position: absolute;
+	top: 2.5%;
+	left: 2.5%;
+	bottom: 2.5%;
+	right: 2.5%;
+}
+.roller .d:before{
+	content: '';
+	border-radius: 1000px;
+	position: absolute;
+	top: 4%;
+	right: 4%;
+	left: 4%;
+	bottom: 4%;
+	background-color: #2e3140;
+}
+.roller .i{
+	left: 45%;
+	top: 8%;
+	right: 45%;
+	bottom: 82%;
+	border-radius: 1000px;
+	background-image: inherit;
+	background-color: #1f212d;
+	position: absolute;
+	transform: rotate(180deg);
+}
+.roller .i:before{
+	content: '';
+	border-radius: 1000px;
+	position: absolute;
+	top: 8%;
+	right: 8%;
+	left: 8%;
+	bottom: 8%;
+	background-color: #2e3140;
+}
+
+.roller .t{
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.roller .progress {
+	transform: rotate(-90deg);
+}
+
+.roller .progress__value {
+	r: 47.5%;
+	cx: 50%;
+	cy: 50%;
+	fill: none;
+	stroke: #fa7067;
+	stroke-width: 5%;
+	stroke-dasharray: calc(2 * 3.14 * 47.5%);
+}

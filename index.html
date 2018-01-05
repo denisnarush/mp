@@ -4,7 +4,7 @@
 	<title>Mp</title>
 	<link rel="icon" href="favicon.svg" type="image/svg+xml">
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500">
 	<link rel="stylesheet" type="text/css" href="icomoon/style.css">
 	<link rel="stylesheet" type="text/css" href="app.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,13 +18,13 @@
 	<div class="state" data-state="player">
 		<div class="top">
 			<div class="top-s top-s__left">
-				<p class="top-title">
-					<i class="icon-arrow-down-right"></i>
+				<span class="top-back"><i class="icon-arrow-down-right"></i></span>
+				<span class="top-title">
 					<span class="top-title-text top-title-text__with-icon">Now Playing</span>
-				</p>
+				</span>
 			</div>
 			<div class="top-s top-s__right">
-				<span hidden class="top-equalizer"><i class="icon icon__equalizer"></i></span>
+				<span class="top-equalizer"><i class="icon-equalizer"></i></span>
 				<span hidden class="top-menu" data-menu="toggle"><i class="icon icon__menu"></i></span>
 			</div>
 		</div>
@@ -32,7 +32,7 @@
 			<div class="player-cover">
 				<img title="Lea Michele - Louder" alt="Lea Michele - Louder" id="streamArtwork">
 			</div>
-			<audio id="stream" controls preload="auto" autoplay hidden></audio>
+			<audio id="stream" controls autoplay preload="auto" hidden></audio>
 			<p class="player-title" id="streamGenre"></p>
 			<p class="player-author" id="streamTitle"></p>
 			<div class="player-trackbar">
@@ -50,8 +50,36 @@
 			</div>
 		</div>
 	</div>
+	<!-- EQ -->
+	<div class="state" data-state="eq">
+		<div class="top">
+			<div class="top-s top-s__left">
+				<span class="top-back"><i class="icon-arrow-left"></i></span>
+				<span class="top-title">
+					<span class="top-title-text top-title-text__with-icon">Equalizer</span>
+				</span>
+			</div>
+			<div class="top-s top-s__right">
+			</div>
+		</div>
+		<div hidden class="eq"></div>
+		<div class="bot">
+			<div class="bot-s bot-s__left">
+				<div class="roller">
+					<div class="t">
+						<svg class="progress" width="100%" height="100%" viewBox="0 0 100 100">
+							<circle class="progress__value" id="volume-bar" stroke-dashoffset="calc(2 * 3.14 * 47.5% * (1 - 0.75))"></circle>
+						</svg>
+					</div>
+					<div class="d"><div class="i"></div></div>
+				</div>
+				<div class="bot-title"><span class="bot-title-text" id="volume-label">Volume<em>75%</em></span></div>
+			</div>
+			<div hidden class="bot-s bot-s__right"></div>
+		</div>
+	</div>	
 	<!-- Playlist -->
-	<div class="state" style="transform: translateY(calc(100% - 60px));" data-state="playlist">
+	<div class="state" data-state="playlist">
 		<div class="top top__bg">
 			<p class="top-title top-title__center top-title__swipe">
 				<span class="top-title-text top-title-text__small">Playlist</span>
@@ -62,8 +90,6 @@
 			<div id="playlist"></div>
 		</div>
 	</div>
-
-
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
 	<script src="main.js" type="module"></script>
 
