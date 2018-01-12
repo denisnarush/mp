@@ -79,7 +79,7 @@ class Player {
 
         ( this.playlist.current === this.playlist.tracks.length ?  this.playlist.current = 0 :  this.playlist.current );
 
-        this.getTrack(this.playlist.tracks[this.playlist.current].id);
+        this.getTrack();
     }
     /**
      * Prev button handler
@@ -94,7 +94,7 @@ class Player {
 
         ( this.playlist.current === 0 ?  this.playlist.current = this.playlist.tracks.length - 1 : this.playlist.current );
 
-        this.getTrack(this.playlist.tracks[this.playlist.current].id);
+        this.getTrack();
     }
     /**
      * Stream can play handler
@@ -174,7 +174,7 @@ class Player {
         }
 
         this.playlist.current = item.getAttribute("data-trackindex");
-        this.getTrack(this.playlist.tracks[this.playlist.current].id);
+        this.getTrack();
     }
     /**
      * Keyboard configuration
@@ -209,35 +209,34 @@ class Player {
         }
     }
 
-    getTrack (trackID) {
+    getTrack () {
         if (this.playlist.querySelector(".playlist-item__current")) {
             this.playlist.querySelector(".playlist-item__current").classList.remove("playlist-item__current");
         }
 
-        this.fetch(`tracks/${trackID}`, "", (data) => {
-            let cover;
-            let time = new Date();
-            // track time
-            time.setTime(data.duration);
+        let cover;
+        let time = new Date();
+        let track = this.playlist.tracks[this.playlist.current];
+        // track time
+        time.setTime(track.duration);
 
-            this.stream.pause();
-            // set audio src url to soundcloud stream
-            this.stream.src = data.stream_url + "?client_id=" + this.CLIENT_ID;
-            // track artwork
-            if (data.artwork_url !== null) {
-                cover = data.artwork_url.replace(new RegExp("large","g"),"t500x500");
-            } else {
-                cover = data.user.avatar_url.replace(new RegExp("large","g"),"t500x500");
-            }
-            
-            this.streamArtwork.src = cover;
-            this.streamBgArtwork.style.backgroundImage = "url('"+cover+"')";
-            this.streamGenre.innerHTML = data.genre;
-            this.streamTitle.innerHTML = data.title;
-            this.streamDurationTime.innerHTML = time.toUTCString().slice(20, 25);
+        this.stream.pause();
+        // set audio src url to soundcloud stream
+        this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
+        // track artwork
+        if (track.artwork_url !== null) {
+            cover = track.artwork_url.replace(new RegExp("large","g"),"t500x500");
+        } else {
+            cover = track.user.avatar_url.replace(new RegExp("large","g"),"t500x500");
+        }
+        
+        this.streamArtwork.src = cover;
+        this.streamBgArtwork.style.backgroundImage = "url('"+cover+"')";
+        this.streamGenre.innerHTML = track.genre;
+        this.streamTitle.innerHTML = track.title;
+        this.streamDurationTime.innerHTML = time.toUTCString().slice(20, 25);
 
-            this.playlist.children[this.playlist.current].classList.toggle("playlist-item__current");
-        });
+        this.playlist.children[this.playlist.current].classList.toggle("playlist-item__current");
     }
 
     getTracks() {
@@ -252,7 +251,7 @@ class Player {
             this.generatePlaylist();
             
             // preload first track
-            this.getTrack(tracks[this.playlist.current].id);
+            this.getTrack();
         });
     }
 
