@@ -1,4 +1,3 @@
-/* global SC */
 import { getSearchParameters } from "./utils.js";
 const params = getSearchParameters();
 /**
@@ -13,7 +12,6 @@ class Player {
         this.GENRE = params.genre || "Chillout";
         this.CLIENT_ID = "7172aa9d8184ed052cf6148b4d6b8ae6";
         this.REDIRECT_URI = "http://www.player-denisnarush.c9.io";
-        this.DEFAULT_TRACK_COVER = "img/tmp/album-cover.png";
         this.actionPlay = document.getElementById("actionPlay");
         this.actionPause = document.getElementById("actionPause");
         this.actionNext = document.getElementById("actionNext");
@@ -33,6 +31,18 @@ class Player {
         this.streamTitle = document.getElementById("streamTitle");
 
         this.init();
+    }
+    fetch(endpoint, params, callback) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", `//api.soundcloud.com/${endpoint}?client_id=${this.CLIENT_ID}${params}`, true);
+        xhr.addEventListener("load", (event) => {
+            if (event.currentTarget.status === 200) {
+                callback(JSON.parse(event.currentTarget.response));
+            } else {
+                callback({});
+            }
+        });
+        xhr.send();
     }
     /**
      * Play button handler
@@ -204,7 +214,7 @@ class Player {
             this.playlist.querySelector(".playlist-item__current").classList.remove("playlist-item__current");
         }
 
-        SC.get("/tracks/" + trackID).then((data) => {
+        this.fetch(`tracks/${trackID}`, "", (data) => {
             let cover;
             let time = new Date();
             // track time
@@ -217,7 +227,7 @@ class Player {
             if (data.artwork_url !== null) {
                 cover = data.artwork_url.replace(new RegExp("large","g"),"t500x500");
             } else {
-                cover = this.DEFAULT_TRACK_COVER;
+                cover = data.user.avatar_url.replace(new RegExp("large","g"),"t500x500");
             }
             
             this.streamArtwork.src = cover;
@@ -233,20 +243,16 @@ class Player {
     getTracks() {
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
 
-        // search query
-        SC.get("/tracks", {
-            client_id: this.CLIENT_ID,
-            limit: this.LIMIT,
-            genres: this.GENRE,
-            offset: offset
-        }).then((tracks) => {
+        this.fetch("tracks", `&limit=${this.LIMIT}&genres=${this.GENRE}&offset=${offset}`, (tracks) => {
+
             this.playlist.tracks = tracks;
             this.playlist.current = 0;
-        
-            // preload first track
-            this.getTrack(tracks[this.playlist.current].id);
+            
             // generate playlist
             this.generatePlaylist();
+            
+            // preload first track
+            this.getTrack(tracks[this.playlist.current].id);
         });
     }
 
@@ -281,7 +287,6 @@ class Player {
         this.playlist.looped = false;
 
         this.stream.volume = 0.75;
-        this.streamBgArtwork.style.backgroundImage = "url('" + this.DEFAULT_TRACK_COVER + "')";
 
         // play tap
         this.actionPlay.addEventListener("click", () => {this.onPLay();});
@@ -308,10 +313,6 @@ class Player {
         // keydown
         window.addEventListener("keydown", (event) => {this.onKeydown(event);});
 
-        SC.initialize({
-            client_id: this.CLIENT_ID,
-            redirect_uri: this.REDIRECT_URI
-        });
         this.getTracks();
     } 
 }
