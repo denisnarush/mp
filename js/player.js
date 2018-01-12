@@ -22,6 +22,7 @@ class Player {
         this.actionShuffle = document.getElementById("actionShuffle");
         
         this.streamCurrentTime = document.getElementById("streamCurrentTime");
+        this.streamDurationTime = document.getElementById("streamDurationTime");
         this.streamBgArtwork = document.getElementById("streamBgArtwork");
         this.streamTrackbar = document.getElementById("streamTrackbar");
         this.playlist = document.getElementById("playlist");
@@ -205,6 +206,9 @@ class Player {
 
         SC.get("/tracks/" + trackID).then((data) => {
             let cover;
+            let time = new Date();
+            // track time
+            time.setTime(data.duration);
 
             this.stream.pause();
             // set audio src url to soundcloud stream
@@ -220,6 +224,7 @@ class Player {
             this.streamBgArtwork.style.backgroundImage = "url('"+cover+"')";
             this.streamGenre.innerHTML = data.genre;
             this.streamTitle.innerHTML = data.title;
+            this.streamDurationTime.innerHTML = time.toUTCString().slice(20, 25);
 
             this.playlist.children[this.playlist.current].classList.toggle("playlist-item__current");
         });
@@ -251,15 +256,19 @@ class Player {
             let time = new Date();
             // track time
             time.setTime(itm.duration);
+
+            /* TODO: remove this condition then SC fixed issue with duration parametr in reques */
+            if (!time.getUTCHours()) {
             // template
-            html += `<div class="playlist-item" data-trackindex="${i}">
-                        <div class="playlist-item-s playlist-item-s__left">
-                            <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
-                        </div>
-                        <div class="playlist-item-s playlist-item-s__right">
-                            <p class="playlist-item-time">${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}</p>
-                        </div>
-                    </div>`;
+                html += `<div class="playlist-item" data-trackindex="${i}">
+                            <div class="playlist-item-s playlist-item-s__left">
+                                <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
+                            </div>
+                            <div class="playlist-item-s playlist-item-s__right">
+                                <p class="playlist-item-time">${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}</p>
+                            </div>
+                        </div>`;
+            }
         });
         // past to the DOM
         this.playlist.innerHTML = html;

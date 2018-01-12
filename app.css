@@ -432,9 +432,10 @@ body{
 }
 .player-trackbar{
 	background-color: rgba(255, 82, 82, .07);
-	width: 70%;
+	width: calc(100% - 100px);
 	max-width: 500px;
 	margin: 3% auto;
+	position: relative;
 }
 .player-trackbar-bar{
 	transition: width .05s; transition-timing-function: linear;
@@ -450,23 +451,28 @@ body{
 	font-size: 16px;
 	font-weight: 400;
 
-	margin-top: .4em;
-
 	position: absolute;
-	right: 0;
-	top: 100%;
-	transform: translateX(50%);
+	top: 50%;
+	transform: translateY(-50%);
 }
+	.player-trackbar-time__current{
+		margin-right: .4em;
+		right: 100%;
+	}
+	.player-trackbar-time__duration{
+		margin-left: .4em;
+		left: 100%;
+	}
 .player-title{
 	color: rgba(235, 235, 250, 0.9);
 
-	font-size: 33.3px;
+	font-size: 6vh;
 	font-family: 'Roboto';
 	font-weight: 300;
 
 	text-align: center;
 
-	margin: auto 0 0 0;
+	margin: 2vh 0 0 0;
 }
 .player-author{
 	color: #ff5252;
@@ -477,13 +483,13 @@ body{
 
 	text-align: center;
 
-	margin: 0 6% auto 6%;
+	margin: 0 6% 2vh 6%;
 }
 .player-actions{
 	box-sizing: border-box;
 	font-size: 0;
 
-	margin: 3% auto;
+	margin: 5vh auto;
 
 	width: 100%;
 	max-width: 500px;
@@ -498,7 +504,7 @@ body{
 
 	width: 20%;
 	color: #ebebfa;
-	font-size: 27px;
+	font-size: 24px;
 	font-weight: normal;
 }
 .player-actions-button .icon-play,
@@ -779,4 +785,12 @@ body{
 	stroke: #fa7067;
 	stroke-width: 5%;
 	stroke-dasharray: calc(2 * 3.14 * 47.5%);
+}
+
+
+/* 0 - 319px */
+@media (max-width: 319px) {
+	.player-actions-button{
+		font-size: 7.52351097vw;
+	}
 }
