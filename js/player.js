@@ -262,18 +262,15 @@ class Player {
             // track time
             time.setTime(itm.duration);
 
-            /* TODO: remove this condition then SC fixed issue with duration parametr in reques */
-            if (!time.getUTCHours()) {
             // template
-                html += `<div class="playlist-item" data-trackindex="${i}">
-                            <div class="playlist-item-s playlist-item-s__left">
-                                <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
-                            </div>
-                            <div class="playlist-item-s playlist-item-s__right">
-                                <p class="playlist-item-time">${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}</p>
-                            </div>
-                        </div>`;
-            }
+            html += `<div class="playlist-item" data-trackindex="${i}">
+                        <div class="playlist-item-s playlist-item-s__left">
+                            <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
+                        </div>
+                        <div class="playlist-item-s playlist-item-s__right">
+                            <p class="playlist-item-time">${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}</p>
+                        </div>
+                    </div>`;
         });
         // past to the DOM
         this.playlist.innerHTML = html;

@@ -1,8 +1,21 @@
 {
   "name": "mp",
-  "version": "0.037.0",
+  "version": "0.040",
   "description": "musical player",
+  "homepage": "https://denisnarush.github.io/mp/",
+  "bugs": {
+    "url": "https://github.com/denisnarush/mp/issues"
+  },
+  "keywords": [
+    "music", "soundcloud"
+  ],
   "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:denisnarush/mp.git"
+  },
+  "author": "Denis Narush (child.denis@gmail.com)",
+  "license": "ISC",
   "window": {
     "toolbar": false,
     "resizable": true,
@@ -10,18 +23,5 @@
     "height": 640
   },
   "scripts": {
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/denisnarush/mp.git"
-  },
-  "keywords": [
-    "music"
-  ],
-  "author": "Denis Narush (me@dennarush.com)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/denisnarush/mp/issues"
-  },
-  "homepage": "https://github.com/denisnarush/mp#readme"
+  }
 }
