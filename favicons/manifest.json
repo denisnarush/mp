@@ -1,7 +1,7 @@
 {
     "name": "Music Player",
     "short_name": "MPSC",
-    "start_url": "index.html",
+    "start_url": "https://denisnarush.github.io/mp/",
     "orientation": "portrait",
     "icons": [
         {
