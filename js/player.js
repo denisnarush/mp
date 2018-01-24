@@ -1,6 +1,6 @@
 import { getSearchParameters } from "./utils.js";
 const params = getSearchParameters();
-const protocol = location.protocol === "chrome-extension:" ? "https" : location.protocol;
+const protocol = location.protocol === "chrome-extension:" ? "https:" : location.protocol;
 /**
  * Class representing a player
  */
@@ -35,7 +35,7 @@ class Player {
     }
     fetch(endpoint, params, callback) {
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", `${protocol}://api.soundcloud.com/${endpoint}?client_id=${this.CLIENT_ID}${params}`, true);
+        xhr.open("GET", `${protocol}//api.soundcloud.com/${endpoint}?client_id=${this.CLIENT_ID}${params}`, true);
         xhr.addEventListener("load", (event) => {
             if (event.currentTarget.status === 200) {
                 callback(JSON.parse(event.currentTarget.response));
