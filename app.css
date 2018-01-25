@@ -1,8 +1,12 @@
 /*
  * TEMP RULLES START
 */
-
-
+html{
+	height: 100vh;
+}
+html,body{
+	overflow: hidden;
+}
 .state,
 .menu,
 .tab-item
@@ -20,9 +24,11 @@
 body{
 	background-color: black;
 	margin: 0;
-	width: 100vw;
-	height: 100vh;
-	position: relative;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 
 /*
@@ -92,7 +98,7 @@ body{
 	background-size: cover;
 	background-position: center center;
 
-	position: absolute;
+	position: fixed;
 
 	top: -5%;
 	right: -5%;
