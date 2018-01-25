@@ -163,12 +163,15 @@ class Player {
      * @param {MouseEvent} event 
      */
     onPlaylist(event) {
-        let path = event.path, i = 0;
+        let item = "",
+            current = event.target;
 
-        while (this.playlist !== path[i]) {
-            i++;
+        while(this.playlist !== current) {
+            if (current.parentElement === this.playlist) {
+                item = current;
+            }
+            current = current.parentElement;
         }
-        let item = path[i - 1];
 
         if (!item) {
             return;
