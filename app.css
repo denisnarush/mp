@@ -1,12 +1,7 @@
 /*
  * TEMP RULLES START
 */
-html{
-	height: 100vh;
-}
-html,body{
-	overflow: hidden;
-}
+
 .state,
 .menu,
 .tab-item
@@ -19,81 +14,18 @@ html,body{
  * TEMP RULLES END
 */
 
-
+html, body{
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+}
 
 body{
 	background-color: black;
+	position: relative;
 	margin: 0;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
 }
 
-/*
- * ICONS START
-*/
-
-.icon{
-	display: inline-block;
-	vertical-align: middle;
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-}
-.icon-equalizer{
-	color: #ff5252;
-	font-size: 24px;
-}
-.icon__menu{
-	background-image: url('img/interface/icon-menu.png');
-	width: 4px;
-	height: 26px;
-}
-.icon__search{
-	background-image: url('img/interface/icon-search.png');
-	width: 20px;
-	height: 21px;
-}
-.icon__refresh{
-	background-image: url('img/interface/icon-refresh.png');
-	width: 30px;
-	height: 24px;
-}
-.icon-arrow-down-right{
-	color: #ff5252;
-	font-size: 24px;
-	font-weight: 700;
-	vertical-align: middle;
-}
-.icon-arrow-left{
-	color: #ff5252;
-	font-size: 24px;
-	font-weight: 700;
-	vertical-align: middle;
-	padding: 3px;
-	margin-left: -3px;
-}
-/*
- * ICONS END
-*/
-
-
-
-.state{
-	background-color: rgba(0,0,0,.5);
-	margin: 0 auto;
-
-	position: absolute;
-
-	width: 100%;
-	height: 100%;
-
-	z-index: 1;
-	overflow: hidden;
-
-	transform: translateZ(0);
-}
 .bg{
 	background-size: cover;
 	background-position: center center;
@@ -107,8 +39,57 @@ body{
 
 	z-index: -1;
 
-	filter: blur(10px);
 	-webkit-filter: blur(10px);
+}
+.bg:before{
+	content: "";
+	background-color: rgba(0,0,0,.5);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+}
+
+/*
+ * ICONS START
+*/
+
+.icon{
+	display: inline-block;
+	vertical-align: middle;
+	color: #ff5252;
+	font-size: 24px;
+}
+.icon-equalizer{}
+.icon-arrow-down-right{
+	font-weight: 700;
+}
+.icon-arrow-left{
+	font-weight: 700;
+	padding: 3px;
+	margin-left: -3px;
+}
+
+/*
+ * ICONS END
+*/
+
+
+
+.state{
+	margin: 0 auto;
+
+	position: absolute;
+
+	width: 100%;
+	height: 100%;
+
+	z-index: 1;
+	overflow: hidden;
+
+	transform: translateZ(0);
 }
 
 
