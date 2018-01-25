@@ -15,10 +15,17 @@
 */
 
 html, body{
-	height: 100vh;
+	height: 100%;
 	width: 100vw;
 	overflow: hidden;
 }
+@supports(padding: env(safe-area-inset-top)) {
+	body{
+		height: 100vh;
+		box-sizing: border-box;
+	}
+}
+
 
 body{
 	background-color: black;
@@ -87,7 +94,6 @@ body{
 	height: 100%;
 
 	z-index: 1;
-	overflow: hidden;
 
 	transform: translateZ(0);
 }
