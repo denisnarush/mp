@@ -565,24 +565,6 @@ body{
 	width: 19px;
 	height: 22px;
 }
-.playlist-item:after{
-	background: url('img/interface/playlist-item-sort.png') center center no-repeat;
-	background-size: 3px 15px;
-
-	content: '';
-	cursor: pointer;
-
-	display: block;
-
-	padding: 17px;
-
-	position: absolute;
-	top: 0;
-	right: 0;
-
-	width: 3px;
-	height: 15px;
-}
 	.playlist__line .playlist-item{
 		background: url('img/interface/playlist-item-bg.png') 5% 0 no-repeat;
 		background-size: 110% 100%;

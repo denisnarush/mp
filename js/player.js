@@ -1,4 +1,5 @@
 import { getSearchParameters } from "./utils.js";
+import { Settings } from "./settings.js";
 const params = getSearchParameters();
 const protocol = location.protocol === "chrome-extension:" ? "https:" : location.protocol;
 /**
@@ -164,6 +165,12 @@ class Player {
         this.streamTrackbarIndicator.style.width = w;
         // current track time
         this.streamCurrentTime.innerHTML = `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
+    }
+    /**
+     * Volume handler
+    */
+    onVolumeChange() {
+        Settings.volume = this.stream.volume;
     }
     /**
      * Playlist item click handler
@@ -357,7 +364,7 @@ class Player {
         this.playlist.shuffled = false;
         this.playlist.looped = false;
 
-        this.stream.volume = 0.75;
+        this.stream.volume = Settings.volume;
 
         // play tap
         this.actionPlay.addEventListener("click", () => {this.onPLay();});
@@ -379,6 +386,8 @@ class Player {
         this.actionLoop.addEventListener("click", () => {this.onLoop();});
         // time update
         this.stream.addEventListener("timeupdate", () => {this.onTimeUpdate();});
+        // volume change
+        this.stream.addEventListener("volumechange", () => {this.onVolumeChange();});
         // playlist tap
         this.playlist.addEventListener("click", (event) => {this.onPlaylist(event);});
         // stream trackbar tap
