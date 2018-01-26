@@ -465,6 +465,9 @@ body{
 
 	margin: 2vh 0 0 0;
 }
+.player-title:focus{
+	outline: none;
+}
 .player-author{
 	color: #ff5252;
 

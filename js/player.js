@@ -10,7 +10,7 @@ class Player {
      */
     constructor() {
         this.LIMIT = 30,
-        this.GENRE = params.genre || "Chillout";
+        this.GENRE = params.genre || "chillout";
         this.CLIENT_ID = "7172aa9d8184ed052cf6148b4d6b8ae6";
         this.REDIRECT_URI = "http://www.player-denisnarush.c9.io";
         this.actionPlay = document.getElementById("actionPlay");
@@ -254,13 +254,18 @@ class Player {
     }
 
     getTracks(genre) {
+        if (genre && genre.toLocaleLowerCase() === this.GENRE) {
+            return;
+        }
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
 
         this.fetch("tracks", `&limit=${this.LIMIT}&genres=${genre || this.GENRE}&offset=${offset}`, (tracks) => {
             if (genre && tracks.length === 0) {
                 return this.getTracks();
-            } else {
-                this.GENRE = genre;
+            }
+
+            if (genre) {
+                this.GENRE = genre.toLocaleLowerCase();;
             }
 
             this.playlist.tracks = tracks;
