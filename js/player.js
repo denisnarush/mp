@@ -253,10 +253,15 @@ class Player {
         this.playlist.children[this.playlist.current].classList.toggle("playlist-item__current");
     }
 
-    getTracks() {
+    getTracks(genre) {
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
 
-        this.fetch("tracks", `&limit=${this.LIMIT}&genres=${this.GENRE}&offset=${offset}`, (tracks) => {
+        this.fetch("tracks", `&limit=${this.LIMIT}&genres=${genre || this.GENRE}&offset=${offset}`, (tracks) => {
+            if (genre && tracks.length === 0) {
+                return this.getTracks();
+            } else {
+                this.GENRE = genre;
+            }
 
             this.playlist.tracks = tracks;
             this.playlist.current = 0;
@@ -320,8 +325,36 @@ class Player {
         this.stream.addEventListener("timeupdate", () => {this.onTimeUpdate();});
         // playlist tap
         this.playlist.addEventListener("click", (event) => {this.onPlaylist(event);});
-        // stream trackbar click
+        // stream trackbar tap
         this.streamTrackbar.addEventListener("click", (event) => {this.onTrackBar(event);});
+
+        // genre tap
+        this.streamGenre.addEventListener("click", () => {
+            this.streamGenre.setAttribute("contenteditable", true);
+            this.streamGenre.focus();
+        });
+        // genre keypress
+        this.streamGenre.addEventListener("keypress", (event) => {
+            if (event.code === "Enter") {
+                event.preventDefault();
+                this.streamGenre.removeAttribute("contenteditable");
+                this.getTracks(this.streamGenre.innerHTML);
+            }
+        });
+        // genre keydown
+        this.streamGenre.addEventListener("keydown", (event) => {
+            event.stopPropagation();
+        });
+        // genre blur
+        this.streamGenre.addEventListener("blur", () => {
+            if (!this.streamGenre.hasAttribute("contenteditable")) {
+                return;
+            }
+
+            this.streamGenre.removeAttribute("contenteditable");
+            this.getTracks(this.streamGenre.innerHTML);
+        });
+
         // keydown
         window.addEventListener("keydown", (event) => {this.onKeydown(event);});
 
