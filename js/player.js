@@ -11,7 +11,6 @@ class Player {
      */
     constructor() {
         this.LIMIT = 30,
-        this.GENRE = params.genre || "chillout";
         this.CLIENT_ID = "7172aa9d8184ed052cf6148b4d6b8ae6";
         this.REDIRECT_URI = "http://www.player-denisnarush.c9.io";
         this.actionPlay = document.getElementById("actionPlay");
@@ -310,18 +309,18 @@ class Player {
      * @param {String} genre 
      */
     getTracks(genre) {
-        if (genre && genre.toLocaleLowerCase() === this.GENRE) {
+        if (genre && genre.toLocaleLowerCase() === Settings.genre) {
             return;
         }
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
 
-        this.fetch("tracks", `&limit=${this.LIMIT}&genres=${genre || this.GENRE}&offset=${offset}`, (tracks) => {
+        this.fetch("tracks", `&limit=${this.LIMIT}&genres=${genre || Settings.genre}&offset=${offset}`, (tracks) => {
             if (genre && tracks.length === 0) {
                 return this.getTracks();
             }
 
             if (genre) {
-                this.GENRE = genre.toLocaleLowerCase();
+                Settings.genre = genre.toLocaleLowerCase();
             }
 
             this.playlist.tracks = tracks;
@@ -361,6 +360,8 @@ class Player {
      * Initialization
      */
     init() {
+        Settings.genre = params.genre || Settings.genre;
+
         this.playlist.shuffled = false;
         this.playlist.looped = false;
 

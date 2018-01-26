@@ -52,22 +52,21 @@ class Equalizer {
         }
     }
 
-    onTimeUpdate() {
-        if (this.stream.volume !== this.volume) {
-            this.volume = this.stream.volume;
-            this.volumeBar.setAttribute("stroke-dashoffset", `calc(2 * 3.14 * 47.5% * (1 - ${this.volume}))`);
-            this.volumeLabel.innerHTML = `Volume <em>${(100 * this.volume).toFixed(0)}%</em>`;
+    onVolumeChange() {
+        this.volume = this.stream.volume;
+        this.volumeBar.setAttribute("stroke-dashoffset", `calc(2 * 3.14 * 47.5% * (1 - ${this.volume}))`);
+        this.volumeLabel.innerHTML = `Volume <em>${(100 * this.volume).toFixed(0)}%</em>`;
 
-            this.d.style.webkitTransform = `rotate(${360 * this.volume}deg)`;
-            this.d.style.backgroundImage = `linear-gradient(${-360 * this.volume}deg, ${this.gradient})`;
-        }
-        requestAnimationFrame(() => {this.onTimeUpdate();});
+        this.d.style.webkitTransform = `rotate(${360 * this.volume}deg)`;
+        this.d.style.backgroundImage = `linear-gradient(${-360 * this.volume}deg, ${this.gradient})`;
     }
 
     init() {
-        requestAnimationFrame(() => {this.onTimeUpdate();});
         this.d.addEventListener("mouseup", () => {this.up();});
         this.d.addEventListener("mousedown", (event) => {this.down(event);});
+        // volume change
+        this.stream.addEventListener("volumechange", () => {this.onVolumeChange();});
+        this.onVolumeChange();
     }
 }
 
