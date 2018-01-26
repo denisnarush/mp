@@ -24,6 +24,7 @@ class Player {
         this.streamDurationTime = document.getElementById("streamDurationTime");
         this.streamBgArtwork = document.getElementById("streamBgArtwork");
         this.streamTrackbar = document.getElementById("streamTrackbar");
+        this.streamTrackbarIndicator = document.getElementById("streamTrackbarIndicator");
         this.playlist = document.getElementById("playlist");
         this.stream = document.getElementById("stream");
         this.streamBgArtwork = document.getElementById("streamBgArtwork");
@@ -119,7 +120,7 @@ class Player {
     /**
      * Stream loaded handler
      */
-    onLoad() {
+    onLoadStart() {
         this.stream.pause();
         this.stream.play();
     }
@@ -154,7 +155,7 @@ class Player {
         // trackbar width
         w = (this.stream.currentTime * 100 / this.stream.duration).toFixed(1) + "%";
         // trackbar moving
-        this.streamTrackbar.style.width = w;
+        this.streamTrackbarIndicator.style.width = w;
         // current track time
         this.streamCurrentTime.innerHTML = `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
     }
@@ -213,10 +214,19 @@ class Player {
         }
     }
 
+    onTrackBar(event) {
+        if (this.stream.readyState === 4) {
+            const d = event.offsetX / event.target.offsetWidth;
+            this.stream.currentTime = this.stream.duration * d;
+        }
+    }
+
     getTrack () {
         if (this.playlist.querySelector(".playlist-item__current")) {
             this.playlist.querySelector(".playlist-item__current").classList.remove("playlist-item__current");
         }
+
+        this.streamTrackbarIndicator.style.width = "0";
 
         let cover;
         let time = new Date();
@@ -301,7 +311,7 @@ class Player {
         // stream ended
         this.stream.addEventListener("ended", () => {this.onEnded();});
         // stream load
-        this.stream.addEventListener("load", () => {this.onLoad();});
+        this.stream.addEventListener("loadstart", () => {this.onLoadStart();});
         // shuffle tap
         this.actionShuffle.addEventListener("click", () => {this.onShuffle();});
         // repeat tap
@@ -310,6 +320,8 @@ class Player {
         this.stream.addEventListener("timeupdate", () => {this.onTimeUpdate();});
         // playlist tap
         this.playlist.addEventListener("click", (event) => {this.onPlaylist(event);});
+        // stream trackbar click
+        this.streamTrackbar.addEventListener("click", (event) => {this.onTrackBar(event);});
         // keydown
         window.addEventListener("keydown", (event) => {this.onKeydown(event);});
 

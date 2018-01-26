@@ -433,6 +433,7 @@ body{
 	position: relative;
 	height: 10px;
 	background-color: rgb(255, 82, 82);
+	z-index: -1;
 }
 .player-trackbar-time{
 	color: rgba(254, 95, 89, 0.9);
