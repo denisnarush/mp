@@ -13,9 +13,12 @@ class Animation {
             this.togglePlaylist();
         });
         this.player.querySelector(".top-equalizer").addEventListener("click", () => {
-            this.togglePlayerLeft();
-            this.toggleEqLeft();
-            this.togglePlaylistLeft();
+            this.eq.removeAttribute("hidden");
+            import("./equalizer.js").then(() => {
+                this.togglePlayerLeft();
+                this.toggleEqLeft();
+                this.togglePlaylistLeft();
+            });
         });
         this.eq.querySelector(".top-back").addEventListener("click", () => {
             this.toggleEqLeft();
