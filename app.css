@@ -421,6 +421,7 @@ body{
 	visibility: initial;
 }
 .player-trackbar{
+	cursor: pointer;
 	background-color: rgba(255, 82, 82, .07);
 	width: calc(100% - 100px);
 	max-width: 500px;
@@ -462,6 +463,7 @@ body{
 	font-weight: 300;
 
 	text-align: center;
+	text-transform: lowercase;
 
 	margin: 2vh 0 0 0;
 }
@@ -533,7 +535,7 @@ body{
 	-webkit-overflow-scrolling: touch;
 }
 .playlist{
-	background-color: rgba(29, 39, 44, 0.5);
+	background-color: rgba(29, 39, 44, 0.85);
 	box-sizing: border-box;
 	height: calc(100% - 58px);
 	overflow: hidden;
@@ -546,11 +548,16 @@ body{
 		text-align: center;
 	}
 .playlist-item{
+	cursor: pointer;
 	font-size: 0;
 
 	margin-bottom: -2px;
 	position: relative;
 	overflow: hidden;
+	opacity: .9;
+}
+.playlist-item:hover{
+	opacity: 1;
 }
 .playlist-item.playlist-item__current:before{
 	background-image: url(img/interface/icon-bars.png);
