@@ -34,6 +34,12 @@ class Player {
 
         this.init();
     }
+    /**
+     * fetch SoundCloud data
+     * @param {String} endpoint 
+     * @param {String} params 
+     * @param {Function} callback 
+     */
     fetch(endpoint, params, callback) {
         let xhr = new XMLHttpRequest();
         xhr.open("GET", `${protocol}//api.soundcloud.com/${endpoint}?client_id=${this.CLIENT_ID}${params}`, true);
@@ -213,31 +219,71 @@ class Player {
             break;
         }
     }
-
+    /**
+     * Track swing
+     * @param {MouseEvent} event 
+     */
     onTrackBar(event) {
         if (this.stream.readyState === 4) {
             const d = event.offsetX / event.target.offsetWidth;
             this.stream.currentTime = this.stream.duration * d;
         }
     }
+    /**
+     * Enter to genre editing
+     */
+    onGenreClick() {
+        this.streamGenre.setAttribute("contenteditable", true);
+        this.streamGenre.focus();
+    }
+    /**
+     * Detecting Enter (submit) method
+     * @param {KeyboardEvent} event 
+     */
+    onGenreKeypress(event) {
+        if (event.code === "Enter") {
+            event.preventDefault();
+            this.streamGenre.removeAttribute("contenteditable");
+            this.getTracks(this.streamGenre.innerHTML);
+        }
+    }
+    /**
+     * Stop event bubbling
+     * @param {KeyboardEvent} event 
+     */
+    onGenreKeydown(event) {
+        event.stopPropagation();
+    }
+    /**
+     * Submiting changes on loosing focus event
+     */
+    onGenreBlur() {
+        if (!this.streamGenre.hasAttribute("contenteditable")) {
+            return;
+        }
 
+        this.streamGenre.removeAttribute("contenteditable");
+        this.getTracks(this.streamGenre.innerHTML);
+    }
+    /**
+     * Get track from playlist array
+     */
     getTrack () {
         if (this.playlist.querySelector(".playlist-item__current")) {
             this.playlist.querySelector(".playlist-item__current").classList.remove("playlist-item__current");
         }
 
-        this.streamTrackbarIndicator.style.width = "0";
-
         let cover;
         let time = new Date();
         let track = this.playlist.tracks[this.playlist.current];
+
         // track time
         time.setTime(track.duration);
-
-        this.stream.pause();
+        // reset track progress bar width
+        this.streamTrackbarIndicator.style.width = "0";
         // set audio src url to soundcloud stream
         this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
-        // track artwork
+        // discovering track artwork
         if (track.artwork_url !== null) {
             cover = track.artwork_url.replace(new RegExp("large","g"),"t500x500");
         } else {
@@ -252,7 +298,10 @@ class Player {
 
         this.playlist.children[this.playlist.current].classList.toggle("playlist-item__current");
     }
-
+    /**
+     * Get list of tracks from SoundCloud
+     * @param {String} genre 
+     */
     getTracks(genre) {
         if (genre && genre.toLocaleLowerCase() === this.GENRE) {
             return;
@@ -265,7 +314,7 @@ class Player {
             }
 
             if (genre) {
-                this.GENRE = genre.toLocaleLowerCase();;
+                this.GENRE = genre.toLocaleLowerCase();
             }
 
             this.playlist.tracks = tracks;
@@ -278,7 +327,9 @@ class Player {
             this.getTrack();
         });
     }
-
+    /**
+     * Playlist generator method
+     */
     generatePlaylist() {
         let html = "";
         this.playlist.tracks.forEach(function (itm, i) {
@@ -332,33 +383,14 @@ class Player {
         this.playlist.addEventListener("click", (event) => {this.onPlaylist(event);});
         // stream trackbar tap
         this.streamTrackbar.addEventListener("click", (event) => {this.onTrackBar(event);});
-
         // genre tap
-        this.streamGenre.addEventListener("click", () => {
-            this.streamGenre.setAttribute("contenteditable", true);
-            this.streamGenre.focus();
-        });
+        this.streamGenre.addEventListener("click", () => {this.onGenreClick();});
         // genre keypress
-        this.streamGenre.addEventListener("keypress", (event) => {
-            if (event.code === "Enter") {
-                event.preventDefault();
-                this.streamGenre.removeAttribute("contenteditable");
-                this.getTracks(this.streamGenre.innerHTML);
-            }
-        });
+        this.streamGenre.addEventListener("keypress", (event) => {this.onGenreKeypress(event);});
         // genre keydown
-        this.streamGenre.addEventListener("keydown", (event) => {
-            event.stopPropagation();
-        });
+        this.streamGenre.addEventListener("keydown", (event) => {this.onGenreKeydown(event);});
         // genre blur
-        this.streamGenre.addEventListener("blur", () => {
-            if (!this.streamGenre.hasAttribute("contenteditable")) {
-                return;
-            }
-
-            this.streamGenre.removeAttribute("contenteditable");
-            this.getTracks(this.streamGenre.innerHTML);
-        });
+        this.streamGenre.addEventListener("blur", () => {this.onGenreBlur();});
 
         // keydown
         window.addEventListener("keydown", (event) => {this.onKeydown(event);});
