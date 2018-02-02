@@ -10,9 +10,9 @@ class Player {
      * Create a player
      */
     constructor() {
-        this.LIMIT = 30,
-        this.CLIENT_ID = "7172aa9d8184ed052cf6148b4d6b8ae6";
-        this.REDIRECT_URI = "http://www.player-denisnarush.c9.io";
+        this.LIMIT = Settings.limit;
+        this.CLIENT_ID = Settings.scKey;
+        this.REDIRECT_URI = Settings.scURL;
         this.actionPlay = document.getElementById("actionPlay");
         this.actionPause = document.getElementById("actionPause");
         this.actionNext = document.getElementById("actionNext");
@@ -275,6 +275,14 @@ class Player {
      * Get track from playlist array
      */
     getTrack () {
+        // important pause!
+        this.stream.pause();
+
+        if (this.playlist.tracks.length === 0) {
+            Settings.genre = null;
+            return this.getTracks();
+        }
+
         if (this.playlist.querySelector(".playlist-item__current")) {
             this.playlist.querySelector(".playlist-item__current").classList.remove("playlist-item__current");
         }
@@ -293,7 +301,7 @@ class Player {
         if (track.artwork_url !== null) {
             cover = track.artwork_url.replace(new RegExp("large","g"),"t500x500");
         } else {
-            cover = track.user.avatar_url.replace(new RegExp("large","g"),"t500x500");
+            cover = track.user.avatar_url;
         }
         
         this.streamArtwork.src = cover;
@@ -315,10 +323,6 @@ class Player {
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
 
         this.fetch("tracks", `&limit=${this.LIMIT}&genres=${genre || Settings.genre}&offset=${offset}`, (tracks) => {
-            if (genre && tracks.length === 0) {
-                return this.getTracks();
-            }
-
             if (genre) {
                 Settings.genre = genre.toLocaleLowerCase();
             }
@@ -368,23 +372,24 @@ class Player {
         this.stream.volume = Settings.volume;
 
         // play tap
-        this.actionPlay.addEventListener("click", () => {this.onPLay();});
+        this.actionPlay.applyEvent("tap", () => {this.onPLay();}, "Play");
         // pause tap
-        this.actionPause.addEventListener("click", () => {this.onPause();});
+        this.actionPause.applyEvent("tap", () => {this.onPause();}, "Pause");
         // next tap
-        this.actionNext.addEventListener("click", () => {this.onNext();});
+        this.actionNext.applyEvent("tap", () => {this.onNext();}, "Next");
         // prev tap
-        this.actionPrev.addEventListener("click", () => {this.onPrev();});
+        this.actionPrev.applyEvent("tap", () => {this.onPrev();}, "Previous");
+        // shuffle tap
+        this.actionShuffle.applyEvent("tap", () => {this.onShuffle();}, "Shuffle");
+        // repeat tap
+        this.actionLoop.applyEvent("tap", () => {this.onLoop();}, "Repeat");
+
         // stream can play
         this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
         // stream ended
         this.stream.addEventListener("ended", () => {this.onEnded();});
         // stream load
         this.stream.addEventListener("loadstart", () => {this.onLoadStart();});
-        // shuffle tap
-        this.actionShuffle.addEventListener("click", () => {this.onShuffle();});
-        // repeat tap
-        this.actionLoop.addEventListener("click", () => {this.onLoop();});
         // time update
         this.stream.addEventListener("timeupdate", () => {this.onTimeUpdate();});
         // volume change
