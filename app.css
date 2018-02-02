@@ -428,6 +428,9 @@ body{
 	margin: 3% auto;
 	position: relative;
 }
+.player-trackbar span{
+	cursor: initial;
+}
 .player-trackbar-bar{
 	transition: width .05s; transition-timing-function: linear;
 	display: block;
