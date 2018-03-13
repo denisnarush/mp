@@ -230,6 +230,7 @@ class PlayerState extends State {
 
         this.streamGenre.removeAttribute("contenteditable");
         Player.getTracks(this.streamGenre.innerHTML);
+        this.streamGenre.innerHTML = Settings.genre;
     }
     /** 
      * when data starts fetching, we can start populate UI

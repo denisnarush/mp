@@ -35,10 +35,11 @@ class Player {
             return;
         }
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
+        Settings.genre = genre ? genre.toLocaleLowerCase() : Settings.genre;
 
         this.fetch("tracks", `&limit=${this.LIMIT}&genres=${genre || Settings.genre}&offset=${offset}`, (tracks) => {
-            if (genre) {
-                Settings.genre = genre.toLocaleLowerCase();
+            if(!tracks.length) {
+                return this.getTracks("chillout");
             }
 
             // this.stream.tracks = tracks;
@@ -54,15 +55,16 @@ class Player {
         // important pause!
         this.stream.pause();
 
+        let track = this.stream.tracks[this.stream.current];
+
         // detecting if track was paused
-        if (this.stream.currentTime) {
+        if (this.stream.currentTime && this.stream.src === track.stream_url + "?client_id=" + this.CLIENT_ID) {
             // and resume
             return this.stream.play();
         }
 
         let cover;
         let time = new Date();
-        let track = this.stream.tracks[this.stream.current];
 
         // track time
         time.setTime(track.duration);
