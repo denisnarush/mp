@@ -381,6 +381,10 @@ body{
 .player-title:focus{
 	outline: none;
 }
+.player-title[contenteditable]{
+	user-select: initial;
+	-webkit-user-select: initial;
+}
 .player-author{
 	color: #ff5252;
 
