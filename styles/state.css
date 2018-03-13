@@ -1,0 +1,4 @@
+.state{
+    padding-top: calc(var(--bar-padding-top) + var(--bar-padding-bottom) + var(--bar-height));
+    overflow: hidden;
+}

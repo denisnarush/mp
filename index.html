@@ -6,6 +6,8 @@
 	<style>@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500");</style>
 	<style>@import url("icomoon/style.css");</style>
 	<style>@import url("app.css");</style>
+	<style>@import url("styles/bar.css");</style>
+	<style>@import url("styles/state.css");</style>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="application-name" content="MPLSC">
@@ -29,54 +31,34 @@
 </head>
 <body>
 	<div class="bg" id="streamBgArtwork"></div>
+	<!-- Top Bar -->
+	<div class="bar bar__top bar__fixed"></div>
 	<!-- Now Playing -->
 	<div class="state" data-state="player">
-		<div class="top">
-			<div class="top-s top-s__left">
-				<span class="top-back"><i class="icon icon-arrow-down-right"></i></span>
-				<span class="top-title">
-					<span class="top-title-text top-title-text__with-icon">Now Playing</span>
-				</span>
-			</div>
-			<div class="top-s top-s__right">
-				<span class="top-equalizer"><i class="icon icon-equalizer"></i></span>
-				<span hidden class="top-menu" data-menu="toggle"><i class="icon icon__menu"></i></span>
-			</div>
-		</div>
 		<div class="player">
 			<div class="player-cover">
-				<img title="Lea Michele - Louder" alt="Lea Michele - Louder" id="streamArtwork">
+				<img src="./favicons/mstile-310x310.png" title="Lea Michele - Louder" alt="Lea Michele - Louder" id="streamArtwork">
 			</div>
 			<audio id="stream"></audio>
 			<p class="player-title" id="streamGenre" spellcheck="false"></p>
 			<p class="player-author" id="streamTitle"></p>
 			<div class="player-trackbar" id="streamTrackbar">
-				<span class="player-trackbar-time player-trackbar-time__current" id="streamCurrentTime"></span>
+				<span class="player-trackbar-time player-trackbar-time__current" id="streamCurrentTime">00:00</span>
 				<span class="player-trackbar-bar" id="streamTrackbarIndicator" style="width: 0"></span>
-				<span class="player-trackbar-time player-trackbar-time__duration" id="streamDurationTime"></span>
+				<span class="player-trackbar-time player-trackbar-time__duration" id="streamDurationTime">00:00</span>
 			</div>
 			<div class="player-actions">
 				<span id="actionShuffle" class="player-actions-button" style="opacity: 0.5"><i class="icon-shuffle"></i></span>
-				<span id="actionPrev" class="player-actions-button"><i class="icon-backward2"></i></span>
+				<span id="actionPrev" class="player-actions-button"><i class="icon-backward"></i></span>
 				<span id="actionPlay" class="player-actions-button"><i class="icon-play"></i></span>
 				<span id="actionPause" class="player-actions-button" hidden><i class="icon-pause"></i></span>
-				<span id="actionNext" class="player-actions-button"><i class="icon-forward3"></i></span>
+				<span id="actionNext" class="player-actions-button"><i class="icon-forward"></i></span>
 				<span id="actionLoop" class="player-actions-button" style="opacity: 0.5"><i class="icon-loop"></i></span>
 			</div>
 		</div>
 	</div>
 	<!-- EQ -->
-	<div class="state" data-state="eq" hidden>
-		<div class="top">
-			<div class="top-s top-s__left">
-				<span class="top-back"><i class="icon icon-arrow-left"></i></span>
-				<span class="top-title">
-					<span class="top-title-text top-title-text__with-icon">Equalizer</span>
-				</span>
-			</div>
-			<div class="top-s top-s__right">
-			</div>
-		</div>
+	<div class="state" data-state="eq" off>
 		<div hidden class="eq"></div>
 		<div class="bot">
 			<div class="bot-s bot-s__left">
@@ -94,12 +76,8 @@
 		</div>
 	</div>	
 	<!-- Playlist -->
-	<div class="state" data-state="playlist">
-		<div class="top top__bg">
-			<p class="top-title top-title__center top-title__swipe">
-				<span class="top-title-text top-title-text__small">Playlist</span>
-			</p>
-		</div>
+	<div class="state" data-state="playlist" off>
+		<div class="bar bar__top bar__local bar__bg"></div>
 		<div class="playlist playlist__line">
 			<div class="playlist-scroll" style="top: 30%" hidden></div>
 			<div id="playlist"></div>

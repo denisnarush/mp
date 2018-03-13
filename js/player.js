@@ -1,38 +1,11 @@
-import { getSearchParameters } from "./utils.js";
-import { Settings } from "./settings.js";
-const params = getSearchParameters();
+import {Settings} from "./settings.js";
 const protocol = location.protocol === "chrome-extension:" ? "https:" : location.protocol;
-/**
- * Class representing a player
- */
+
 class Player {
-    /**
-     * Create a player
-     */
     constructor() {
         this.LIMIT = Settings.limit;
         this.CLIENT_ID = Settings.scKey;
-        this.REDIRECT_URI = Settings.scURL;
-        this.actionPlay = document.getElementById("actionPlay");
-        this.actionPause = document.getElementById("actionPause");
-        this.actionNext = document.getElementById("actionNext");
-        this.actionPrev = document.getElementById("actionPrev");
-        this.actionLoop = document.getElementById("actionLoop");
-        this.actionShuffle = document.getElementById("actionShuffle");
-        
-        this.streamCurrentTime = document.getElementById("streamCurrentTime");
-        this.streamDurationTime = document.getElementById("streamDurationTime");
-        this.streamBgArtwork = document.getElementById("streamBgArtwork");
-        this.streamTrackbar = document.getElementById("streamTrackbar");
-        this.streamTrackbarIndicator = document.getElementById("streamTrackbarIndicator");
-        this.playlist = document.getElementById("playlist");
         this.stream = document.getElementById("stream");
-        this.streamBgArtwork = document.getElementById("streamBgArtwork");
-        this.streamArtwork = document.getElementById("streamArtwork");
-        this.streamGenre = document.getElementById("streamGenre");
-        this.streamTitle = document.getElementById("streamTitle");
-
-        this.init();
     }
     /**
      * fetch SoundCloud data
@@ -52,266 +25,7 @@ class Player {
         });
         xhr.send();
     }
-    /**
-     * Play button handler
-     */
-    onPLay() {
-        if(!this.stream.paused) {
-            return;
-        }
-        this.stream.play();
-        this.actionPlay.setAttribute("hidden", "");
-        this.actionPause.removeAttribute("hidden");
-    }
-    /**
-     * Pause button handler
-     */
-    onPause() {
-        if(this.stream.paused) {
-            return;
-        }
-        this.stream.pause();
-        this.actionPlay.removeAttribute("hidden");
-        this.actionPause.setAttribute("hidden", "");
-    }
-    /**
-     * Next button handler
-     */
-    onNext() {
-        if (this.playlist.shuffled) {
-            let i = Math.floor(Math.random() * (this.playlist.tracks.length - 0)) + 0;
-            ( this.playlist.current === i ? this.playlist.current++ : this.playlist.current = i );
-        } else {
-            this.playlist.current++;
-        }
 
-        ( this.playlist.current === this.playlist.tracks.length ?  this.playlist.current = 0 :  this.playlist.current );
-
-        this.getTrack();
-    }
-    /**
-     * Prev button handler
-     */
-    onPrev() {
-        if (this.playlist.shuffled) {
-            let i = Math.floor(Math.random() * (this.playlist.tracks.length - 0)) + 0;
-            ( this.playlist.current === i ? this.playlist.current-- : this.playlist.current = i );
-        } else {
-            this.playlist.current--;
-        }
-
-        ( this.playlist.current === 0 ?  this.playlist.current = this.playlist.tracks.length - 1 : this.playlist.current );
-
-        this.getTrack();
-    }
-    /**
-     * Stream can play handler
-     */
-    onCanPlayThrough() {
-        if (!this.stream.paused) {
-            this.actionPlay.setAttribute("hidden", "");
-            this.actionPause.removeAttribute("hidden");
-        }
-    }
-    /**
-     * Stream ends handler
-     */
-    onEnded() {
-        if (this.playlist.looped) {
-            this.stream.currentTime = 0;
-        } else {
-            this.onNext();
-        }
-    }
-    /**
-     * Stream loaded handler
-     */
-    onLoadStart() {
-        this.stream.pause();
-        this.stream.play();
-    }
-    /**
-     * Shuffle button handler
-     */
-    onShuffle() {
-        // turn off loop
-        this.playlist.looped = false;
-        this.actionLoop.style.opacity = 0.5;
-
-        this.playlist.shuffled = !this.playlist.shuffled;
-        this.actionShuffle.style.opacity = (this.playlist.shuffled ? 1 : 0.5);
-    }
-    /**
-     * Loop button handler
-     */
-    onLoop() {
-        // turn off shuffle
-        this.playlist.shuffled = false;
-        this.actionShuffle.style.opacity = 0.5;
-
-        this.playlist.looped = !this.playlist.looped;
-        this.actionLoop.style.opacity = (this.playlist.looped ? 1 : 0.5);
-    }
-    /**
-     * Stream time updates handler
-     */
-    onTimeUpdate() {
-        let w, time;
-        time = new Date(this.stream.currentTime * 1000);
-        // trackbar width
-        w = (this.stream.currentTime * 100 / this.stream.duration).toFixed(1) + "%";
-        // trackbar moving
-        this.streamTrackbarIndicator.style.width = w;
-        // current track time
-        this.streamCurrentTime.innerHTML = `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
-    }
-    /**
-     * Volume handler
-    */
-    onVolumeChange() {
-        Settings.volume = this.stream.volume;
-    }
-    /**
-     * Playlist item click handler
-     * @param {MouseEvent} event 
-     */
-    onPlaylist(event) {
-        let item = "",
-            current = event.target;
-
-        while(this.playlist !== current) {
-            if (current.parentElement === this.playlist) {
-                item = current;
-            }
-            current = current.parentElement;
-        }
-
-        if (!item) {
-            return;
-        }
-
-        this.playlist.current = item.getAttribute("data-trackindex");
-        this.getTrack();
-    }
-    /**
-     * Keyboard configuration
-     * @param {KeyboardEvent} event 
-     */
-    onKeydown(event) {
-        switch (event.code) {
-        case "Space":
-            if(this.stream.paused) {
-                this.onPLay();
-            } else {
-                this.onPause();
-            }
-            break;
-        case "ArrowRight":
-            this.stream.currentTime += 5;
-            break;
-        case "ArrowLeft":
-            this.stream.currentTime -= 5;
-            break;
-        case "ArrowUp":
-            (100 * this.stream.volume >= 95 ? this.stream.volume = 1 : this.stream.volume = (100 * this.stream.volume + 5) / 100);
-            break;
-        case "ArrowDown":
-            (100 * this.stream.volume <= 5 ? this.stream.volume = 0 : this.stream.volume = (100 * this.stream.volume - 5) / 100);
-            break;
-        case "KeyR":
-            if (event.metaKey || event.ctrlKey) {
-                this.getTracks();
-            }
-            break;
-        }
-    }
-    /**
-     * Track swing
-     * @param {MouseEvent} event 
-     */
-    onTrackBar(event) {
-        if (this.stream.readyState === 4) {
-            const d = event.offsetX / event.target.offsetWidth;
-            this.stream.currentTime = this.stream.duration * d;
-        }
-    }
-    /**
-     * Enter to genre editing
-     */
-    onGenreClick() {
-        this.streamGenre.setAttribute("contenteditable", true);
-        this.streamGenre.focus();
-    }
-    /**
-     * Detecting Enter (submit) method
-     * @param {KeyboardEvent} event 
-     */
-    onGenreKeypress(event) {
-        if (event.code === "Enter") {
-            event.preventDefault();
-            this.streamGenre.removeAttribute("contenteditable");
-            this.getTracks(this.streamGenre.innerHTML);
-        }
-    }
-    /**
-     * Stop event bubbling
-     * @param {KeyboardEvent} event 
-     */
-    onGenreKeydown(event) {
-        event.stopPropagation();
-    }
-    /**
-     * Submiting changes on loosing focus event
-     */
-    onGenreBlur() {
-        if (!this.streamGenre.hasAttribute("contenteditable")) {
-            return;
-        }
-
-        this.streamGenre.removeAttribute("contenteditable");
-        this.getTracks(this.streamGenre.innerHTML);
-    }
-    /**
-     * Get track from playlist array
-     */
-    getTrack () {
-        // important pause!
-        this.stream.pause();
-
-        if (this.playlist.tracks.length === 0) {
-            Settings.genre = null;
-            return this.getTracks();
-        }
-
-        if (this.playlist.querySelector(".playlist-item__current")) {
-            this.playlist.querySelector(".playlist-item__current").classList.remove("playlist-item__current");
-        }
-
-        let cover;
-        let time = new Date();
-        let track = this.playlist.tracks[this.playlist.current];
-
-        // track time
-        time.setTime(track.duration);
-        // reset track progress bar width
-        this.streamTrackbarIndicator.style.width = "0";
-        // set audio src url to soundcloud stream
-        this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
-        // discovering track artwork
-        if (track.artwork_url !== null) {
-            cover = track.artwork_url.replace(new RegExp("large","g"),"t500x500");
-        } else {
-            cover = track.user.avatar_url;
-        }
-        
-        this.streamArtwork.src = cover;
-        this.streamBgArtwork.style.backgroundImage = "url('"+cover+"')";
-        this.streamGenre.innerHTML = track.genre;
-        this.streamTitle.innerHTML = track.title;
-        this.streamDurationTime.innerHTML = time.toUTCString().slice(20, 25);
-
-        this.playlist.children[this.playlist.current].classList.toggle("playlist-item__current");
-    }
     /**
      * Get list of tracks from SoundCloud
      * @param {String} genre 
@@ -327,91 +41,106 @@ class Player {
                 Settings.genre = genre.toLocaleLowerCase();
             }
 
-            this.playlist.tracks = tracks;
-            this.playlist.current = 0;
-            
-            // generate playlist
-            this.generatePlaylist();
-            
-            // preload first track
-            this.getTrack();
+            // this.stream.tracks = tracks;
+            this.stream.tracks = tracks;
+            // this.stream.current = 0;
+            this.stream.current = 0;
+
+            this.start();
         });
     }
-    /**
-     * Playlist generator method
-     */
-    generatePlaylist() {
-        let html = "";
-        this.playlist.tracks.forEach(function (itm, i) {
-            let time = new Date();
-            // track time
-            time.setTime(itm.duration);
 
-            // template
-            html += `<div class="playlist-item" data-trackindex="${i}">
-                        <div class="playlist-item-s playlist-item-s__left">
-                            <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
-                        </div>
-                        <div class="playlist-item-s playlist-item-s__right">
-                            <p class="playlist-item-time">${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}</p>
-                        </div>
-                    </div>`;
-        });
-        // past to the DOM
-        this.playlist.innerHTML = html;
+    start() {
+        // important pause!
+        this.stream.pause();
+
+        // detecting if track was paused
+        if (this.stream.currentTime) {
+            // and resume
+            return this.stream.play();
+        }
+
+        let cover;
+        let time = new Date();
+        let track = this.stream.tracks[this.stream.current];
+
+        // track time
+        time.setTime(track.duration);
+
+        // discovering track artwork
+        if (track.artwork_url !== null) {
+            cover = track.artwork_url.replace(new RegExp("large","g"),"t500x500");
+        } else {
+            cover = track.user.avatar_url;
+        }
+
+        this.stream.track = track;
+        this.stream.cover = cover;
+        this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
+
+        
+        const promise = this.stream.play();
+
+        if (promise !== undefined) {
+            promise.catch(() => {
+                /**
+                * iOS 11 play() is a promise.
+                */
+            });
+        }
     }
-    /**
-     * Initialization
-     */
-    init() {
-        Settings.genre = params.genre || Settings.genre;
+    stop() {
+        this.stream.pause();
+    }
+    next() {
+        let last = this.stream.current;
 
-        this.playlist.shuffled = false;
-        this.playlist.looped = false;
+        if (this.stream.shuffled) {
+            let i = Math.floor(Math.random() * (this.stream.tracks.length - 0)) + 0;
+            ( this.stream.current === i ? this.stream.current++ : this.stream.current = i );
+        } else {
+            this.stream.current++;
+        }
 
-        this.stream.volume = Settings.volume;
+        ( this.stream.current === this.stream.tracks.length ?  this.stream.current = 0 :  this.stream.current );
 
-        // play tap
-        this.actionPlay.applyEvent("tap", () => {this.onPLay();}, "Play");
-        // pause tap
-        this.actionPause.applyEvent("tap", () => {this.onPause();}, "Pause");
-        // next tap
-        this.actionNext.applyEvent("tap", () => {this.onNext();}, "Next");
-        // prev tap
-        this.actionPrev.applyEvent("tap", () => {this.onPrev();}, "Previous");
-        // shuffle tap
-        this.actionShuffle.applyEvent("tap", () => {this.onShuffle();}, "Shuffle");
-        // repeat tap
-        this.actionLoop.applyEvent("tap", () => {this.onLoop();}, "Repeat");
+        if (this.stream.current !== last) {
+            this.stream.pause();
+            this.stream.currentTime = 0;
+        }
 
-        // stream can play
-        this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
-        // stream ended
-        this.stream.addEventListener("ended", () => {this.onEnded();});
-        // stream load
-        this.stream.addEventListener("loadstart", () => {this.onLoadStart();});
-        // time update
-        this.stream.addEventListener("timeupdate", () => {this.onTimeUpdate();});
-        // volume change
-        this.stream.addEventListener("volumechange", () => {this.onVolumeChange();});
-        // playlist tap
-        this.playlist.addEventListener("click", (event) => {this.onPlaylist(event);});
-        // stream trackbar tap
-        this.streamTrackbar.addEventListener("click", (event) => {this.onTrackBar(event);});
-        // genre tap
-        this.streamGenre.addEventListener("click", () => {this.onGenreClick();});
-        // genre keypress
-        this.streamGenre.addEventListener("keypress", (event) => {this.onGenreKeypress(event);});
-        // genre keydown
-        this.streamGenre.addEventListener("keydown", (event) => {this.onGenreKeydown(event);});
-        // genre blur
-        this.streamGenre.addEventListener("blur", () => {this.onGenreBlur();});
+        this.start();
+    }
+    prev() {
+        let last = this.stream.current;
 
-        // keydown
-        window.addEventListener("keydown", (event) => {this.onKeydown(event);});
+        if (this.stream.shuffled) {
+            let i = Math.floor(Math.random() * (this.stream.tracks.length - 0)) + 0;
+            ( this.stream.current === i ? this.stream.current-- : this.stream.current = i );
+        } else {
+            this.stream.current--;
+        }
 
-        this.getTracks();
-    } 
+        ( this.stream.current <= 0 ?  this.stream.current = this.stream.tracks.length - 1 : this.stream.current );
+
+        if (this.stream.current !== last) {
+            this.stream.pause();
+            this.stream.currentTime = 0;
+        }
+
+        this.start();
+    }
+    select(id) {
+        if (this.stream.current === id) {
+            return;
+        }
+        this.stream.current = id;
+
+        this.stream.pause();
+        this.stream.currentTime = 0;
+        this.start();
+    }
 }
+let instance = new Player();
 
-export default new Player();
+export {instance as Player};

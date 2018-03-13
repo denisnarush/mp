@@ -1,10 +1,5 @@
 export function isMouseEvent () {
-    try {
-        new MouseEvent("test");
-        return true;
-    } catch (e) {
-        return false;
-    }
+    return !("ontouchstart" in document);
 }
 
 Element.prototype.applyEvent = function (type, listner, title) {
@@ -15,7 +10,7 @@ Element.prototype.applyEvent = function (type, listner, title) {
             element.addEventListener("click", listner);
         } else {
             // TODO: made changes for working with touch
-            element.addEventListener("click", listner);
+            element.addEventListener("touchstart", listner);
         }
     } else {
         element.addEventListener(type, listner);

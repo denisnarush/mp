@@ -1,15 +1,26 @@
-class Equalizer {
-    constructor() {
-        const eq = document.querySelector("[data-state=\"eq\"]");
+import { State } from "./state.js";
 
-        eq.addEventListener("mousemove", (event) => {this.move(event);});
+class Equalizer extends State {
+    constructor() {
+        super("eq");
+
+        this.state.addEventListener("mousemove", (event) => {this.move(event);});
+
+        this.state.topBar = [{
+            icon: {
+                type: "icon-arrow-left",
+                handler: () => this.switchToPlayer()
+            }
+        }, {
+            title: "Equalizer"
+        }];
 
         this.pressed = false;
         this.gradient = "#0c0c10, #56586c";
-        this.d = eq.querySelector(".roller .d");
+        this.d = this.state.querySelector(".roller .d");
         this.stream = document.querySelector("#stream");
-        this.volumeBar = eq.querySelector("#volume-bar");
-        this.volumeLabel = eq.querySelector("#volume-label");
+        this.volumeBar = this.state.querySelector("#volume-bar");
+        this.volumeLabel = this.state.querySelector("#volume-label");
 
         this.init();
     }
@@ -61,12 +72,17 @@ class Equalizer {
         this.d.style.backgroundImage = `linear-gradient(${-360 * this.volume}deg, ${this.gradient})`;
     }
 
+    switchToPlayer() {
+        this.switchTo("player");
+    }
+
     init() {
         this.d.addEventListener("mouseup", () => {this.up();});
         this.d.addEventListener("mousedown", (event) => {this.down(event);});
         // volume change
         this.stream.addEventListener("volumechange", () => {this.onVolumeChange();});
         this.onVolumeChange();
+        this.on();
     }
 }
 

@@ -1,3 +1,17 @@
+:root{
+	--bar-padding-top: 14px;
+	--bar-padding-bottom: 14px;
+
+	--bar-font-size: 20px;
+	--bar-height: 32px;
+	--bar-line-height: calc(32 / 20);
+}
+
+@supports(padding: env(safe-area-inset-top)) {
+    :root{
+        --bar-padding-top: calc(14px + env(safe-area-inset-top));
+    }
+}
 /*
  * TEMP RULLES START
 */
@@ -5,10 +19,13 @@
 .state,
 .menu,
 .tab-item
-{transition: transform .2s; transition-timing-function: linear;}
+{transition: transform .3s; transition-timing-function: ease-out;}
 
 [hidden] {display: none !important;}
-* {user-select: none;}
+* {
+	user-select: none;
+	-webkit-user-select: none;
+}
 
 /*
  * TEMP RULLES END
@@ -86,16 +103,8 @@ body{
 
 
 .state{
-	margin: 0 auto;
-
-	position: absolute;
-
 	width: 100%;
 	height: 100%;
-
-	z-index: 1;
-
-	transform: translateZ(0);
 }
 
 
@@ -230,124 +239,6 @@ body{
 
 
 /*
- * TABS START
-*/
-
-.tabs{
-	font-size: 0;
-	white-space: nowrap;
-}
-.tab-item{
-	display: inline-block;
-	vertical-align: top;
-	width: 100%;
-}
-
-.tabs .menu {
-	white-space: normal;
-}
-
-/*
- * TABS END
-*/
-
-
-
-/*
- * TOP START
-*/
-
-.top{
-	font-size: 0;
-	padding: 18px 5%;
-}
-.top__bg{
-	background: url('img/interface/playlist-item-bg.png') 0 0 no-repeat, rgba(29, 39, 44, 0.8);
-	background-size: 110% 110%;
-	background-position: 5% -5%;
-	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-}
-.top-back .icon-arrow-left{
-	cursor: pointer;
-}
-.top-title{
-	white-space: nowrap;
-}
-.top-title.top-title__center{
-	text-align: center;
-}
-.top-title__swipe{
-	position: relative;
-}
-.top-title__swipe:before,
-.top-title__swipe:after{
-	content: '';
-	display: block;
-	background: url('img/interface/top-title-swipe.png') 0 0 no-repeat;
-	background-size: 100% 100%;
-
-	margin-top: -5.5px;
-
-	position: absolute;
-	top: 50%;
-
-	width: 27px;
-	height: 11px;
-
-}
-.top-title__swipe:before{
-	left: 0;
-}
-.top-title__swipe:after{
-	right: 0;
-}
-.top-title-text{
-	color: rgba(255, 255, 255, 0.8);
-	display: inline-block;
-
-	font-family: 'Roboto';
-	font-size: 20px;
-	font-weight: 400;
-
-	vertical-align: middle;
-	padding: 1px 0;
-}
-.top-title-text__with-icon{
-	margin-left: .7em;
-}
-.top-title-text__small{
-	font-size: 16.666667px;
-	padding: 2px 0;
-}
-.top-equalizer,
-.top-menu{
-	cursor: pointer;
-	display: inline-block;
-	vertical-align: middle;
-}
-.top-equalizer{
-	padding: 3px;
-}
-.top-menu{
-	padding: 2px 20px;
-	margin-right: -20px;
-}
-.top-s{
-	display: inline-block;
-	vertical-align: bottom;
-	width: 50%;
-}
-.top-s__left{
-}
-.top-s__right{
-	text-align: right;
-}
-
-/*
- * TOP END
-*/
-
-/*
  * BOT START
 */
 .bot{
@@ -390,17 +281,23 @@ body{
 /*
  * PLAYER START
 */
-[data-state="player"]{
+.state[data-state="player"]{
 	display: flex;
 	flex-direction: column;
+	padding-bottom: 60px;
+	box-sizing: border-box;
+	transform: translate3d(0, 0, 1px);
+}
+.state[data-state="player"][off]{
+	transform: translate3d(-99.9%, 0, 1px);
 }
 .player{
 	box-sizing: border-box;
 	display: flex;
 	flex: 1 0 auto;
-	padding: 0 0 60px 0;
+	padding: 0 0 40px 0;
 	flex-direction: column;
-	justify-content: space-between;
+	align-items: center;
 }
 .player-cover{
 	flex: 1;
@@ -411,7 +308,8 @@ body{
 .player-cover img{
 	visibility: hidden;
 }
-.player-cover img[src^="http"]{
+.player-cover img[src^="http"],
+.player-cover img[src^="./"]{
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -422,11 +320,20 @@ body{
 }
 .player-trackbar{
 	cursor: pointer;
-	background-color: rgba(255, 82, 82, .07);
 	width: calc(100% - 100px);
 	max-width: 500px;
 	margin: 3% auto;
 	position: relative;
+}
+.player-trackbar:before{
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin-top: -.5px;
+	height: 1px;
+	top: 50%;
+	background-color: rgba(244, 59, 0, .25);
 }
 .player-trackbar span{
 	cursor: initial;
@@ -435,7 +342,8 @@ body{
 	transition: width .05s; transition-timing-function: linear;
 	display: block;
 	position: relative;
-	height: 10px;
+	height: 1px;
+	margin: 15px 0;
 	background-color: rgb(255, 82, 82);
 	z-index: -1;
 }
@@ -447,17 +355,17 @@ body{
 	font-weight: 400;
 
 	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
+	z-index: -1;
+	margin-top: -8px;
+	top: 100%;
 }
 	.player-trackbar-time__current{
-		margin-right: .4em;
-		right: 100%;
+		left: 0;
 	}
 	.player-trackbar-time__duration{
-		margin-left: .4em;
-		left: 100%;
+		right: 0;
 	}
+
 .player-title{
 	color: rgba(235, 235, 250, 0.9);
 
@@ -485,13 +393,13 @@ body{
 	margin: 0 6% 2vh 6%;
 }
 .player-actions{
-	box-sizing: border-box;
 	font-size: 0;
-
-	margin: 5vh auto;
-
-	width: 100%;
+	margin: 5vh 50px;
+	width: calc(100% - 100px);
 	max-width: 500px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 .player-actions-button{
 	cursor: pointer;
@@ -501,7 +409,6 @@ body{
 	vertical-align: middle;
 	text-align: center;
 
-	width: 20%;
 	color: #ebebfa;
 	font-size: 24px;
 	font-weight: normal;
@@ -513,8 +420,8 @@ body{
 	display: inline-block;
 	transform: scaleY(0.8);
 }
-.player-actions-button .icon-forward3,
-.player-actions-button .icon-backward2{
+.player-actions-button .icon-forward,
+.player-actions-button .icon-backward{
 	color: #fff;
 	font-size: 2.2em;
 	display: inline-block;
@@ -529,12 +436,23 @@ body{
 /*
  * PLAYLIST START
 */
-[data-state="playlist"]{
-	transform: translateY(calc(100% - 60px)) translateX(0);
+.state[data-state="playlist"]{
+	transform: translate3d(0, 0, 1px);
+	padding-top: 0;
+	position: fixed;
+	top: 0;
+	z-index: 6;
+}
+.state[data-state="playlist"][off]{
+	transform: translate3d(0, 99.9%, 1px);
+	margin-top: -60px;
+}
+.state[data-state="playlist"][off] .bar{
+	padding-top: 14px;
 }
 #playlist{
 	height: 100%;
-	overflow-y: scroll;
+	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
 }
 .playlist{
@@ -544,6 +462,9 @@ body{
 	overflow: hidden;
 	position: relative;
 	z-index: 1;
+}
+.state[data-state="playlist"] .icon-list{
+	font-size: 2em;
 }
 	.playlist__square{
 		padding: 20px 20px;
@@ -698,9 +619,14 @@ body{
 */
 
 .state[data-state="eq"]{
-	transform: translateX(100%);
+	transform: translate3d(0, 0, 1px);
 	display: flex;
 	flex-direction: column;
+	position: absolute;
+	top: 0;
+}
+.state[data-state="eq"][off] {
+	transform: translate3d(99.9%, 0, 1px);
 }
 .eq{
 	flex: 1 0 auto;

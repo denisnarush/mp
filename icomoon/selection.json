@@ -4,6 +4,37 @@
     {
       "icon": {
         "paths": [
+          "M224 320h576c17.666 0 32-14.334 32-32s-14.334-32-32-32h-576c-17.666 0-32 14.334-32 32s14.334 32 32 32zM800 384h-576c-17.666 0-32 14.334-32 32s14.334 32 32 32h576c17.666 0 32-14.334 32-32s-14.334-32-32-32zM800 512h-576c-17.666 0-32 14.334-32 32s14.334 32 32 32h576c17.666 0 32-14.334 32-32s-14.334-32-32-32zM800 640h-576c-17.666 0-32 14.334-32 32s14.334 32 32 32h576c17.666 0 32-14.334 32-32s-14.334-32-32-32z"
+        ],
+        "attrs": [
+          {}
+        ],
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "tags": [
+          "lines",
+          "list",
+          "weather"
+        ],
+        "grid": 16
+      },
+      "attrs": [
+        {}
+      ],
+      "properties": {
+        "order": 1,
+        "id": 0,
+        "name": "list",
+        "prevSize": 32,
+        "code": 59653
+      },
+      "setIdx": 0,
+      "setId": 2,
+      "iconIdx": 0
+    },
+    {
+      "icon": {
+        "paths": [
           "M896 448h16c26.4 0 48-21.6 48-48v-160c0-26.4-21.6-48-48-48h-16v-192h-128v192h-16c-26.4 0-48 21.6-48 48v160c0 26.4 21.6 48 48 48h16v576h128v-576zM768 256h128v128h-128v-128zM592 832c26.4 0 48-21.6 48-48v-160c0-26.4-21.6-48-48-48h-16v-576h-128v576h-16c-26.4 0-48 21.6-48 48v160c0 26.4 21.6 48 48 48h16v192h128v-192h16zM448 640h128v128h-128v-128zM272 448c26.4 0 48-21.6 48-48v-160c0-26.4-21.6-48-48-48h-16v-192h-128v192h-16c-26.4 0-48 21.6-48 48v160c0 26.4 21.6 48 48 48h16v576h128v-576h16zM128 256h128v128h-128v-128z"
         ],
         "attrs": [
@@ -31,8 +62,8 @@
         "name": "equalizer",
         "code": 59652
       },
-      "setIdx": 0,
-      "setId": 2,
+      "setIdx": 1,
+      "setId": 1,
       "iconIdx": 0
     },
     {
@@ -63,7 +94,7 @@
       },
       "setIdx": 1,
       "setId": 1,
-      "iconIdx": 2
+      "iconIdx": 1
     },
     {
       "icon": {
@@ -93,7 +124,7 @@
       },
       "setIdx": 1,
       "setId": 1,
-      "iconIdx": 3
+      "iconIdx": 2
     },
     {
       "icon": {
@@ -111,7 +142,7 @@
       "attrs": [],
       "properties": {
         "ligatures": "backward2, player11",
-        "name": "backward2",
+        "name": "backward",
         "order": 8,
         "id": 288,
         "prevSize": 32,
@@ -119,7 +150,7 @@
       },
       "setIdx": 1,
       "setId": 1,
-      "iconIdx": 4
+      "iconIdx": 3
     },
     {
       "icon": {
@@ -137,7 +168,7 @@
       "attrs": [],
       "properties": {
         "ligatures": "forward3, player12",
-        "name": "forward3",
+        "name": "forward",
         "order": 9,
         "id": 289,
         "prevSize": 32,
@@ -145,7 +176,7 @@
       },
       "setIdx": 1,
       "setId": 1,
-      "iconIdx": 5
+      "iconIdx": 4
     },
     {
       "icon": {
@@ -172,7 +203,7 @@
       },
       "setIdx": 1,
       "setId": 1,
-      "iconIdx": 6
+      "iconIdx": 5
     },
     {
       "icon": {
@@ -199,7 +230,7 @@
       },
       "setIdx": 1,
       "setId": 1,
-      "iconIdx": 7
+      "iconIdx": 6
     },
     {
       "icon": {
@@ -228,7 +259,7 @@
       },
       "setIdx": 1,
       "setId": 1,
-      "iconIdx": 0
+      "iconIdx": 7
     },
     {
       "icon": {
@@ -257,7 +288,7 @@
       },
       "setIdx": 1,
       "setId": 1,
-      "iconIdx": 1
+      "iconIdx": 8
     }
   ],
   "height": 1024,
