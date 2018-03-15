@@ -51,6 +51,22 @@ class Player {
         });
     }
 
+    play() {
+        if (!this.stream.paused) {
+            return;
+        }
+
+        const promise = this.stream.play();
+
+        if (promise !== undefined) {
+            promise.catch(() => {
+                /**
+                * iOS 11 play() is a promise.
+                */
+            });
+        }
+    }
+
     start() {
         // important pause!
         this.stream.pause();
@@ -80,16 +96,6 @@ class Player {
         this.stream.cover = cover;
         this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
 
-        
-        const promise = this.stream.play();
-
-        if (promise !== undefined) {
-            promise.catch(() => {
-                /**
-                * iOS 11 play() is a promise.
-                */
-            });
-        }
     }
     stop() {
         this.stream.pause();

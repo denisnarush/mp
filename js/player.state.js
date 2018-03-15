@@ -52,16 +52,13 @@ class PlayerState extends State {
         this.init();
     }
     onCanPlayThrough() {
-        if (!this.stream.paused) {
-            this.actionPlay.setAttribute("hidden", "");
-            this.actionPause.removeAttribute("hidden");
-        }
+        Player.play();
     }
     /**
      * Play button handler
      */
     onPlay() {
-        Player.start();
+        Player.play();
     }
     /** 
      * Stream resumed
