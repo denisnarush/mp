@@ -1,9 +1,6 @@
-import { getSearchParameters } from "./utils.js";
-import { Settings } from "./settings.js";
 import { State } from "./state.js";
-import { Player } from "./player.js";
-
-const params = getSearchParameters();
+import {default as Player } from "./player.js";
+import {default as Playlist} from "./playlist.state.js";
 /**
  * Class representing a player
  */
@@ -15,8 +12,6 @@ class PlayerState extends State {
     constructor() {
         super("player");
 
-        this.CLIENT_ID = Settings.scKey;
-        this.REDIRECT_URI = Settings.scURL;
         this.actionPlay = document.getElementById("actionPlay");
         this.actionPause = document.getElementById("actionPause");
         this.actionNext = document.getElementById("actionNext");
@@ -48,8 +43,6 @@ class PlayerState extends State {
                 handler: () => {this.switchTo("equalizer");}
             }
         }*/];
-
-        this.init();
     }
     onCanPlayThrough() {
         Player.play();
@@ -128,21 +121,19 @@ class PlayerState extends State {
      * Stream time updates handler
      */
     onTimeUpdate() {
-        let w, time;
+        let w, time, duration;
+
         time = new Date(this.stream.currentTime * 1000);
+        duration = this.stream.duration || 1;
+
         // trackbar width
-        w = (this.stream.currentTime * 100 / this.stream.duration).toFixed(1) + "%";
+        w = (this.stream.currentTime * 100 / duration).toFixed(1) + "%";
         // trackbar moving
         this.streamTrackbarIndicator.style.width = w;
         // current track time
         this.streamCurrentTime.innerHTML = `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
     }
-    /**
-     * Volume handler
-    */
-    onVolumeChange() {
-        Settings.volume = this.stream.volume;
-    }
+
     /**
      * Keyboard configuration
      * @param {KeyboardEvent} event 
@@ -226,7 +217,6 @@ class PlayerState extends State {
 
         this.streamGenre.removeAttribute("contenteditable");
         Player.getTracks(this.streamGenre.innerHTML);
-        this.streamGenre.innerHTML = Settings.genre;
     }
     /** 
      * when data starts fetching, we can start populate UI
@@ -245,11 +235,8 @@ class PlayerState extends State {
      * Initialization
      */
     init() {
-        Settings.genre = params.genre || Settings.genre;
-
         this.stream.shuffled = false;
         this.stream.looped = false;
-        this.stream.volume = Settings.volume;
 
         // play tap
         this.actionPlay.applyEvent("tap", () => {this.onPlay();}, "Play");
@@ -272,8 +259,6 @@ class PlayerState extends State {
         this.stream.addEventListener("ended", () => {this.onEnded();});
         // time update
         this.stream.addEventListener("timeupdate", () => {this.onTimeUpdate();});
-        // volume change
-        this.stream.addEventListener("volumechange", () => {this.onVolumeChange();});
         // paused
         this.stream.addEventListener("pause", () => {this.onPaused();});
         // played
@@ -294,7 +279,9 @@ class PlayerState extends State {
         window.addEventListener("keydown", (event) => {this.onKeydown(event);});
 
         Player.getTracks();
-        this.on();
+        Playlist.init();
+
+        super.init();
     }
 }
 

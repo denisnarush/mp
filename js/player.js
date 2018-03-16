@@ -1,4 +1,11 @@
-import {Settings} from "./settings.js";
+import { Settings } from "./settings.js";
+import { getSearchParameters } from "./utils.js";
+
+const params = getSearchParameters();
+
+Settings.genre = params.genre || Settings.genre;
+Settings.limit = params.limit || Settings.limit;
+
 const protocol = location.protocol === "chrome-extension:" ? "https:" : location.protocol;
 
 class Player {
@@ -6,6 +13,13 @@ class Player {
         this.LIMIT = Settings.limit;
         this.CLIENT_ID = Settings.scKey;
         this.stream = document.getElementById("stream");
+
+        this.stream.volume = Settings.volume;
+
+        // volume change
+        this.stream.addEventListener("volumechange", () => {
+            this.onVolumeChange();
+        });
     }
     /**
      * fetch SoundCloud data
@@ -148,7 +162,9 @@ class Player {
         this.stream.currentTime = 0;
         this.start();
     }
+    onVolumeChange() {
+        Settings.volume = this.stream.volume;
+    }
 }
-let instance = new Player();
 
-export {instance as Player};
+export default new Player();

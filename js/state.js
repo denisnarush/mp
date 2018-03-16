@@ -12,19 +12,24 @@ class State {
     }
 
     on () {
-        this.topBar.to(this.state.topBar || []);
+        if (!this.state.topBar.manually) {
+            this.topBar.to(this.state.topBar || []);
+        }
         this.state.removeAttribute("off");
     }
+
     off () {
         this.state.setAttribute("off", "");
     }
+
     isOn () {
         return !this.state.hasAttribute("off");
     }
+
     switchTo (state) {
         try {
             import(`./${state}.state.js`).then((module) => {
-                module.default.on();
+                module.default.init();
                 this.destroy();
             });
         } catch (Errror) {

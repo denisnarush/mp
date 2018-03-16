@@ -1,5 +1,5 @@
 import { State } from "./state.js";
-import { Player } from "./player.js";
+import { default as Player } from "./player.js";
 
 class Playlist extends State {
     constructor() {
@@ -23,11 +23,11 @@ class Playlist extends State {
             }
         }];
 
+        this.state.topBar.manually = true;
+
         this.stream = document.getElementById("stream");
         this.playlist = this.state.querySelector("#playlist");
         this.playlistTopBar = this.state.querySelector(".bar.bar__top");
-
-        this.init();
     }
 
     /**
@@ -42,7 +42,7 @@ class Playlist extends State {
             time.setTime(itm.duration);
 
             // template
-            html += `<div class="playlist-item" data-trackindex="${i}">
+            html += `<div class="playlist-item ${this.stream.current === i ? "playlist-item__current" : ""}" data-trackindex="${i}">
                         <div class="playlist-item-s playlist-item-s__left">
                             <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
                         </div>
@@ -61,6 +61,7 @@ class Playlist extends State {
     onPlaylistItem(event) {
         let item = "",
             current = event.target;
+
         while(this.playlist !== current) {
             if (current.parentElement === this.playlist) {
                 item = current;
@@ -80,15 +81,37 @@ class Playlist extends State {
     onPlaylistBar() {
         this.isOn() ? this.off() : this.on();
     }
+    /**
+     * Changing current class of playlist item
+     */
+    onCanPlayThrough() {
+        if (!this.isOn()) {
+            return;
+        }
+
+        try {
+            this.playlist.querySelector(".playlist-item__current").classList.remove("playlist-item__current");
+        } catch (error) {
+            // no any previous setted current class
+        } finally {
+            this.playlist.querySelectorAll(".playlist-item")[this.stream.current].classList.add("playlist-item__current");
+        }
+    }
+    /**
+     * On state instructions
+     */
     on() {
         this.generate();
-        this.state.removeAttribute("off");
+        super.on();
     }
+
     init() {
         // playlist item tap
         this.playlist.applyEvent("click", (event) => {this.onPlaylistItem(event);});
         // playlist top bar tap
         this.playlistTopBar.applyEvent("tap", () => {this.onPlaylistBar();});
+
+        this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
         // render bar to local element before `on` event
         this.topBar.to(this.state.topBar || []);
     }
