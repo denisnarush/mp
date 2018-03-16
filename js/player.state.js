@@ -206,8 +206,7 @@ class PlayerState extends State {
     onGenreKeypress(event) {
         if (event.code === "Enter") {
             event.preventDefault();
-            this.streamGenre.removeAttribute("contenteditable");
-            Player.getTracks(this.streamGenre.innerHTML);
+            event.target.blur();
         }
     }
     /**
