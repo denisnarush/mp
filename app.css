@@ -36,10 +36,9 @@ html, body{
 	width: 100vw;
 	overflow: hidden;
 }
-@supports(padding: env(safe-area-inset-top)) {
+@supports(padding: env(safe-area-inset-bottom)) {
 	body{
-		height: 100vh;
-		box-sizing: border-box;
+		padding-bottom: env(safe-area-inset-bottom);
 	}
 }
 
