@@ -33,20 +33,25 @@
 
 html, body{
 	height: 100%;
-	width: 100vw;
+	width: 100%;
 	overflow: hidden;
 }
-@supports(padding: env(safe-area-inset-bottom)) {
-	body{
-		padding-bottom: env(safe-area-inset-bottom);
-	}
-}
-
 
 body{
 	background-color: black;
 	position: relative;
 	margin: 0;
+}
+
+@supports(padding: env(safe-area-inset-bottom)) {
+	@media (orientation: portrait){
+		body{
+			height: calc(100% + env(safe-area-inset-bottom) - 34px);
+		}
+		html{
+			height: calc(100% + env(safe-area-inset-bottom) + 10px);
+		}
+	}
 }
 
 .bg{
@@ -283,8 +288,6 @@ body{
 .state[data-state="player"]{
 	display: flex;
 	flex-direction: column;
-	padding-bottom: 60px;
-	box-sizing: border-box;
 	transform: translate3d(0, 0, 1px);
 }
 .state[data-state="player"][off]{
@@ -294,15 +297,22 @@ body{
 	box-sizing: border-box;
 	display: flex;
 	flex: 1 0 auto;
-	padding: 0 0 40px 0;
 	flex-direction: column;
 	align-items: center;
 }
 .player-cover{
-	flex: 1;
-	height: 1px;
+	flex: 2;
+	margin-top: 60px;
+	height: 0px;
 	position: relative;
 	text-align: center;
+}
+@supports(padding: env(safe-area-inset-bottom)) {
+	@media (orientation: portrait){
+		.player-cover{
+			margin-top: calc(env(safe-area-inset-bottom) + 60px);
+		}
+	}
 }
 .player-cover img{
 	visibility: hidden;
@@ -397,7 +407,8 @@ body{
 }
 .player-actions{
 	font-size: 0;
-	margin: 5vh 50px;
+	flex: 1;
+	margin: 0 auto 60px auto;
 	width: calc(100% - 100px);
 	max-width: 500px;
 	display: flex;
@@ -455,7 +466,7 @@ body{
 }
 #playlist{
 	height: 100%;
-	overflow-y: auto;
+	overflow: scroll;
 	-webkit-overflow-scrolling: touch;
 }
 .playlist{
