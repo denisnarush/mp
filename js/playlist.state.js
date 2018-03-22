@@ -106,6 +106,10 @@ class Playlist extends State {
     }
 
     init() {
+        let onTop = true;
+        let onBot = false;
+        let y = 0;
+
         // playlist item tap
         this.playlist.applyEvent("click", (event) => {this.onPlaylistItem(event);});
         // playlist top bar tap
@@ -114,6 +118,25 @@ class Playlist extends State {
         this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
         // render bar to local element before `on` event
         this.topBar.to(this.state.topBar || []);
+
+
+
+        //TODO: extract to Utils
+
+        this.playlist.addEventListener("touchstart", (event) => {
+            onTop = (this.playlist.scrollTop === 0);
+            onBot = (this.playlist.scrollTop + this.playlist.clientHeight === this.playlist.scrollHeight);
+            y = event.layerY;
+        });
+
+        this.playlist.addEventListener("touchmove", (event) => {
+            let movingUp = y < event.layerY;
+            let movingDown = y > event.layerY;
+
+            if ((movingUp && onTop) || (movingDown && onBot)) {
+                event.preventDefault();
+            }
+        });
     }
 }
 
