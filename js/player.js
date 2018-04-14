@@ -83,7 +83,7 @@ class Player {
 
     start() {
         // important pause!
-        this.stream.pause();
+        this.stop();
 
         let track = this.stream.tracks[this.stream.current];
 
@@ -112,7 +112,7 @@ class Player {
 
     }
     stop() {
-        this.stream.pause();
+        setTimeout(() => {this.stream.pause();}, 0);
     }
     next() {
         let last = this.stream.current;
@@ -127,7 +127,6 @@ class Player {
         ( this.stream.current === this.stream.tracks.length ?  this.stream.current = 0 :  this.stream.current );
 
         if (this.stream.current !== last) {
-            this.stream.pause();
             this.stream.currentTime = 0;
         }
 
@@ -146,7 +145,6 @@ class Player {
         ( this.stream.current <= 0 ?  this.stream.current = this.stream.tracks.length - 1 : this.stream.current );
 
         if (this.stream.current !== last) {
-            this.stream.pause();
             this.stream.currentTime = 0;
         }
 
@@ -157,8 +155,6 @@ class Player {
             return;
         }
         this.stream.current = id;
-
-        this.stream.pause();
         this.stream.currentTime = 0;
         this.start();
     }

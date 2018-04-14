@@ -222,13 +222,25 @@ class PlayerState extends State {
      * when data starts fetching, we can start populate UI
     */
     onLoadStart() {
+        this.actionPlay.removeAttribute("hidden");
+        this.actionPause.setAttribute("hidden", "");
+
         let endtime = new Date(this.stream.track.duration);
 
         this.streamBgArtwork.style.backgroundImage =`url("${this.stream.cover}")`;
         this.streamTitle.innerHTML = this.stream.track.title;
         this.streamGenre.innerHTML = this.stream.track.genre;
         this.streamArtwork.src = this.stream.cover;
+
+        this.streamCurrentTime.innerHTML = "00:00";
         this.streamDurationTime.innerHTML = `${(endtime.getUTCHours() ? endtime.toUTCString().slice(17, 25) : endtime.toUTCString().slice(20, 25))}`;
+    }
+    /**
+     * when metadata loaded
+     */
+    onMetadataLoaded() {
+        this.streamTrackbarIndicator.style.width = "0%";
+        Player.play();
     }
 
     /**
@@ -255,6 +267,8 @@ class PlayerState extends State {
         this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
         // load start
         this.stream.addEventListener("loadstart", () => {this.onLoadStart();});
+        // metadata
+        this.stream.addEventListener("loadedmetadata", () => {this.onMetadataLoaded();});
         // stream ended
         this.stream.addEventListener("ended", () => {this.onEnded();});
         // time update
