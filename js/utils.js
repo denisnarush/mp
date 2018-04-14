@@ -6,12 +6,7 @@ Element.prototype.applyEvent = function (type, listner, title) {
     const element = this;
 
     if (type == "tap") {
-        if (isMouseEvent()) {
-            element.addEventListener("click", listner);
-        } else {
-            // TODO: made changes for working with touch
-            element.addEventListener("touchstart", listner);
-        }
+        TapEvent(element, listner);
     } else {
         element.addEventListener(type, listner);
     }
@@ -22,6 +17,37 @@ Element.prototype.applyEvent = function (type, listner, title) {
 
     return element;
 };
+
+
+function TapEvent (element, listner) {
+    let x, y, t;
+
+    let originalEvent;
+
+    let start = (e) => {
+        originalEvent = e;
+        x = e.layerX;
+        y = e.layerY;
+        t = (new Date()).getTime();
+    };
+
+    let end = (e) => {
+        let d = (new Date()).getTime() - t;
+
+        if (x == e.layerX && y == e.layerY && d < 100) {
+            listner(originalEvent);
+        }
+    };
+
+
+    if (isMouseEvent()) {
+        element.addEventListener("click", listner);
+    } else {
+        element.addEventListener("touchstart", start);
+        element.addEventListener("touchend", end);
+    }
+}
+
 
 export function getSearchParameters() {
     function transformToAssocArray( prmstr ) {

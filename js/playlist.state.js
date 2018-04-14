@@ -78,7 +78,8 @@ class Playlist extends State {
     /**
      * Playlist state top bar handler
     */
-    onPlaylistBar() {
+    onPlaylistBar(event) {
+        event.preventDefault();
         this.isOn() ? this.off() : this.on();
     }
     /**
@@ -113,7 +114,7 @@ class Playlist extends State {
         // playlist item tap
         this.playlist.applyEvent("click", (event) => {this.onPlaylistItem(event);});
         // playlist top bar tap
-        this.playlistTopBar.applyEvent("tap", () => {this.onPlaylistBar();});
+        this.playlistTopBar.applyEvent("tap", (event) => {this.onPlaylistBar(event);});
 
         this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
         // render bar to local element before `on` event

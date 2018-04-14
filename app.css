@@ -459,7 +459,7 @@ body{
 }
 .state[data-state="playlist"][off]{
 	transform: translate3d(0, 99.9%, 1px);
-	margin-top: -60px;
+	margin-top: -59px;
 }
 .state[data-state="playlist"][off] .bar{
 	padding-top: 14px;
@@ -472,7 +472,7 @@ body{
 .playlist{
 	background-color: rgba(29, 39, 44, 0.85);
 	box-sizing: border-box;
-	height: calc(100% - 58px);
+	height: calc(100% - var(--bar-padding-top) - var(--bar-height) - var(--bar-padding-bottom));
 	overflow: hidden;
 	position: relative;
 	z-index: 1;
