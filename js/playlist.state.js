@@ -42,7 +42,7 @@ class Playlist extends State {
             time.setTime(itm.duration);
 
             // template
-            html += `<div class="playlist-item ${this.stream.current === i ? "playlist-item__current" : ""}" data-trackindex="${i}">
+            html += `<div class="playlist-item ${this.stream.current == i ? "playlist-item__current" : ""}" data-trackindex="${i}">
                         <div class="playlist-item-s playlist-item-s__left">
                             <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
                         </div>
@@ -112,7 +112,7 @@ class Playlist extends State {
         let y = 0;
 
         // playlist item tap
-        this.playlist.applyEvent("click", (event) => {this.onPlaylistItem(event);});
+        this.playlist.applyEvent("tap", (event) => {this.onPlaylistItem(event);});
         // playlist top bar tap
         this.playlistTopBar.applyEvent("tap", (event) => {this.onPlaylistBar(event);});
 

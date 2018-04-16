@@ -6,8 +6,6 @@ const params = getSearchParameters();
 Settings.genre = params.genre || Settings.genre;
 Settings.limit = params.limit || Settings.limit;
 
-const protocol = location.protocol === "chrome-extension:" ? "https:" : location.protocol;
-
 class Player {
     constructor() {
         this.LIMIT = Settings.limit;
@@ -29,7 +27,7 @@ class Player {
      */
     fetch(endpoint, params, callback) {
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", `${protocol}//api.soundcloud.com/${endpoint}?client_id=${this.CLIENT_ID}${params}`, true);
+        xhr.open("GET", `//api.soundcloud.com/${endpoint}?client_id=${this.CLIENT_ID}${params}`, true);
         xhr.addEventListener("load", (event) => {
             if (event.currentTarget.status === 200) {
                 callback(JSON.parse(event.currentTarget.response));
@@ -48,6 +46,7 @@ class Player {
         if (genre && genre.toLocaleLowerCase() === Settings.genre) {
             return;
         }
+
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
         Settings.genre = genre ? genre.toLocaleLowerCase() : Settings.genre;
 
