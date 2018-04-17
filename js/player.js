@@ -1,5 +1,5 @@
 import { Settings } from "./settings.js";
-import { getSearchParameters } from "./utils.js";
+import { getSearchParameters, request } from "./utils.js";
 
 const params = getSearchParameters();
 
@@ -50,11 +50,12 @@ class Player {
         let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
         Settings.genre = genre ? genre.toLocaleLowerCase() : Settings.genre;
 
-        this.fetch("tracks", `&limit=${this.LIMIT}&genres=${genre || Settings.genre}&offset=${offset}`, (tracks) => {
-            if(!tracks.length) {
-                return this.getTracks("chillout");
-            }
-
+        request({ url: Settings.scURL + "/tracks", body: {
+            client_id: Settings.scKey,
+            limit: this.LIMIT,
+            genres: genre || Settings.genre,
+            offset: offset
+        }}).then((tracks) => {
             // this.stream.tracks = tracks;
             this.stream.tracks = tracks;
             // this.stream.current = 0;
@@ -85,6 +86,8 @@ class Player {
         this.stop();
 
         let track = this.stream.tracks[this.stream.current];
+
+        if (!track) {return;}
 
         // detecting if track was paused
         if (this.stream.currentTime && this.stream.src === track.stream_url + "?client_id=" + this.CLIENT_ID) {

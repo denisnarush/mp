@@ -6,7 +6,7 @@ const key = "settings";
  * SoundCloud
  */
 const SCKEY = "7172aa9d8184ed052cf6148b4d6b8ae6";
-const SCURL = "http://www.player-denisnarush.c9.io";
+const SCURL = "//api.soundcloud.com";
 
 /**
  * Getter

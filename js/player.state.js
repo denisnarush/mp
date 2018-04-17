@@ -1,6 +1,7 @@
 import { State } from "./state.js";
-import {default as Player } from "./player.js";
-import {default as Playlist} from "./playlist.state.js";
+import { Settings } from "./settings.js";
+import { default as Player } from "./player.js";
+import { default as Playlist } from "./playlist.state.js";
 /**
  * Class representing a player
  */
@@ -28,6 +29,10 @@ class PlayerState extends State {
         this.streamArtwork = document.getElementById("streamArtwork");
         this.streamGenre = document.getElementById("streamGenre");
         this.streamTitle = document.getElementById("streamTitle");
+
+        this.stream.shuffled = false;
+        this.stream.looped = false;
+        this.streamGenre.innerHTML = Settings.genre;
 
         this.state.topBar = [{
             icon: {
@@ -247,9 +252,6 @@ class PlayerState extends State {
      * Initialization
      */
     init() {
-        this.stream.shuffled = false;
-        this.stream.looped = false;
-
         // play tap
         this.actionPlay.applyEvent("tap", () => {this.onPlay();}, "Play");
         // pause tap
