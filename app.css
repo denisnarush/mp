@@ -329,7 +329,7 @@ body{
 }
 .player-trackbar{
 	cursor: pointer;
-	width: calc(100% - 100px);
+	width: 90%;
 	max-width: 500px;
 	margin: 3% auto;
 	position: relative;
@@ -409,7 +409,7 @@ body{
 	font-size: 0;
 	flex: 1;
 	margin: 0 auto 60px auto;
-	width: calc(100% - 100px);
+	width: 90%;
 	max-width: 500px;
 	display: flex;
 	align-items: center;
@@ -493,6 +493,7 @@ body{
 	position: relative;
 	overflow: hidden;
 	opacity: .9;
+	padding: 0 5%;
 }
 .playlist-item:hover{
 	opacity: 1;
@@ -505,7 +506,7 @@ body{
 
 	position: absolute;
 	top: 39px;
-	right: 40px;
+	right: 5%;
 
 	width: 19px;
 	height: 22px;
@@ -602,7 +603,7 @@ body{
 	font-family: 'Roboto';
 	font-weight: 500;
 
-	margin: 14px 35px 6px 0;
+	margin: 14px 0 6px 0;
 }
 .playlist-item-active{
 	text-align: center;
@@ -613,7 +614,7 @@ body{
 }
 .playlist-item-s__left{
 	width: calc(100% - 100px);
-	padding: 14px 22px;
+	padding: 14px 0;
 	box-sizing: border-box;
 }
 .playlist-item-s__left .playlist-item-title{
