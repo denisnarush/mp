@@ -1,0 +1,14 @@
+:root{
+	--bar-padding-top: 14px;
+	--bar-padding-bottom: 14px;
+
+	--bar-font-size: 20px;
+	--bar-height: 32px;
+	--bar-line-height: calc(32 / 20);
+}
+
+@supports(padding: env(safe-area-inset-top)) {
+    :root{
+        --bar-padding-top: calc(14px + env(safe-area-inset-top));
+    }
+}

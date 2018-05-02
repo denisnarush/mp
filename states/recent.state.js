@@ -1,9 +1,10 @@
-import { State } from "./state.js";
-import { default as Player } from "./player.js";
+import { State } from "../modules/state.js";
+import { Settings } from "../modules/settings.js";
+import { default as Player } from "../modules/player.js";
 
-class Playlist extends State {
+class Recent extends State {
     constructor() {
-        super("playlist", {
+        super("recent", {
             topBarElement: ".bar.bar__top"
         });
 
@@ -14,7 +15,7 @@ class Playlist extends State {
         }, {
             push: "right"
         }, {
-            title: "Playlist"
+            title: "Recent"
         }, {
             push: "right"
         }, {
@@ -36,7 +37,10 @@ class Playlist extends State {
     generate() {
         let html = "";
 
-        this.stream.tracks.forEach((itm, i) => {
+        let i = Settings.recent.length;
+        while (i--) {
+            let itm = Settings.recent[i];
+
             let time = new Date();
             // track time
             time.setTime(itm.duration);
@@ -50,7 +54,7 @@ class Playlist extends State {
                             <p class="playlist-item-time">${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}</p>
                         </div>
                     </div>`;
-        });
+        }
         // past to the DOM
         this.playlist.innerHTML = html;
     }
@@ -72,6 +76,7 @@ class Playlist extends State {
         if (!item) {
             return;
         }
+
 
         Player.select(item.getAttribute("data-trackindex"));
     }
@@ -95,7 +100,7 @@ class Playlist extends State {
         } catch (error) {
             // no any previous setted current class
         } finally {
-            this.playlist.querySelectorAll(".playlist-item")[this.stream.current].classList.add("playlist-item__current");
+            this.playlist.querySelector(`[data-trackindex='${this.stream.current}']`).classList.add("playlist-item__current");
         }
     }
     /**
@@ -122,7 +127,6 @@ class Playlist extends State {
 
 
 
-        //TODO: extract to Utils
 
         this.playlist.addEventListener("touchstart", (event) => {
             onTop = (this.playlist.scrollTop === 0);
@@ -141,4 +145,4 @@ class Playlist extends State {
     }
 }
 
-export default new Playlist();
+export default new Recent();

@@ -1,10 +1,22 @@
+/**
+ * Bar
+ */
 class Bar {
+    /**
+     * constructor
+     * @param {HTMLElement} targer 
+     */
     constructor (targer) {
         this.element  = targer;
     }
 
+    /**
+     * Html container of elements
+     * @param {Array} elements 
+     */
     to(elements) {
         let fragment = document.createDocumentFragment();
+
         elements.forEach((item) => {
             let type = Object.keys(item)[0];
             fragment.appendChild(this[`${type}Element`](item[type]));
@@ -17,6 +29,10 @@ class Bar {
         this.element.appendChild(fragment);
     }
 
+    /**
+     * Html element for Icon type
+     * @param {Object} options
+     */
     iconElement(options) {
         let element = document.createElement("div");
         element.className = "bar-icon";
@@ -32,6 +48,10 @@ class Bar {
         return element;
     }
 
+    /**
+     * Html element for Title type
+     * @param {String} value
+     */
     titleElement(value) {
         let element = document.createElement("div");
         element.className = "bar-title";
@@ -39,10 +59,18 @@ class Bar {
         return element;
     }
 
+    /**
+     * Html element for Push type
+     * @param {String} direction
+     */
     pushElement(direction) {
         let element = document.createElement("div");
         element.className = `bar-push bar-push__${direction}`;
         return element;
     }
 }
-export {Bar};
+
+/**
+ * Exeport
+ */
+export { Bar };

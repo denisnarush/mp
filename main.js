@@ -1,4 +1,4 @@
-import { default as Player } from "./js/player.state.js";
+import { default as Player } from "./states/player.state.js";
 
 Player.init();
 

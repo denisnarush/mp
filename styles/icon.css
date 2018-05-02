@@ -1,0 +1,10 @@
+.icon{
+	display: inline-block;
+	vertical-align: middle;
+	color: #ff5252;
+	font-size: 24px;
+}
+.icon-arrow-down-right,
+.icon-arrow-left{
+	font-weight: 700;
+}

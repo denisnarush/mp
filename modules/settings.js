@@ -6,7 +6,7 @@ const key = "settings";
  * SoundCloud
  */
 const SCKEY = "7172aa9d8184ed052cf6148b4d6b8ae6";
-const SCURL = "//api.soundcloud.com";
+const SCURL = ("nw" in window === false ? "//api.soundcloud.com" : "http://api.soundcloud.com");
 
 /**
  * Getter
@@ -30,8 +30,8 @@ function getter(prop) {
 
 /**
  * Setter
- * @param {String} prop 
- * @param {String || Number} value 
+ * @param {String} prop Poperty to update
+ * @param {any} value New value
  */
 function setter(prop, value) {
     let settings = JSON.parse(localStorage.getItem(key));
@@ -52,8 +52,9 @@ function setter(prop, value) {
 function setDefault() {
     const settings = {
         volume: 0.70,
-        limit: 30,
-        genre: "chillout"
+        limit: 9,
+        genre: "chillout",
+        recent: []
     };
 
     localStorage.setItem(key, JSON.stringify(settings));
@@ -82,6 +83,18 @@ let Settings = {
     set genre (value) {
         return setter("genre", value);
     },
+    get recent () {
+        return getter("recent");
+    },
+    set recent (value) {
+        // destroy one if no free index to apply
+        if (value.length > Settings.limit) {
+            value.pop();
+            return Settings.recent = value;
+        }
+        // apply
+        return setter("recent", value);
+    },
     // SoundCloud
     get scKey () {
         return SCKEY;
@@ -97,4 +110,4 @@ let Settings = {
     }
 };
 
-export {Settings};
+export { Settings };

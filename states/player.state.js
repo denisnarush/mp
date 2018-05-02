@@ -1,7 +1,7 @@
-import { State } from "./state.js";
-import { Settings } from "./settings.js";
-import { default as Player } from "./player.js";
-import { default as Playlist } from "./playlist.state.js";
+import { State } from "../modules/state.js";
+import { Settings } from "../modules/settings.js";
+import { default as Player } from "../modules/player.js";
+import { default as Recent } from "./recent.state.js";
 /**
  * Class representing a player
  */
@@ -42,12 +42,7 @@ class PlayerState extends State {
             title: "Now Playing"
         }, {
             push: "right"
-        }/*, {
-            icon: {
-                type: "icon icon-equalizer",
-                handler: () => {this.switchTo("equalizer");}
-            }
-        }*/];
+        }];
     }
     onCanPlayThrough() {
         Player.play();
@@ -82,13 +77,13 @@ class PlayerState extends State {
      * Next button handler
      */
     onNext() {
-        Player.next();
+        Player.getTracks();
     }
     /**
      * Prev button handler
      */
     onPrev() {
-        Player.prev();
+        Player.next();
     }
     /**
      * Stream ends handler
@@ -97,7 +92,7 @@ class PlayerState extends State {
         if (this.stream.looped) {
             this.stream.currentTime = 0;
         } else {
-            this.onNext();
+            Player.getTracks();
         }
     }
     /**
@@ -295,7 +290,7 @@ class PlayerState extends State {
         window.addEventListener("keydown", (event) => {this.onKeydown(event);});
 
         Player.getTracks();
-        Playlist.init();
+        Recent.init();
 
         super.init();
     }

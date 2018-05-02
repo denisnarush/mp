@@ -1,6 +1,14 @@
 import {Bar} from "./bar.js";
 
+/**
+ * State
+ */
 class State {
+    /**
+     * 
+     * @param {String} name State's name
+     * @param {any} options Options
+     */
     constructor(name, options = {}) {
         this.state = document.querySelector(`[data-state="${name}"]`);
 
@@ -11,6 +19,9 @@ class State {
         this.topBar = this.topBar || new Bar(document.body.querySelector(".bar.bar__top"));
     }
 
+    /**
+     * On
+     */
     on () {
         if (!this.state.topBar.manually) {
             this.topBar.to(this.state.topBar || []);
@@ -18,17 +29,27 @@ class State {
         this.state.removeAttribute("off");
     }
 
+    /**
+     * Off
+     */
     off () {
         this.state.setAttribute("off", "");
     }
 
+    /**
+     * isOn
+     */
     isOn () {
         return !this.state.hasAttribute("off");
     }
 
+    /**
+     * Switches to state by name
+     * @param {String} state 
+     */
     switchTo (state) {
         try {
-            import(`./${state}.state.js`).then((module) => {
+            import(`../states/${state}.state.js`).then((module) => {
                 module.default.init();
                 this.destroy();
             });
@@ -37,13 +58,22 @@ class State {
         }
     }
 
+    /**
+     * Init
+     */
     init () {
         this.on();
     }
 
+    /**
+     * Destroy
+     */
     destroy () {
         this.off();
     }
 }
 
-export {State};
+/**
+ * Export
+ */
+export { State };

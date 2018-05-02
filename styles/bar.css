@@ -33,6 +33,8 @@
     font-size: var(--bar-font-size);
     line-height: var(--bar-line-height);
     font-weight: 400;
+
+    white-space: nowrap;
 }
 
 .bar-push.bar-push__right{

@@ -1,12 +1,18 @@
 import { Settings } from "./settings.js";
-import { getSearchParameters, request } from "./utils.js";
+import { request } from "./utils.js";
 
-const params = getSearchParameters();
+const params = {};
 
 Settings.genre = params.genre || Settings.genre;
 Settings.limit = params.limit || Settings.limit;
 
+/**
+ * Player
+ */
 class Player {
+    /**
+     * Constructor
+     */
     constructor() {
         this.LIMIT = Settings.limit;
         this.CLIENT_ID = Settings.scKey;
@@ -19,28 +25,10 @@ class Player {
             this.onVolumeChange();
         });
     }
-    /**
-     * fetch SoundCloud data
-     * @param {String} endpoint 
-     * @param {String} params 
-     * @param {Function} callback 
-     */
-    fetch(endpoint, params, callback) {
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", `//api.soundcloud.com/${endpoint}?client_id=${this.CLIENT_ID}${params}`, true);
-        xhr.addEventListener("load", (event) => {
-            if (event.currentTarget.status === 200) {
-                callback(JSON.parse(event.currentTarget.response));
-            } else {
-                callback({});
-            }
-        });
-        xhr.send();
-    }
 
     /**
      * Get list of tracks from SoundCloud
-     * @param {String} genre 
+     * @param {String} genre Tracks genre
      */
     getTracks(genre) {
         if (genre && genre.toLocaleLowerCase() === Settings.genre) {
@@ -52,19 +40,27 @@ class Player {
 
         request({ url: Settings.scURL + "/tracks", body: {
             client_id: Settings.scKey,
-            limit: this.LIMIT,
+            limit: 1,
             genres: genre || Settings.genre,
             offset: offset
         }}).then((tracks) => {
-            // this.stream.tracks = tracks;
-            this.stream.tracks = tracks;
-            // this.stream.current = 0;
+
+            if (tracks.length) {
+                let recent = Settings.recent;
+                recent.unshift(tracks[0]);
+                Settings.recent = recent;
+            }
+
+            this.stream.tracks = Settings.recent;
             this.stream.current = 0;
 
             this.start();
         });
     }
 
+    /**
+     * Play
+     */
     play() {
         if (!this.stream.paused) {
             return;
@@ -81,6 +77,9 @@ class Player {
         }
     }
 
+    /**
+     * Start
+     */
     start() {
         // important pause!
         this.stop();
@@ -113,9 +112,17 @@ class Player {
         this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
 
     }
+
+    /**
+     * Stop
+     */
     stop() {
         setTimeout(() => {this.stream.pause();}, 0);
     }
+
+    /**
+     * Next
+     */
     next() {
         let last = this.stream.current;
 
@@ -134,6 +141,10 @@ class Player {
 
         this.start();
     }
+
+    /**
+     * Prev
+     */
     prev() {
         let last = this.stream.current;
 
@@ -152,6 +163,11 @@ class Player {
 
         this.start();
     }
+
+    /**
+     * Select
+     * @param {Number} id Index of track in list
+     */
     select(id) {
         if (this.stream.current === id) {
             return;
@@ -160,6 +176,10 @@ class Player {
         this.stream.currentTime = 0;
         this.start();
     }
+
+    /**
+     * Volume changed
+     */
     onVolumeChange() {
         Settings.volume = this.stream.volume;
     }
