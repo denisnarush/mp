@@ -47,7 +47,7 @@ class Player {
         // if track allready founded once
         if (Settings.ok.indexOf(offset) !== -1) {
             if (Settings.ok.length == 1) {
-                Settings.offset += 2;
+                Settings.offset += Settings.limit;
             }
             return this.getTracks();
         }
@@ -70,11 +70,11 @@ class Player {
                     ok.push(offset);
                     Settings.ok = ok;
 
-                    Settings.offset += 2;
+                    Settings.offset += Settings.limit;
 
 
                     // no longer then 7.5 min
-                    if (tracks[0].duration > 450000) {
+                    if (tracks[0].duration > Settings.duration) {
                         return this.getTracks();
                     }
 
