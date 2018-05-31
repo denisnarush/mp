@@ -66,8 +66,8 @@ export function request (obj) {
         obj.method = obj.method || "GET";
 
         if (obj.method === "GET") {
-            obj.url += "?" + toURLencoded(obj.body);
-            obj.body = null;
+            obj.url += "?" + toURLencoded(obj.options);
+            obj.options = null;
         }
 
         xhr.open(
@@ -87,6 +87,6 @@ export function request (obj) {
         };
         xhr.onerror = () => reject(xhr.statusText);
 
-        xhr.send(obj.body);
+        xhr.send(obj.options);
     });
 }

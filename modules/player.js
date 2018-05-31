@@ -31,31 +31,65 @@ class Player {
      * @param {String} genre Tracks genre
      */
     getTracks(genre) {
+        // do not set genre twice
         if (genre && genre.toLocaleLowerCase() === Settings.genre) {
             return;
         }
 
-        let offset = Math.floor(Math.random() * (2000 - 0)) + 0;
-        Settings.genre = genre ? genre.toLocaleLowerCase() : Settings.genre;
+        if (genre) {
+            Settings.offset = 0;
+            Settings.ok = [];
+            Settings.genre = genre.toLocaleLowerCase();
+        }
 
-        request({ url: Settings.scURL + "/tracks", body: {
+        let offset = Math.floor(Math.random() * (Settings.offset)) + 1;
+
+        // if track allready founded once
+        if (Settings.ok.indexOf(offset) !== -1) {
+            if (Settings.ok.length == 1) {
+                Settings.offset += 2;
+            }
+            return this.getTracks();
+        }
+
+        // request params
+        const params = {
             client_id: Settings.scKey,
             limit: 1,
-            genres: genre || Settings.genre,
+            genres: Settings.genre,
             offset: offset
-        }}).then((tracks) => {
+        };
 
-            if (tracks.length) {
-                let recent = Settings.recent;
-                recent.unshift(tracks[0]);
-                Settings.recent = recent;
-            }
+        request({ url: Settings.scURL + "/tracks", options: params})
+            .then((tracks) => {
+                // response has no tracks
+                if (!tracks.length) {
+                    this.getTracks("chillout");
+                } else {
+                    let ok = Settings.ok;
+                    ok.push(offset);
+                    Settings.ok = ok;
 
-            this.stream.tracks = Settings.recent;
-            this.stream.current = 0;
+                    Settings.offset += 2;
 
-            this.start();
-        });
+
+                    // no longer then 7.5 min
+                    if (tracks[0].duration > 450000) {
+                        return this.getTracks();
+                    }
+
+                    let recent = Settings.recent;
+                    recent.unshift(tracks[0]);
+                    Settings.recent = recent;
+
+                    this.stream.tracks = Settings.recent;
+                    this.stream.current = 0;
+
+                    this.start();
+                }
+            }, () => {
+                this.getTracks();
+            });
     }
 
     /**

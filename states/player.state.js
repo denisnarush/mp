@@ -160,11 +160,6 @@ class PlayerState extends State {
         case "ArrowDown":
             (100 * this.stream.volume <= 5 ? this.stream.volume = 0 : this.stream.volume = (100 * this.stream.volume - 5) / 100);
             break;
-        case "KeyR":
-            if (event.metaKey || event.ctrlKey) {
-                Player.getTracks();
-            }
-            break;
         }
     }
     /**
