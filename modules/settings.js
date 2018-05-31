@@ -52,6 +52,7 @@ function setter(prop, value) {
 function setDefault() {
     const settings = {
         offset: 0,
+        duration: 450000,
         volume: 0.70,
         limit: 9,
         genre: "chillout",
@@ -73,12 +74,17 @@ let Settings = {
     set volume (value) {
         return setter("volume", value.toFixed(2) * 1);
     },
-    // App
     get offset () {
         return getter("offset");
     },
     set offset (value) {
         return setter("offset", value);
+    },
+    get duration () {
+        return getter("duration");
+    },
+    set duration (value) {
+        return setter("duration", value);
     },
     get limit () {
         return getter("limit");
