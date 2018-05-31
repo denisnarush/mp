@@ -19,11 +19,12 @@ class PlayerState extends State {
         this.actionPrev = document.getElementById("actionPrev");
         this.actionLoop = document.getElementById("actionLoop");
         this.actionShuffle = document.getElementById("actionShuffle");
-        
+
         this.streamCurrentTime = document.getElementById("streamCurrentTime");
         this.streamDurationTime = document.getElementById("streamDurationTime");
         this.streamBgArtwork = document.getElementById("streamBgArtwork");
         this.streamTrackbar = document.getElementById("streamTrackbar");
+        this.streamProgressIndicator = document.getElementById("streamProgressIndicator");
         this.streamTrackbarIndicator = document.getElementById("streamTrackbarIndicator");
         this.stream = document.getElementById("stream");
         this.streamArtwork = document.getElementById("streamArtwork");
@@ -44,7 +45,7 @@ class PlayerState extends State {
             push: "right"
         }];
     }
-    onCanPlayThrough() {
+    onCanPlay() {
         Player.play();
     }
     /**
@@ -129,7 +130,7 @@ class PlayerState extends State {
         // trackbar width
         w = (this.stream.currentTime * 100 / duration).toFixed(1) + "%";
         // trackbar moving
-        this.streamTrackbarIndicator.style.width = w;
+        this.streamProgressIndicator.style.width = w;
         // current track time
         this.streamCurrentTime.innerHTML = `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
     }
@@ -239,10 +240,22 @@ class PlayerState extends State {
      * when metadata loaded
      */
     onMetadataLoaded() {
-        this.streamTrackbarIndicator.style.width = "0%";
+        this.streamProgressIndicator.style.width = "0%";
         Player.play();
     }
 
+    onProgress() {
+        if (this.stream.duration < 1) {
+            return;
+        }
+
+        for (var i = 0; i < this.stream.buffered.length; i++) {
+            if (this.stream.buffered.start(this.stream.buffered.length - 1 - i) < this.stream.currentTime) {
+                this.streamTrackbarIndicator.style.width = (this.stream.buffered.end(this.stream.buffered.length - 1 - i) / this.stream.duration) * 100 + "%";
+                break;
+            }
+        }
+    }
     /**
      * Initialization
      */
@@ -261,7 +274,12 @@ class PlayerState extends State {
         this.actionLoop.applyEvent("tap", () => {this.onLoop();}, "Repeat");
 
         // can playtrough
-        this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
+        // this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
+
+        // can play
+        this.stream.addEventListener("canplay", () => {this.onCanPlay();});
+        // progress
+        this.stream.addEventListener("progress", () => {this.onProgress();});
         // load start
         this.stream.addEventListener("loadstart", () => {this.onLoadStart();});
         // metadata
