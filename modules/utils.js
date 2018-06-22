@@ -1,3 +1,4 @@
+import { Settings } from "./settings.js";
 Element.prototype.applyEvent = function (type, listner, title) {
     const element = this;
 
@@ -89,4 +90,18 @@ export function request (obj) {
 
         xhr.send(obj.options);
     });
+}
+
+export function assignToPlayedGenre (source) {
+    let target = {};
+    let src;
+    
+    if(Settings.played[Settings.genre]) {
+        src = Object.assign(Settings.played[Settings.genre], source);
+    } else {
+        src = source;
+    }
+
+    target[Settings.genre] = src;
+    Settings.played = Object.assign(Settings.played, target);
 }

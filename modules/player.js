@@ -1,10 +1,11 @@
 import { Settings } from "./settings.js";
-import { request } from "./utils.js";
+import { request, assignToPlayedGenre } from "./utils.js";
 
 const params = {};
 
 Settings.genre = params.genre || Settings.genre;
 Settings.limit = params.limit || Settings.limit;
+
 
 /**
  * Player
@@ -16,38 +17,64 @@ class Player {
     constructor() {
         this.LIMIT = Settings.limit;
         this.CLIENT_ID = Settings.scKey;
+
         this.stream = document.getElementById("stream");
 
-        this.stream.volume = Settings.volume;
+        if (!this.stream) {
+            const container = document.createElement("audio");
+            container.setAttribute("preload", "auto");
+            container.volume = Settings.volume;
 
-        // volume change
-        this.stream.addEventListener("volumechange", () => {
-            this.onVolumeChange();
-        });
+            // volume change
+            container.addEventListener("volumechange", () => {
+                this.onVolumeChange();
+            });
+    
+            // can playtrough
+            container.addEventListener("canplaythrough", () => {
+                this.onCanPlayThrough();
+            });
+            // can play
+            container.addEventListener("canplay", () => {
+                this.onCanPlay();
+            });
+
+            document.body.appendChild(container);
+            this.stream = container;
+        }
     }
 
     /**
      * Get list of tracks from SoundCloud
-     * @param {String} genre Tracks genre
+     * @param {String} [genre=undefined] Tracks genre
+     * @return {void} undefined
      */
-    getTracks(genre) {
+    getTracks(genre = undefined) {
         // do not set genre twice
         if (genre && genre.toLocaleLowerCase() === Settings.genre) {
             return;
         }
 
         if (genre) {
-            Settings.offset = 0;
-            Settings.ok = [];
             Settings.genre = genre.toLocaleLowerCase();
         }
 
-        let offset = Math.floor(Math.random() * (Settings.offset)) + 1;
+        // init playing genre in settings
+        if (!Settings.played[Settings.genre]) {
+            assignToPlayedGenre({
+                offset: 50,
+                id: []
+            });
+        }
+
+        let offset = Math.floor(Math.random() * (Settings.played[Settings.genre].offset)) + 1;
 
         // if track allready founded once
-        if (Settings.ok.indexOf(offset) !== -1) {
-            if (Settings.ok.length == 1) {
-                Settings.offset += Settings.limit;
+        if (Settings.played[Settings.genre].id.indexOf(offset) !== -1) {
+            if (Settings.played[Settings.genre].id.length == 1) {
+                assignToPlayedGenre({
+                    offset: Settings.played[Settings.genre].offset += Settings.limit
+                });
             }
             return this.getTracks();
         }
@@ -57,38 +84,42 @@ class Player {
             client_id: Settings.scKey,
             limit: 1,
             genres: Settings.genre,
-            offset: offset
+            offset: Settings.played[Settings.genre].offset
         };
+
+        assignToPlayedGenre({
+            offset: Settings.played[Settings.genre].offset += Settings.limit
+        });
 
         request({ url: Settings.scURL + "/tracks", options: params})
             .then((tracks) => {
                 // response has no tracks
                 if (!tracks.length) {
-                    this.getTracks("chillout");
-                } else {
-                    let ok = Settings.ok;
-                    ok.push(offset);
-                    Settings.ok = ok;
-
-                    Settings.offset += Settings.limit;
-
-
-                    // no longer then 7.5 min
-                    if (tracks[0].duration > Settings.duration) {
-                        return this.getTracks();
-                    }
-
-                    let recent = Settings.recent;
-                    recent.unshift(tracks[0]);
-                    Settings.recent = recent;
-
-                    this.stream.tracks = Settings.recent;
-                    this.stream.current = 0;
-
-                    this.start();
+                    return this.getTracks();
                 }
+
+                let ids = Settings.played[Settings.genre].id;
+                ids.push(params.offset);
+
+                assignToPlayedGenre({
+                    id: ids
+                });
+
+                // no longer then 7.5 min
+                if (tracks[0].duration > Settings.duration) {
+                    return this.getTracks();
+                }
+
+                let recent = Settings.recent;
+                recent.unshift(tracks[0]);
+                Settings.recent = recent;
+
+                this.stream.tracks = Settings.recent;
+                this.stream.current = 0;
+
+                this.start();
             }, () => {
-                this.getTracks();
+                return this.getTracks();
             });
     }
 
@@ -216,6 +247,20 @@ class Player {
      */
     onVolumeChange() {
         Settings.volume = this.stream.volume;
+    }
+
+    /**
+     * Can play handler
+     */
+    onCanPlay() {
+        this.play();
+    }
+
+    /**
+     * Can play through handler
+     */
+    onCanPlayThrough() {
+        this.play();
     }
 }
 

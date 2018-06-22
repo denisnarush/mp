@@ -51,13 +51,12 @@ function setter(prop, value) {
  */
 function setDefault() {
     const settings = {
-        offset: 0,
         duration: 450000,
         volume: 0.70,
         limit: 9,
         genre: "chillout",
         recent: [],
-        ok:[]
+        played: {}
     };
 
     localStorage.setItem(key, JSON.stringify(settings));
@@ -73,12 +72,6 @@ let Settings = {
     },
     set volume (value) {
         return setter("volume", value.toFixed(2) * 1);
-    },
-    get offset () {
-        return getter("offset");
-    },
-    set offset (value) {
-        return setter("offset", value);
     },
     get duration () {
         return getter("duration");
@@ -110,11 +103,11 @@ let Settings = {
         // apply
         return setter("recent", value);
     },
-    get ok () {
-        return getter("ok");
+    get played () {
+        return getter("played");
     },
-    set ok (value) {
-        return setter("ok", value);
+    set played (value) {
+        return setter("played", value);
     },
     // SoundCloud
     get scKey () {
