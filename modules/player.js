@@ -84,7 +84,7 @@ class Player {
             client_id: Settings.scKey,
             limit: 1,
             genres: Settings.genre,
-            offset: Settings.played[Settings.genre].offset
+            offset: offset
         };
 
         assignToPlayedGenre({
