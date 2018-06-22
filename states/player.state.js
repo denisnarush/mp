@@ -26,7 +26,7 @@ class PlayerState extends State {
         this.streamTrackbar = document.getElementById("streamTrackbar");
         this.streamProgressIndicator = document.getElementById("streamProgressIndicator");
         this.streamTrackbarIndicator = document.getElementById("streamTrackbarIndicator");
-        this.stream = document.getElementById("stream");
+        this.stream = Player.stream;
         this.streamArtwork = document.getElementById("streamArtwork");
         this.streamGenre = document.getElementById("streamGenre");
         this.streamTitle = document.getElementById("streamTitle");
@@ -44,9 +44,6 @@ class PlayerState extends State {
         }, {
             push: "right"
         }];
-    }
-    onCanPlay() {
-        Player.play();
     }
     /**
      * Play button handler
@@ -247,7 +244,6 @@ class PlayerState extends State {
         for (var i = 0; i < this.stream.buffered.length; i++) {
             if (this.stream.buffered.start(this.stream.buffered.length - 1 - i) < this.stream.currentTime) {
                 this.streamTrackbarIndicator.style.width = (this.stream.buffered.end(this.stream.buffered.length - 1 - i) / this.stream.duration) * 100 + "%";
-                break;
             }
         }
     }
@@ -267,12 +263,6 @@ class PlayerState extends State {
         this.actionShuffle.applyEvent("tap", () => {this.onShuffle();}, "Shuffle");
         // repeat tap
         this.actionLoop.applyEvent("tap", () => {this.onLoop();}, "Repeat");
-
-        // can playtrough
-        // this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
-
-        // can play
-        this.stream.addEventListener("canplay", () => {this.onCanPlay();});
         // progress
         this.stream.addEventListener("progress", () => {this.onProgress();});
         // load start

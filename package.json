@@ -7,7 +7,8 @@
     "url": "https://github.com/denisnarush/mp/issues"
   },
   "keywords": [
-    "music", "soundcloud"
+    "music",
+    "soundcloud"
   ],
   "main": "index.html",
   "repository": {
@@ -23,5 +24,13 @@
     "height": 640
   },
   "scripts": {
+    "start": "http-server .",
+    "test": "eslint --init"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.19.1",
+    "http-server": "^0.11.1",
+    "mocha": "^5.2.0"
   }
 }

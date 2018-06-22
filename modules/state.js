@@ -11,6 +11,13 @@ class State {
      */
     constructor(name, options = {}) {
         this.state = document.querySelector(`[data-state="${name}"]`);
+        if (!this.state) {
+            this.state = document.createElement("div");
+            this.state.classList.add("state");
+            this.state.setAttribute("data-state", name);
+            this.state.setAttribute("off", "");
+            document.body.appendChild(this.state);
+        }
 
         if (options.topBarElement) {
             this.topBar = new Bar(this.state.querySelector(options.topBarElement));
@@ -45,12 +52,21 @@ class State {
 
     /**
      * Switches to state by name
-     * @param {String} state 
+     * @param {String} state
+     * @param {Objecte} optionsq
      */
-    switchTo (state) {
+    switchTo (state, options) {
+        let params = options || {};
+
+        params.init = params.init === undefined ? true : params.init;
+
         try {
             import(`../states/${state}.state.js`).then((module) => {
-                module.default.init();
+                if (params.init) {
+                    module.default.init();
+                } else {
+                    module.default.on();
+                }
                 this.destroy();
             });
         } catch (Errror) {

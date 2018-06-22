@@ -26,7 +26,7 @@ class Recent extends State {
 
         this.state.topBar.manually = true;
 
-        this.stream = document.getElementById("stream");
+        this.stream = Player.stream;
         this.playlist = this.state.querySelector("#playlist");
         this.playlistTopBar = this.state.querySelector(".bar.bar__top");
     }
