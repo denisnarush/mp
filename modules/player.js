@@ -105,13 +105,28 @@ class Player {
                     id: ids
                 });
 
+                let track = tracks[0];
+
                 // no longer then 7.5 min
-                if (tracks[0].duration > Settings.duration) {
+                if (track.duration > Settings.duration) {
                     return this.getTracks();
                 }
-
+                // get recent array from Settings
                 let recent = Settings.recent;
-                recent.unshift(tracks[0]);
+                // store information about track with only necessary values
+                recent.unshift({
+                    id: track.id,
+                    duration: track.duration,
+                    artwork_url: track.artwork_url,
+                    stream_url: track.stream_url,
+                    title: track.title,
+                    genre: track.genre,
+                    user: {
+                        username: track.user.username,
+                        avatar_url: track.user.avatar_url
+                    }
+                });
+                // save modified recent array
                 Settings.recent = recent;
 
                 this.stream.tracks = Settings.recent;

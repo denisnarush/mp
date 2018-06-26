@@ -29,16 +29,28 @@
 }
 .player-cover img{
 	visibility: hidden;
-}
-.player-cover img[src^="http"],
-.player-cover img[src^="./"]{
 	position: absolute;
-	top: 0;
+    top: 0;
+    bottom: 0;
+}
+img.player-cover-placeholder{
+	position: absolute;
+    top: 0;
 	bottom: 0;
 	height: 100%;
 	transform: translateX(-50%);
-	padding-top: 0;
 	visibility: initial;
+}
+img.player-cover-picture{
+	position: absolute;
+    top: 50%;
+    bottom: 0;
+    height: 30%;
+    transform: translateX(-50%) translateY(-50%);
+    padding-top: 0;
+	visibility: initial;
+	-webkit-mask: url(/img/interface/vinil_mask.png) 50% 50% no-repeat;
+    -webkit-mask-size: 100%;
 }
 .player-trackbar{
 	cursor: pointer;
@@ -109,6 +121,7 @@
 	text-transform: lowercase;
 
 	margin: 2vh 0 0 0;
+	min-height: 1.2em;
 }
 .player-title:focus{
 	outline: none;
@@ -127,6 +140,7 @@
 	text-align: center;
 
 	margin: 0 6% 2vh 6%;
+	min-height: 1.2em;
 }
 .player-actions{
 	font-size: 0;
