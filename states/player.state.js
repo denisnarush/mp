@@ -1,14 +1,12 @@
+import "../modules/moti-on.js";
 import { State } from "../modules/state.js";
 import { Settings } from "../modules/settings.js";
 import { default as Player } from "../modules/player.js";
 import { default as Recent } from "./recent.state.js";
 /**
- * Class representing a player
+ * Class representing a player state view
  */
 class PlayerState extends State {
-    /**
-     * Create a player
-     */
 
     constructor() {
         super("player");
@@ -169,7 +167,7 @@ class PlayerState extends State {
         }
 
         let w = event.target.offsetWidth;
-        let x = event.offsetX || event.layerX;
+        let x = event.x;
 
         if (this.stream.readyState === 4) {
             const d = x / w;
@@ -233,7 +231,6 @@ class PlayerState extends State {
      */
     onMetadataLoaded() {
         this.streamProgressIndicator.style.width = "0%";
-        Player.play();
     }
 
     onProgress() {
@@ -252,17 +249,17 @@ class PlayerState extends State {
      */
     init() {
         // play tap
-        this.actionPlay.applyEvent("tap", () => {this.onPlay();}, "Play");
+        this.actionPlay.doOn("tap", () => {this.onPlay();});
         // pause tap
-        this.actionPause.applyEvent("tap", () => {this.onPause();}, "Pause");
+        this.actionPause.doOn("tap", () => {this.onPause();});
         // next tap
-        this.actionNext.applyEvent("tap", () => {this.onNext();}, "Next");
+        this.actionNext.doOn("tap", () => {this.onNext();});
         // prev tap
-        this.actionPrev.applyEvent("tap", () => {this.onPrev();}, "Previous");
+        this.actionPrev.doOn("tap", () => {this.onPrev();});
         // shuffle tap
-        this.actionShuffle.applyEvent("tap", () => {this.onShuffle();}, "Shuffle");
+        this.actionShuffle.doOn("tap", () => {this.onShuffle();});
         // repeat tap
-        this.actionLoop.applyEvent("tap", () => {this.onLoop();}, "Repeat");
+        this.actionLoop.doOn("tap", () => {this.onLoop();});
         // progress
         this.stream.addEventListener("progress", () => {this.onProgress();});
         // load start
@@ -279,7 +276,7 @@ class PlayerState extends State {
         this.stream.addEventListener("play", () => {this.onPlayed();});
 
         // stream trackbar tap
-        this.streamTrackbar.applyEvent("tap", (event) => {this.onTrackBar(event);});
+        this.streamTrackbar.doOn("tap", (event) => {this.onTrackBar(event);});
         // genre tap
         this.streamGenre.addEventListener("click", () => {this.onGenreClick();});
         // genre keypress

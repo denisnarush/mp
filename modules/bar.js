@@ -1,3 +1,5 @@
+import "./moti-on.js";
+
 /**
  * Bar
  */
@@ -38,7 +40,7 @@ class Bar {
         element.className = "bar-icon";
 
         if (options.handler) {
-            element.applyEvent("tap", options.handler);
+            element.doOn("tap", options.handler);
         }
 
         let icon = document.createElement("i");
