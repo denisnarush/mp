@@ -23,10 +23,10 @@ class TapEvent {
 
 /**
 * Tap
-* 1. Should start and ends on the same target
-* 2. Should start and ends on the same position
+* 1. Target: Same
+* 2. Delta position: dX and dY = 0
 * 3. Touches: 1
-* 4. Delay: 0 < E < 1.0
+* 4. Fire: 0 < Event < Delay
 * @param {function} handler 
 */
 function Tap (handler) {
