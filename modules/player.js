@@ -111,6 +111,7 @@ class Player {
                 if (track.duration > Settings.duration) {
                     return this.getTracks();
                 }
+
                 // get recent array from Settings
                 let recent = Settings.recent;
                 // store information about track with only necessary values
