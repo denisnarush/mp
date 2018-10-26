@@ -49,7 +49,7 @@ img.player-cover-picture{
     transform: translateX(-50%) translateY(-50%);
     padding-top: 0;
 	visibility: initial;
-	-webkit-mask: url(/img/interface/vinil_mask.png) 50% 50% no-repeat;
+	-webkit-mask: url(../img/interface/vinil_mask.png) 50% 50% no-repeat;
     -webkit-mask-size: 100%;
 }
 .player-trackbar{
