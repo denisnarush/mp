@@ -83,8 +83,7 @@ class Recent extends State {
     /**
      * Playlist state top bar handler
     */
-    onPlaylistBar(event) {
-        event.preventDefault();
+    onPlaylistBar() {
         this.isOn() ? this.off() : this.on();
     }
     /**
@@ -117,9 +116,9 @@ class Recent extends State {
         let y = 0;
 
         // playlist item tap
-        this.playlist.applyEvent("tap", (event) => {this.onPlaylistItem(event);});
+        this.playlist.doOn("tap", (event) => {this.onPlaylistItem(event);});
         // playlist top bar tap
-        this.playlistTopBar.applyEvent("tap", (event) => {this.onPlaylistBar(event);});
+        this.playlistTopBar.doOn("tap", (event) => {this.onPlaylistBar(event);});
 
         this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
         // render bar to local element before `on` event

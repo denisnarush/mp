@@ -12,33 +12,22 @@ describe("Player", function () {
 
         // load modules
         Promise.all([
-            "../../modules/settings.js",
             "../../modules/player.js"
         ]
             .map(x => import(x)))
-            .then(([settings, player]) => {
-                Settings = settings;
+            .then(([player]) => {
                 Player = player.default;
 
                 done();
             });
     });
 
-    // runs after each test in this block
-    afterEach(function(done) {
-        // remove player element
-        document.getElementById("stream").remove();
-        // clear localStorage
-        localStorage.removeItem("settings");
-
-        done();
-    });
-
     /**
      * Should be applyed with <audio id=\"stream\">
      */
-    it("Should be applyed with <audio id=\"stream\">", function () {
+    it("Should be applyed with <audio> HTML element and have id=\"stream\"", function () {
         chai.expect(Player).to.have.property("stream");
+        chai.expect(Player.stream).to.be.an.instanceof(HTMLAudioElement);
     });
     /**
      * Should get tracks
@@ -59,7 +48,7 @@ describe("Player", function () {
      * Should play track
      */
     it("Should play track", function (done) {
-        this.timeout(1000);
+        this.timeout(2000);
 
         let t = () => {
             if (Player.stream.currentTime !== 0) {
