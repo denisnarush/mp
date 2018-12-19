@@ -20,15 +20,13 @@ body{
 
     display: flex;
 }
-.wrapper{margin: auto;}
-.container{}
-.album{
-    position: relative;
-}
+.album,
 .cover{
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    transition: opacity 2s;
+}
+.album:hover:after,
+.cover:hover{
+    opacity: .3;
 }
 /* -TMP */
 
@@ -60,14 +58,14 @@ body{
 }
 .album{
     transform-style: preserve-3d;
-    width: var(--size);
     perspective: 460px;
 }
 .container_horizontal .album{
     display: inline-block;
-    margin-right: calc(var(--size) / -2);
+    margin-right: calc(var(--size) / -4);
     padding: calc(var(--size) / 4) 0;
     perspective-origin: 0 50%;
+    width: 130px;
     height: var(--size);
 }
 .container_horizontal .album:after{
@@ -81,44 +79,44 @@ body{
     margin: auto;
     position: absolute;
     top: 50%;
-    left: 41px;
+    left: 2px;
     border-radius: 3px;
-    height: 245px;
+    height: 249px;
 }
 .container_vertical .album{
     padding: 0 calc(var(--size) / 4);
     perspective-origin: 50% 100%;
     min-height: calc(var(--size) / 4);
+    position: relative;
 }
 .container_vertical .album:after{
-    content: "title";
+    content: "";
     display: block;
-    font-size: 3px;
+    height: 3px;
     color: white;
     transform: translateZ(0px) translateX(-50%);
     background: black;
-    width: 243px;
+    width: 245px;
     margin: auto;
     position: absolute;
     top: 98px;
     left: 50%;
     border-radius: 0 0 3px 3px;
 }
-
 .cover{
     display: inline-block;
     width: var(--size);
     height: var(--size);
-}
-
-.cover{
     background-size: 100% 100%;
     background-repeat: no-repeat;
     backface-visibility: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
 }
 .container_horizontal .cover{
     transform: rotateY(45deg) translateZ(0) translateX(-50%) translateY(-50%);
-    transform-origin: 10% 0%;
+    transform-origin: 15% 0%;
     border-radius: 0 3px;
 }
 .container_vertical .cover{
