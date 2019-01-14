@@ -1,4 +1,4 @@
-import "./../modules/moti-on.js";
+import "./../../modules/moti-on.js";
 
 function activeToggle (e) {
     e.target.classList.toggle("active");
