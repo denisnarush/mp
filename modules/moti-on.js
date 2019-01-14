@@ -1,5 +1,5 @@
-import {Tap} from "./moti-on.tap.js";
-
+import { Tap } from "./moti-on.tap.js";
+import { Hold } from "./moti-on.hold.js";
 
 /**
  * Detec
@@ -26,6 +26,10 @@ function detectAction (name) {
     case "tap":
         action = "tap";
         break;
+
+    case "hold":
+        action = "hold";
+        break;
     }
 
     return action;
@@ -50,6 +54,10 @@ HTMLElement.prototype.doOn = function (eventName, handler, options) {
     case "tap":
         Tap.call(targetElement, handler);
         return;
+
+    case "hold":
+        Hold.call(targetElement, handler);
+        return;
     }
 
     /* TODO: Move this out */
@@ -65,6 +73,7 @@ HTMLElement.prototype.doOn = function (eventName, handler, options) {
                     target: event.target
                 };
             }
+
             // touch
             if (event.type.indexOf("touch") === 0) {
                 params = {
@@ -73,6 +82,10 @@ HTMLElement.prototype.doOn = function (eventName, handler, options) {
                     target: event.changedTouches[0].target,
                 };
             }
+
+
+            // TODO: Debug property
+            params._event = event;
 
             handler.call(targetElement, params);
         } else {
@@ -106,6 +119,13 @@ HTMLElement.prototype.doOff = function (eventName, handler) {
     case "tap":
         if (targetElement.destroyTapHandler) {
             targetElement.destroyTapHandler(handler);
+        }
+
+        return;
+
+    case "hold":
+        if (targetElement.destroyHoldHandler) {
+            targetElement.destroyHoldHandler(handler);
         }
 
         return;
