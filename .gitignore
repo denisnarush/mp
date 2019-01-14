@@ -1,5 +1,5 @@
 #files
-package.json
+package-lock.json
 
 #system generated files
 *.DS_Store
