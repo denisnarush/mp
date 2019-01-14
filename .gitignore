@@ -1,2 +1,8 @@
+#files
+package.json
+
+#system generated files
 *.DS_Store
+
+#folders
 node_modules/
