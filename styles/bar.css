@@ -1,8 +1,8 @@
 .bar{
     padding-top: var(--bar-padding-top);
-    padding-right: 5%;
+    padding-right: 16px;
     padding-bottom: var(--bar-padding-bottom);
-    padding-left: 5%;
+    padding-left: 16px;
 
     display: flex;
     align-items: center;

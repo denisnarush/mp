@@ -24,12 +24,13 @@ class Player {
             const container = document.createElement("audio");
             container.setAttribute("preload", "auto");
             container.volume = Settings.volume;
+            container.shuffled = false;
+            container.looped = false;
 
             // volume change
             container.addEventListener("volumechange", () => {
                 this.onVolumeChange();
             });
-    
             // can playtrough
             container.addEventListener("canplaythrough", () => {
                 this.onCanPlayThrough();
@@ -139,6 +140,25 @@ class Player {
             });
     }
 
+    getDuration() {
+        return this.stream.duration;
+    }
+    getTrackDuration() {
+        return this.stream.track.duration;
+    }
+    getCover() {
+        return (this.stream.track.artwork_url ? this.stream.track.artwork_url.replace(new RegExp("large","g"),"t500x500") : this.stream.track.user.avatar_url);
+    }
+    getTItle() {
+        return this.stream.track.title;
+    }
+    getGenre() {
+        return this.stream.track.genre;
+    }
+    getCurrentTime() {
+        return this.stream.currentTime;
+    }
+
     /**
      * Play
      */
@@ -175,21 +195,14 @@ class Player {
             return this.stream.play();
         }
 
-        let cover;
         let time = new Date();
 
         // track time
         time.setTime(track.duration);
 
-        // discovering track artwork
-        if (track.artwork_url !== null) {
-            cover = track.artwork_url.replace(new RegExp("large","g"),"t500x500");
-        } else {
-            cover = track.user.avatar_url;
-        }
+
 
         this.stream.track = track;
-        this.stream.cover = cover;
         this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
 
     }
@@ -277,6 +290,29 @@ class Player {
      */
     onCanPlayThrough() {
         this.play();
+    }
+
+
+    onProgress(fn) {
+        this.stream.addEventListener("progress", fn);
+    }
+    onLoadStart(fn) {
+        this.stream.addEventListener("loadstart", fn);
+    }
+    onMetadataLoaded(fn) {
+        this.stream.addEventListener("loadedmetadata", fn);
+    }
+    onPlay(fn) {
+        this.stream.addEventListener("play", fn);
+    }
+    onPause(fn) {
+        this.stream.addEventListener("pause", fn);
+    }
+    onEnded(fn) {
+        this.stream.addEventListener("ended", fn);
+    }
+    onTimeUpdate(fn) {
+        this.stream.addEventListener("timeupdate", fn);
     }
 }
 

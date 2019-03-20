@@ -8,7 +8,8 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080/albums.html",
+            "url": "http://localhost:8080/",
+            "runtimeArgs": ["--disable-web-security", "--auto-open-devtools-for-tabs"],
             "webRoot": "${workspaceFolder}"
         }
     ]

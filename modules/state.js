@@ -19,20 +19,16 @@ class State {
             document.body.appendChild(this.state);
         }
 
-        if (options.topBarElement) {
-            this.topBar = new Bar(this.state.querySelector(options.topBarElement));
-        }
-
-        this.topBar = this.topBar || new Bar(document.body.querySelector(".bar.bar__top"));
+         this.state.querySelectorAll(`[data-element]`).forEach((el) => {
+             this.elements = this.elements || {};
+             this.elements[el.getAttribute('data-element')] = el;
+         })
     }
 
     /**
      * On
      */
     on () {
-        if (!this.state.topBar.manually) {
-            this.topBar.to(this.state.topBar || []);
-        }
         this.state.removeAttribute("off");
     }
 

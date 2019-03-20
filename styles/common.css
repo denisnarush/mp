@@ -24,10 +24,10 @@ body{
 @supports(padding: env(safe-area-inset-bottom)) {
 	@media (orientation: portrait){
 		body{
-			height: calc(100% + env(safe-area-inset-bottom) - 34px);
+			height: calc(100% + env(safe-area-inset-bottom));
 		}
 		html{
-			height: calc(100% + env(safe-area-inset-bottom) + 10px);
+			height: calc(100% + env(safe-area-inset-bottom));
 		}
 	}
 }

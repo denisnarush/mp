@@ -36,35 +36,38 @@
 <body>
 	<!-- Background from artwork -->
 	<div class="bg" id="streamBgArtwork"></div>
-	<!-- Top Bar -->
-	<div class="bar bar__top bar__fixed"></div>
 	<!-- Now Playing State -->
 	<div class="state" data-state="player">
+		<div class="bar bar__top">
+			<div class="bar-icon"><i class="icon icon-arrow-down-right"></i></div>
+			<div class="bar-title">Now Playing</div>
+			<div class="bar-push bar-push__right"></div>
+		</div>
 		<div class="player">
 			<div class="player-cover">
 				<img src="./img/interface/vinil.png" class="player-cover-placeholder">
-				<img src="" title="" alt="" id="streamArtwork" class="player-cover-picture">
+				<img data-element="artwork" class="player-cover-picture">
 			</div>
-			<p class="player-title" id="streamGenre" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></p>
-			<p class="player-author" id="streamTitle"></p>
+			<p data-element="genre" class="player-title" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></p>
+			<p data-element="title" class="player-author"></p>
 			<div class="player-trackbar" id="streamTrackbar">
-				<span class="player-trackbar-time player-trackbar-time__current" id="streamCurrentTime">00:00</span>
+				<span data-element="ctime" class="player-trackbar-time player-trackbar-time__current">00:00</span>
 				<span class="player-progress-bar" id="streamProgressIndicator" style="width: 0"></span>
 				<span class="player-trackbar-bar" id="streamTrackbarIndicator" style="width: 0"></span>
-				<span class="player-trackbar-time player-trackbar-time__duration" id="streamDurationTime">00:00</span>
+				<span data-element="dtime" class="player-trackbar-time player-trackbar-time__duration">00:00</span>
 			</div>
 			<div class="player-actions">
 				<span id="actionShuffle" class="player-actions-button" style="opacity: 0.5"><i class="icon-shuffle"></i></span>
 				<span id="actionPrev" class="player-actions-button"><i class="icon-backward"></i></span>
-				<span id="actionPlay" class="player-actions-button"><i class="icon-play"></i></span>
-				<span id="actionPause" class="player-actions-button" hidden><i class="icon-pause"></i></span>
+				<span data-element="play" class="player-actions-button"><i class="icon-play"></i></span>
+				<span data-element="pause" class="player-actions-button" hidden><i class="icon-pause"></i></span>
 				<span id="actionNext" class="player-actions-button"><i class="icon-forward"></i></span>
 				<span id="actionLoop" class="player-actions-button" style="opacity: 0.5"><i class="icon-loop"></i></span>
 			</div>
 		</div>
 	</div>
 	<!-- Recent State-->
-	<div class="state" data-state="recent" off>
+	<div class="state" data-state="recent" off hidden>
 		<div class="bar bar__top bar__local bar__bg"></div>
 		<div class="playlist playlist__line">
 			<div class="playlist-scroll" style="top: 30%" hidden></div>

@@ -1,3 +1,7 @@
 {
-    "editor.fontSize": 12
+    "editor.fontSize": 12,
+    "editor.renderWhitespace": "boundary",
+    "eslint.autoFixOnSave": true,
+    "eslint.alwaysShowStatus": true,
+    "editor.minimap.enabled": false
 }
