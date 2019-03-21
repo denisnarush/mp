@@ -235,8 +235,8 @@ export class PlayerState extends State {
 
         this.streamBgArtwork.style.backgroundImage =`url("${Player.getCover()}")`;
         this.streamArtwork.src = Player.getCover();
-        this.streamTitle.innerHTML = Player.getTItle();
-        this.streamGenre.innerHTML = Player.getGenre();
+        this.streamTitle.innerHTML = Player.getTrackTitle();
+        this.streamGenre.innerHTML = Player.getTrackGenre();
 
         this.streamCurrentTime.innerHTML = "00:00";
         this.streamDurationTime.innerHTML = `${(endtime.getUTCHours() ? endtime.toUTCString().slice(17, 25) : endtime.toUTCString().slice(20, 25))}`;
@@ -269,8 +269,8 @@ export class PlayerState extends State {
         // this.actionPlay.doOn("tap", () => {this.onPlay();});
         // // pause tap
         // this.actionPause.doOn("tap", () => {this.onPause();});
-        // next tap
-        this.actionNext.doOn("tap", () => {this.onNext();});
+        // // next tap
+        // this.actionNext.doOn("tap", () => {this.onNext();});
         // prev tap
         this.actionPrev.doOn("tap", () => {this.onPrev();});
         // shuffle tap

@@ -140,23 +140,28 @@ class Player {
             });
     }
 
-    getDuration() {
-        return this.stream.duration;
-    }
-    getTrackDuration() {
-        return this.stream.track.duration;
-    }
     getCover() {
         return (this.stream.track.artwork_url ? this.stream.track.artwork_url.replace(new RegExp("large","g"),"t500x500") : this.stream.track.user.avatar_url);
     }
-    getTItle() {
+    getTrackTitle() {
         return this.stream.track.title;
     }
-    getGenre() {
+    getTrackGenre() {
         return this.stream.track.genre;
     }
     getCurrentTime() {
         return this.stream.currentTime;
+    }
+    getCurrentTimeString() {
+        const time = new Date(this.getCurrentTime() * 1000);
+        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
+    }
+    getTrackDuration() {
+        return this.stream.track.duration;
+    }
+    getTrackDurationString() {
+        const time = new Date(this.getTrackDuration());
+        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
     }
 
     /**
