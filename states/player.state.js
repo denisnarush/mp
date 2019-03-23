@@ -1,8 +1,15 @@
 import { State } from "../modules/state.js";
 import { Settings } from "../modules/settings.js";
-import { default as Player } from "../modules/player.js";
-
+/**
+  * Class representing a Player State
+  * 
+  * @author Denis Narush <child.denis@gmail.com>
+  * @extends State
+ */
 export class PlayerState extends State {
+    /**
+     * Player State constructor
+     */
     constructor() {
         super("player");
 
@@ -12,41 +19,41 @@ export class PlayerState extends State {
         this.elements["next"]   .doOn("tap", PlayerState.onNextBtn.bind(this));
         this.elements["prev"]   .doOn("tap", PlayerState.onPrevBtn.bind(this));
 
-        Player.onPlay(PlayerState.onPlay.bind(this));
-        Player.onPause(PlayerState.onPause.bind(this));
-        Player.onLoadStart(PlayerState.onLoadStart.bind(this));
-        Player.onTimeUpdate(PlayerState.onTimeUpdate.bind(this));
+        this.player.onPlay(PlayerState.onPlay.bind(this));
+        this.player.onPause(PlayerState.onPause.bind(this));
+        this.player.onLoadStart(PlayerState.onLoadStart.bind(this));
+        this.player.onTimeUpdate(PlayerState.onTimeUpdate.bind(this));
     }
     /**
      * Init
      */
     init() {
-        Player.getTracks();
+        this.player.getTracks();
         return this;
     }
     /**
      * Play button handler
      */
     static onPlayBtn() {
-        Player.play();
+        this.player.play();
     }
     /**
      * Pause button handler
      */
     static onPauseBtn() {
-        Player.stop();
+        this.player.stop();
     }
     /**
      * Next button handler
      */
     static onNextBtn() {
-        Player.getTracks();
+        this.player.getTracks();
     }
     /**
      * Prev button handler
      */
     static onPrevBtn() {
-        Player.getTracks();
+        this.player.getTracks();
     }
     /** 
      * Stream resumed
@@ -65,14 +72,14 @@ export class PlayerState extends State {
     */
     static onLoadStart() {
         PlayerState.showPlayBtn.call(this);
-
-        document.querySelector("#streamBgArtwork").style.backgroundImage =`url("${Player.getCover()}")`;
-
-        this.elements["artwork"]    .src = Player.getCover();
-        this.elements["title"]      .innerHTML = Player.getTrackTitle();
-        this.elements["genre"]      .innerHTML = Player.getTrackGenre();
-        this.elements["dtime"]      .innerHTML = Player.getTrackDurationString();
-
+        // update main background
+        document.querySelector("#streamBgArtwork").style.backgroundImage =`url("${this.player.getCover()}")`;
+        // update track info
+        this.elements["artwork"]    .src = this.player.getCover();
+        this.elements["title"]      .innerHTML = this.player.getTrackTitle();
+        this.elements["genre"]      .innerHTML = this.player.getTrackGenre();
+        this.elements["dtime"]      .innerHTML = this.player.getTrackDurationString();
+        // update curent time
         PlayerState.updateCurentTime.call(this);
     }
     /**
@@ -80,17 +87,17 @@ export class PlayerState extends State {
      */
     static onTimeUpdate() {
         // trackbar moving
-        this.elements["pindicator"] .style.width = `${Player.getTrackDuration() ? Player.getCurrentTime() * 100000 / Player.getTrackDuration() : 0}%`;
+        this.elements["pindicator"] .style.width = this.player.getCurrentTimePercent();
         PlayerState.updateCurentTime.call(this);
     }
     /**
      * Update current track time if not equals last value
      */
     static updateCurentTime() {
-        if (this.elements["ctime"].last !== Player.getCurrentTimeString()) {
-            this.elements["ctime"]      .innerHTML = Player.getCurrentTimeString();
-            this.elements["ctime"]      .last = Player.getCurrentTimeString();
-        }   
+        if (this.elements["ctime"]  .last !== this.player.getCurrentTimeString()) {
+            this.elements["ctime"]  .innerHTML = this.player.getCurrentTimeString();
+            this.elements["ctime"]  .last = this.player.getCurrentTimeString();
+        }
     }
     /**
      * Show Play button

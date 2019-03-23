@@ -1,18 +1,13 @@
 import { Settings } from "./settings.js";
 import { request, assignToPlayedGenre } from "./utils.js";
-
-const params = {};
-
-Settings.genre = params.genre || Settings.genre;
-Settings.limit = params.limit || Settings.limit;
-
-
 /**
- * Player
+  * Class representing a Player
+  * 
+  * @author Denis Narush <child.denis@gmail.com>
  */
-class Player {
+export class Player {
     /**
-     * Constructor
+     * Player constructor
      */
     constructor() {
         this.LIMIT = Settings.limit;
@@ -23,6 +18,7 @@ class Player {
         if (!this.stream) {
             const container = document.createElement("audio");
             container.setAttribute("preload", "auto");
+            container.setAttribute("id", "stream");
             container.volume = Settings.volume;
             container.shuffled = false;
             container.looped = false;
@@ -30,14 +26,6 @@ class Player {
             // volume change
             container.addEventListener("volumechange", () => {
                 this.onVolumeChange();
-            });
-            // can playtrough
-            container.addEventListener("canplaythrough", () => {
-                this.onCanPlayThrough();
-            });
-            // can play
-            container.addEventListener("canplay", () => {
-                this.onCanPlay();
             });
 
             document.body.appendChild(container);
@@ -139,31 +127,6 @@ class Player {
                 return this.getTracks();
             });
     }
-
-    getCover() {
-        return (this.stream.track.artwork_url ? this.stream.track.artwork_url.replace(new RegExp("large","g"),"t500x500") : this.stream.track.user.avatar_url);
-    }
-    getTrackTitle() {
-        return this.stream.track.title;
-    }
-    getTrackGenre() {
-        return this.stream.track.genre;
-    }
-    getCurrentTime() {
-        return this.stream.currentTime;
-    }
-    getCurrentTimeString() {
-        const time = new Date(this.getCurrentTime() * 1000);
-        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
-    }
-    getTrackDuration() {
-        return this.stream.track.duration;
-    }
-    getTrackDurationString() {
-        const time = new Date(this.getTrackDuration());
-        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
-    }
-
     /**
      * Play
      */
@@ -182,7 +145,6 @@ class Player {
             });
         }
     }
-
     /**
      * Start
      */
@@ -211,14 +173,12 @@ class Player {
         this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
 
     }
-
     /**
      * Stop
      */
     stop() {
         setTimeout(() => {this.stream.pause();}, 0);
     }
-
     /**
      * Next
      */
@@ -240,7 +200,6 @@ class Player {
 
         this.start();
     }
-
     /**
      * Prev
      */
@@ -262,7 +221,6 @@ class Player {
 
         this.start();
     }
-
     /**
      * Select
      * @param {Number} id Index of track in list
@@ -275,7 +233,6 @@ class Player {
         this.stream.currentTime = 0;
         this.start();
     }
-
     /**
      * Volume changed
      */
@@ -283,21 +240,60 @@ class Player {
         Settings.volume = this.stream.volume;
     }
 
-    /**
-     * Can play handler
-     */
-    onCanPlay() {
-        this.play();
-    }
+
 
     /**
-     * Can play through handler
+     * adds time to current time in ms
+     * @param {number} value
      */
-    onCanPlayThrough() {
-        this.play();
+    addTime(value) {
+        this.stream.currentTime += value;
     }
+    /**
+     * adds volume to current volume
+     * @param {number} value 
+     */
+    addVolume(value) {
+        let volume = this.stream.volume * 100 + value;
 
+        if (volume >= 100) {
+            volume = 100;
+        }
+        if (volume <= 0) {
+            volume = 0;
+        }
 
+        this.stream.volume = volume / 100;
+    }
+    getCover() {
+        return (this.stream.track.artwork_url ? this.stream.track.artwork_url.replace(new RegExp("large","g"),"t500x500") : this.stream.track.user.avatar_url);
+    }
+    getTrackTitle() {
+        return this.stream.track.title;
+    }
+    getTrackGenre() {
+        return this.stream.track.genre;
+    }
+    getCurrentTime() {
+        return this.stream.currentTime;
+    }
+    getCurrentTimeString() {
+        const time = new Date(this.getCurrentTime() * 1000);
+        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
+    }
+    getCurrentTimePercent() {
+        return `${this.getTrackDuration() ? this.getCurrentTime() * 100000 / this.getTrackDuration() : 0}%`;
+    }
+    getTrackDuration() {
+        return this.stream.track.duration;
+    }
+    getTrackDurationString() {
+        const time = new Date(this.getTrackDuration());
+        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
+    }
+    togglePlaying() {
+        this.stream.paused ? this.play() : this.stop();
+    }
     onProgress(fn) {
         this.stream.addEventListener("progress", fn);
     }
@@ -320,5 +316,3 @@ class Player {
         this.stream.addEventListener("timeupdate", fn);
     }
 }
-
-export default new Player();

@@ -272,8 +272,8 @@ export class PlayerState extends State {
         // // next tap
         // this.actionNext.doOn("tap", () => {this.onNext();});
         // prev tap
-        this.actionPrev.doOn("tap", () => {this.onPrev();});
-        // shuffle tap
+        // this.actionPrev.doOn("tap", () => {this.onPrev();});
+        // // shuffle tap
         this.actionShuffle.doOn("tap", () => {this.onShuffle();});
         // repeat tap
         this.actionLoop.doOn("tap", () => {this.onLoop();});

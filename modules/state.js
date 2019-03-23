@@ -1,16 +1,18 @@
-import {Bar} from "./bar.js";
-
+import { Player } from "./player.js";
 /**
- * State
+  * Class representing an App State
+  * 
+  * @author Denis Narush <child.denis@gmail.com>
  */
 class State {
     /**
-     * 
+     * State constructor
      * @param {String} name State's name
      * @param {any} options Options
      */
     constructor(name, options = {}) {
         this.state = document.querySelector(`[data-state="${name}"]`);
+        this.player = new Player();
         if (!this.state) {
             this.state = document.createElement("div");
             this.state.classList.add("state");
