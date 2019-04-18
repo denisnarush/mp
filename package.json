@@ -36,6 +36,6 @@
     "mocha": "^6.0.2"
   },
   "dependencies": {
-    "three": "^0.100.0"
+    "three": "^0.103.0"
   }
 }
