@@ -1,5 +1,6 @@
 {
   "name": "mp",
+  "author": "Denis Narush <child.denis@gmail.com>",
   "version": "1.0.0",
   "description": "musical player",
   "homepage": "https://denisnarush.github.io/mp/",
@@ -8,14 +9,14 @@
   },
   "keywords": [
     "music",
-    "soundcloud"
+    "soundcloud",
+    "three"
   ],
   "main": "index.html",
   "repository": {
     "type": "git",
     "url": "git@github.com:denisnarush/mp.git"
   },
-  "author": "Denis Narush (child.denis@gmail.com)",
   "license": "ISC",
   "window": {
     "toolbar": false,
@@ -24,14 +25,10 @@
     "height": 640
   },
   "scripts": {
-    "start": "http-server .",
-    "test": "eslint --init"
+    "start": "http-server ."
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "eslint": "^4.19.1",
-    "http-server": "^0.11.1",
-    "mocha": "^5.2.0"
+    "http-server": "^0.11.1"
   },
   "dependencies": {
     "three": "^0.100.0"

@@ -12,8 +12,8 @@ describe("Recent State", function () {
 
         // load modules
         Promise.all([
-            "../../modules/settings.js",
-            "../../modules/player.js"
+            "./../../modules/settings.js",
+            "./../../modules/player.js"
         ]
             .map(x => import(x)))
             .then(([settings, player]) => {

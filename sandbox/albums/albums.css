@@ -24,9 +24,19 @@ body{
 .cover{
     transition: opacity 2s;
 }
-.album:hover:after,
-.cover:hover{
-    opacity: .3;
+.scroll{
+    width: 100vw;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.scroll:before{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 950px;
 }
 /* -TMP */
 
@@ -47,14 +57,13 @@ body{
 }
 
 .container_vertical{
-    height: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    /* height: 100%; */
+    /* overflow-y: auto; */
+    /* -webkit-overflow-scrolling: touch; */
 
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: center;
-    padding-bottom: calc(var(--size) / 4 + 4px);
 }
 .album{
     transform-style: preserve-3d;
@@ -86,11 +95,11 @@ body{
 .container_vertical .album{
     padding: 0 calc(var(--size) / 4);
     perspective-origin: 50% 100%;
-    min-height: calc(var(--size) / 4);
+    border: 22px solid transparent;
     position: relative;
 }
 .container_vertical .album:after{
-    content: "";
+    /* content: ""; */
     display: block;
     height: 3px;
     color: white;
@@ -120,8 +129,8 @@ body{
     border-radius: 0 3px;
 }
 .container_vertical .cover{
-    transform: rotateX(45deg) translateZ(-0) translateX(-50%) translateY(-50%);
-    transform-origin: 0% -10%;
+    transform: rotateX(-80deg) translateZ(-0) translateX(-50%) translateY(-50%);
+    transform-origin: 0% 3%;
     border-radius: 10px 10px 0 0;
 }
 
