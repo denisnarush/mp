@@ -1,4 +1,4 @@
-import "../node_modules/chai/chai.js";
+import "./chai.js";
 
 const container = document.createElement("div");
 container.setAttribute("id", "mocha");

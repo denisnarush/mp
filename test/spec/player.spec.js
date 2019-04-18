@@ -12,7 +12,7 @@ describe("Player", function () {
 
         // load modules
         Promise.all([
-            "../../modules/player.js"
+            "./../../modules/player.js"
         ]
             .map(x => import(x)))
             .then(([player]) => {

@@ -1,4 +1,4 @@
-import {toURLencoded} from "../../modules/utils.js";
+import {toURLencoded} from "./../../modules/utils.js";
 
 describe("toURLencoded(params: object)", function () {
     it("incoming: {number: 2}; should returns: \"number=2\"", function () {
