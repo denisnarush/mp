@@ -10,25 +10,24 @@ export class PlayerState extends State {
     /**
      * Player State constructor
      */
-    constructor() {
-        super("player");
+    constructor(options) {
+        super("player", options);
 
-        this.elements["genre"]  .innerHTML = Settings.genre;
-        this.elements["play"]   .doOn("tap", PlayerState.onPlayBtn.bind(this));
-        this.elements["pause"]  .doOn("tap", PlayerState.onPauseBtn.bind(this));
-        this.elements["next"]   .doOn("tap", PlayerState.onNextBtn.bind(this));
-        this.elements["prev"]   .doOn("tap", PlayerState.onPrevBtn.bind(this));
+        this.elements["play"]       .doOn("tap", PlayerState.onPlayBtn.bind(this));
+        this.elements["pause"]      .doOn("tap", PlayerState.onPauseBtn.bind(this));
+        this.elements["next"]       .doOn("tap", PlayerState.onNextBtn.bind(this));
+        this.elements["prev"]       .doOn("tap", PlayerState.onPrevBtn.bind(this));
 
-        this.player.onPlay(PlayerState.onPlay.bind(this));
-        this.player.onPause(PlayerState.onPause.bind(this));
-        this.player.onLoadStart(PlayerState.onLoadStart.bind(this));
-        this.player.onTimeUpdate(PlayerState.onTimeUpdate.bind(this));
+        this.player                 .onPlay(PlayerState.onPlay.bind(this));
+        this.player                 .onPause(PlayerState.onPause.bind(this));
+        this.player                 .onLoadStart(PlayerState.onLoadStart.bind(this));
+        this.player                 .onTimeUpdate(PlayerState.onTimeUpdate.bind(this));
+        this.player                 .onMetadataLoaded(PlayerState.onMetadataLoaded.bind(this));
     }
     /**
      * Init
      */
     init() {
-        this.player.getTracks();
         return this;
     }
     /**
@@ -73,7 +72,7 @@ export class PlayerState extends State {
     static onLoadStart() {
         PlayerState.showPlayBtn.call(this);
         // update main background
-        document.querySelector("#streamBgArtwork").style.backgroundImage =`url("${this.player.getCover()}")`;
+        this.background.style.backgroundImage =`url("${this.player.getCover()}")`;
         // update track info
         this.elements["artwork"]    .src = this.player.getCover();
         this.elements["title"]      .innerHTML = this.player.getTrackTitle();
@@ -89,6 +88,12 @@ export class PlayerState extends State {
         // trackbar moving
         this.elements["pindicator"] .style.width = this.player.getCurrentTimePercent();
         PlayerState.updateCurentTime.call(this);
+    }
+    /**
+     * Player metadata is loaded
+     */
+    static onMetadataLoaded() {
+        this.player.play();
     }
     /**
      * Update current track time if not equals last value

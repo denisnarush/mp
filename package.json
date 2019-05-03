@@ -37,9 +37,9 @@
     "chai": "^4.1.2",
     "eslint": "^5.15.3",
     "http-server": "^0.11.1",
-    "mocha": "^6.0.2"
+    "mocha": "^6.1.4"
   },
   "dependencies": {
-    "three": "^0.103.0"
+    "three": "^0.104.0"
   }
 }

@@ -1,4 +1,3 @@
-import { Player } from "./player.js";
 /**
   * Class representing an App State
   * 
@@ -12,7 +11,7 @@ class State {
      */
     constructor(name, options = {}) {
         this.state = document.querySelector(`[data-state="${name}"]`);
-        this.player = new Player();
+
         if (!this.state) {
             this.state = document.createElement("div");
             this.state.classList.add("state");
@@ -20,6 +19,8 @@ class State {
             this.state.setAttribute("off", "");
             document.body.appendChild(this.state);
         }
+
+        Object.assign(this, options);
 
          this.state.querySelectorAll(`[data-element]`).forEach((el) => {
              this.elements = this.elements || {};

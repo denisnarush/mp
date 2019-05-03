@@ -38,7 +38,7 @@
 	<div class="bg" id="streamBgArtwork"></div>
 	<!-- Now Playing State -->
 	<div class="state" data-state="player">
-		<div class="bar bar__top">
+		<div class="bar">
 			<div class="bar-icon"><i class="icon icon-arrow-down-right"></i></div>
 			<div class="bar-title">Now Playing</div>
 			<div class="bar-push bar-push__right"></div>
@@ -49,12 +49,12 @@
 				<img data-element="artwork" class="player-cover-picture">
 			</div>
 			<p data-element="genre" class="player-title" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></p>
-			<p data-element="title" class="player-author"></p>
+			<p data-element="title" class="player-author">To start listening press play button</p>
 			<div class="player-trackbar" id="streamTrackbar">
-				<span data-element="ctime" class="player-trackbar-time player-trackbar-time__current">00:00</span>
+				<span data-element="ctime" class="player-trackbar-time player-trackbar-time__current"></span>
 				<span data-element="pindicator" class="player-progress-bar" style="width: 0"></span>
 				<span data-element="tindicator" class="player-trackbar-bar" style="width: 0"></span>
-				<span data-element="dtime" class="player-trackbar-time player-trackbar-time__duration">00:00</span>
+				<span data-element="dtime" class="player-trackbar-time player-trackbar-time__duration"></span>
 			</div>
 			<div class="player-actions">
 				<span id="actionShuffle" class="player-actions-button" style="opacity: 0.5"><i class="icon-shuffle"></i></span>
@@ -64,6 +64,11 @@
 				<span data-element="next" class="player-actions-button"><i class="icon-forward"></i></span>
 				<span id="actionLoop" class="player-actions-button" style="opacity: 0.5"><i class="icon-loop"></i></span>
 			</div>
+		</div>
+		<div class="bar" hide>
+			<div class="bar-push bar-push__right"></div>
+			<div class="bar-title">Recent</div>
+			<div class="bar-push bar-push__right"></div>
 		</div>
 	</div>
 	<!-- Recent State-->

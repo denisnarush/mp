@@ -14,11 +14,15 @@ if ("serviceWorker" in navigator && "nw" in window === false) {
 class Main {
     constructor() {
         this.player = new Player();
+
         window.addEventListener("keydown", Main.onKeydown.bind(this));
     }
 
     init() {
-        new PlayerState().init();
+        new PlayerState({
+            player: this.player,
+            background: document.querySelector("#streamBgArtwork")
+        }).init();
     }
 
     /**

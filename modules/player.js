@@ -10,27 +10,23 @@ export class Player {
      * Player constructor
      */
     constructor() {
+
         this.LIMIT = Settings.limit;
         this.CLIENT_ID = Settings.scKey;
 
-        this.stream = document.getElementById("stream");
+        const container = document.createElement("audio");
+        container.setAttribute("preload", "auto");
+        container.volume = Settings.volume;
+        container.shuffled = false;
+        container.looped = false;
 
-        if (!this.stream) {
-            const container = document.createElement("audio");
-            container.setAttribute("preload", "auto");
-            container.setAttribute("id", "stream");
-            container.volume = Settings.volume;
-            container.shuffled = false;
-            container.looped = false;
+        // volume change
+        container.addEventListener("volumechange", () => {
+            this.onVolumeChange();
+        });
 
-            // volume change
-            container.addEventListener("volumechange", () => {
-                this.onVolumeChange();
-            });
-
-            document.body.appendChild(container);
-            this.stream = container;
-        }
+        document.body.appendChild(container);
+        this.stream = container;
     }
 
     /**
@@ -131,6 +127,11 @@ export class Player {
      * Play
      */
     play() {
+
+        if (isNaN(this.stream.duration)) {
+            return this.getTracks();
+        }
+
         if (!this.stream.paused) {
             return;
         }

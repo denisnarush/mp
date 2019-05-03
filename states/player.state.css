@@ -103,6 +103,10 @@ img.player-cover-picture{
 	z-index: -1;
 	margin-top: -8px;
 	top: 100%;
+	transition: opacity 1.5s;
+}
+.player-trackbar-time:empty{
+	opacity: 0;
 }
 	.player-trackbar-time__current{
 		left: 0;
