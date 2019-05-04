@@ -266,6 +266,26 @@ export class Player {
 
         this.stream.volume = volume / 100;
     }
+    /**
+     * @returns {boolean} Returns true if audio element is HAVE_ENOUGH_DATA
+     */
+    get isReady() {
+        // 4 HAVE_ENOUGH_DATA Enough data is available—and the download rate
+        // is high enough—that the media can be played through to the end without interruption.
+        return this.stream.readyState === 4;
+    }
+    /**
+     * @returns {number} audio element current time
+     */
+    get currentTime() {
+        return this.stream.currentTime;
+    }
+    /**
+     * @param {number} value Should be as audio element time value
+     */
+    set currentTime(value) {
+        this.stream.currentTime = value;
+    }
     getCover() {
         return (this.stream.track.artwork_url ? this.stream.track.artwork_url.replace(new RegExp("large","g"),"t500x500") : this.stream.track.user.avatar_url);
     }
@@ -275,15 +295,15 @@ export class Player {
     getTrackGenre() {
         return this.stream.track.genre;
     }
-    getCurrentTime() {
-        return this.stream.currentTime;
-    }
     getCurrentTimeString() {
-        const time = new Date(this.getCurrentTime() * 1000);
+        const time = new Date(this.currentTime * 1000);
         return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
     }
     getCurrentTimePercent() {
-        return `${this.getTrackDuration() ? this.getCurrentTime() * 100000 / this.getTrackDuration() : 0}%`;
+        return `${this.getTrackDuration() ? this.currentTime * 100000 / this.getTrackDuration() : 0}%`;
+    }
+    getDuration() {
+        return this.stream.duration;
     }
     getTrackDuration() {
         return this.stream.track.duration;

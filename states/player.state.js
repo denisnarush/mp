@@ -13,6 +13,7 @@ export class PlayerState extends State {
     constructor(options) {
         super("player", options);
 
+        this.elements["trackbar"]   .doOn("tap", PlayerState.onTrackbar.bind(this));
         this.elements["play"]       .doOn("tap", PlayerState.onPlayBtn.bind(this));
         this.elements["pause"]      .doOn("tap", PlayerState.onPauseBtn.bind(this));
         this.elements["next"]       .doOn("tap", PlayerState.onNextBtn.bind(this));
@@ -29,6 +30,21 @@ export class PlayerState extends State {
      */
     init() {
         return this;
+    }
+    /**
+     * Trackbar handler
+     * @param {} event
+     */
+    static onTrackbar(event) {
+        if (this.elements["trackbar"] !== event.target && !this.player.isReady) {
+            return;
+        }
+
+        const w = event.target.offsetWidth;
+        const x = event.x;
+        const d = x / w;
+
+        this.player.currentTime = this.player.getDuration() * d;
     }
     /**
      * Play button handler

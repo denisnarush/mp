@@ -169,6 +169,9 @@ img.player-cover-picture{
 	font-size: 24px;
 	font-weight: normal;
 }
+.player-actions-button[hide]{
+	opacity: 0 !important;
+}
 /* 0 - 319px */
 @media (max-width: 319px) {
 	.player-actions-button{

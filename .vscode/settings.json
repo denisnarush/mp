@@ -1,6 +1,5 @@
 {
-    "editor.fontSize": 12,
-    "window.zoomLevel": 0.25,
+    "window.zoomLevel": -0.6,
     "editor.renderWhitespace": "boundary",
     "eslint.autoFixOnSave": true,
     "eslint.alwaysShowStatus": true,
