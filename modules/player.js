@@ -15,10 +15,11 @@ export class Player {
         this.CLIENT_ID = Settings.scKey;
 
         const container = document.createElement("audio");
+
+        this.stream = container;
+
         container.setAttribute("preload", "auto");
         container.volume = Settings.volume;
-        container.shuffled = false;
-        container.looped = false;
 
         // volume change
         container.addEventListener("volumechange", () => {
@@ -26,24 +27,11 @@ export class Player {
         });
 
         document.body.appendChild(container);
-        this.stream = container;
     }
-
     /**
      * Get list of tracks from SoundCloud
-     * @param {String} [genre=undefined] Tracks genre
-     * @return {void} undefined
      */
-    getTracks(genre = undefined) {
-        // do not set genre twice
-        if (genre && genre.toLocaleLowerCase() === Settings.genre) {
-            return;
-        }
-
-        if (genre) {
-            Settings.genre = genre.toLocaleLowerCase();
-        }
-
+    getTracks() {
         // init playing genre in settings
         if (!Settings.played[Settings.genre]) {
             assignToPlayedGenre({
@@ -66,10 +54,10 @@ export class Player {
 
         // request params
         const params = {
-            client_id: Settings.scKey,
-            limit: 1,
             genres: Settings.genre,
-            offset: offset
+            client_id: Settings.scKey,
+            offset: offset,
+            limit: 1
         };
 
         assignToPlayedGenre({
@@ -127,7 +115,6 @@ export class Player {
      * Play
      */
     play() {
-
         if (isNaN(this.stream.duration)) {
             return this.getTracks();
         }
@@ -163,16 +150,8 @@ export class Player {
             return this.stream.play();
         }
 
-        let time = new Date();
-
-        // track time
-        time.setTime(track.duration);
-
-
-
         this.stream.track = track;
         this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
-
     }
     /**
      * Stop
@@ -223,18 +202,6 @@ export class Player {
         this.start();
     }
     /**
-     * Select
-     * @param {Number} id Index of track in list
-     */
-    select(id) {
-        if (this.stream.current === id) {
-            return;
-        }
-        this.stream.current = id;
-        this.stream.currentTime = 0;
-        this.start();
-    }
-    /**
      * Volume changed
      */
     onVolumeChange() {
@@ -244,17 +211,15 @@ export class Player {
 
 
     /**
-     * adds time to current time in ms
-     * @param {number} value
+     * @returns {number} Player volume
      */
-    addTime(value) {
-        this.stream.currentTime += value;
+    get volume() {
+        return this.stream.volume;
     }
     /**
-     * adds volume to current volume
-     * @param {number} value 
+     * @param {number} value Set player volume
      */
-    addVolume(value) {
+    set volume(value) {
         let volume = this.stream.volume * 100 + value;
 
         if (volume >= 100) {

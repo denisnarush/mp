@@ -293,8 +293,8 @@ export class PlayerState extends State {
         // // played
         // this.stream.addEventListener("play", () => {this.onPlayed();});
 
-        // stream trackbar tap
-        this.streamTrackbar.doOn("tap", (event) => {this.onTrackBar(event);});
+        // // stream trackbar tap
+        // this.streamTrackbar.doOn("tap", (event) => {this.onTrackBar(event);});
         // genre tap
         this.streamGenre.addEventListener("click", () => {this.onGenreClick();});
         // genre keypress

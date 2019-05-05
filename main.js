@@ -35,16 +35,16 @@ class Main {
             this.player.togglePlaying();
             break;
         case "ArrowRight":
-            this.player.addTime(5);
+            this.player.currentTime += 5;
             break;
         case "ArrowLeft":
-            this.player.addTime(-5);
+        this.player.currentTime -= 5;
             break;
         case "ArrowUp":
-            this.player.addVolume(5);
+            this.player.volume += 5;
             break;
         case "ArrowDown":
-            this.player.addVolume(-5);
+            this.player.volume -=5;
             break;
         }
     }

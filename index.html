@@ -38,7 +38,7 @@
 	<div class="bg" id="streamBgArtwork"></div>
 	<!-- Now Playing State -->
 	<div class="state" data-state="player">
-		<div class="bar">
+		<div data-element="tbar" class="bar" hide>
 			<div class="bar-icon"><i class="icon icon-arrow-down-right"></i></div>
 			<div class="bar-title">Now Playing</div>
 			<div class="bar-push bar-push__right"></div>
@@ -57,18 +57,20 @@
 				<span data-element="dtime" class="player-trackbar-time player-trackbar-time__duration"></span>
 			</div>
 			<div class="player-actions">
-				<span id="actionShuffle" class="player-actions-button" style="opacity: 0.5" hide><i class="icon-shuffle"></i></span>
-				<span data-element="prev" class="player-actions-button"><i class="icon-backward"></i></span>
+				<span id="actionShuffle" class="player-actions-button" hide><i class="icon-shuffle"></i></span>
+				<span data-element="prev" class="player-actions-button" hide><i class="icon-backward"></i></span>
 				<span data-element="play" class="player-actions-button"><i class="icon-play"></i></span>
 				<span data-element="pause" class="player-actions-button" hidden><i class="icon-pause"></i></span>
-				<span data-element="next" class="player-actions-button"><i class="icon-forward"></i></span>
-				<span id="actionLoop" class="player-actions-button" style="opacity: 0.5" hide><i class="icon-loop"></i></span>
+				<span data-element="next" class="player-actions-button" hide><i class="icon-forward"></i></span>
+				<span id="actionLoop" class="player-actions-button" hide><i class="icon-loop"></i></span>
 			</div>
 		</div>
-		<div class="bar" hide>
+		<div data-element="bbar" class="bar bar__bg" hide>
+			<div class="bar-icon"><i class="icon icon-list"></i></div>
 			<div class="bar-push bar-push__right"></div>
 			<div class="bar-title">Recent</div>
 			<div class="bar-push bar-push__right"></div>
+			<div class="bar-icon"><i class="icon icon-list"></i></div>
 		</div>
 	</div>
 	<!-- Recent State-->

@@ -1,4 +1,6 @@
 {
+    "workbench.iconTheme": "vs-minimal",
+    "workbench.colorTheme": "Atom One Dark",
     "window.zoomLevel": -0.6,
     "editor.renderWhitespace": "boundary",
     "eslint.autoFixOnSave": true,

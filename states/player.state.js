@@ -19,6 +19,9 @@ export class PlayerState extends State {
         this.elements["next"]       .doOn("tap", PlayerState.onNextBtn.bind(this));
         this.elements["prev"]       .doOn("tap", PlayerState.onPrevBtn.bind(this));
 
+        this.onPlayBtnOnce_ = PlayerState.onPlayBtnOnce.bind(this);
+        this.elements["play"]       .doOn("tap", this.onPlayBtnOnce_);
+
         this.player                 .onPlay(PlayerState.onPlay.bind(this));
         this.player                 .onPause(PlayerState.onPause.bind(this));
         this.player                 .onLoadStart(PlayerState.onLoadStart.bind(this));
@@ -36,7 +39,7 @@ export class PlayerState extends State {
      * @param {} event
      */
     static onTrackbar(event) {
-        if (this.elements["trackbar"] !== event.target && !this.player.isReady) {
+        if (this.elements["trackbar"] !== event.target || !this.player.isReady) {
             return;
         }
 
@@ -82,6 +85,24 @@ export class PlayerState extends State {
     static onPause() {
         PlayerState.showPlayBtn.call(this);
     }
+    /**
+     * Once on play button handler
+     */
+    static onPlayBtnOnce() {
+        // show prev button
+        this.elements["prev"]       .removeAttribute("hide");
+        // show next button
+        this.elements["next"]       .removeAttribute("hide");
+        // show top bar
+        this.elements["tbar"]       .removeAttribute("hide");
+        // TODO: uncomment after recent state will be implemented
+        // this.elements["bbar"]     .removeAttribute("hide");
+        // remove handler from play button
+        this.elements["play"]       .doOff("tap", this.onPlayBtnOnce_);
+        // delete backup handler
+        delete this.onPlayBtnOnce_;
+
+    }
     /** 
      * Fires when data starts fetching, we can start populate UI
     */
@@ -124,14 +145,14 @@ export class PlayerState extends State {
      * Show Play button
      */
     static showPlayBtn() {
-        this.elements["play"].removeAttribute("hidden");
-        this.elements["pause"].setAttribute("hidden", "");
+        this.elements["play"]       .removeAttribute("hidden");
+        this.elements["pause"]      .setAttribute("hidden", "");
     }
     /**
      * Show Pause button
      */
     static showPauseBtn() {
-        this.elements["play"].setAttribute("hidden", "");
-        this.elements["pause"].removeAttribute("hidden");
+        this.elements["play"]       .setAttribute("hidden", "");
+        this.elements["pause"]      .removeAttribute("hidden");
     }
 }

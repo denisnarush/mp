@@ -65,7 +65,7 @@ function setDefault() {
 /**
  * Settings object
  */
-let Settings = {
+export const Settings = {
     // App
     get volume () {
         return getter("volume");
@@ -123,5 +123,3 @@ let Settings = {
         return SCURL;
     }
 };
-
-export { Settings };

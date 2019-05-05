@@ -103,7 +103,6 @@ img.player-cover-picture{
 	z-index: -1;
 	margin-top: -8px;
 	top: 100%;
-	transition: opacity 1.5s;
 }
 .player-trackbar-time:empty{
 	opacity: 0;
@@ -170,7 +169,7 @@ img.player-cover-picture{
 	font-weight: normal;
 }
 .player-actions-button[hide]{
-	opacity: 0 !important;
+	opacity: 0;
 }
 /* 0 - 319px */
 @media (max-width: 319px) {
