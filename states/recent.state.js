@@ -5,31 +5,21 @@ import { Settings } from "../modules/settings.js";
 export class RecentState extends State {
     constructor(options) {
         super("recent", options);
-
-        // this.state.topBar = [{
-        //     icon: {
-        //         type: "icon-list"
-        //     }
-        // }, {
-        //     push: "right"
-        // }, {
-        //     title: "Recent"
-        // }, {
-        //     push: "right"
-        // }, {
-        //     icon: {
-        //         type: "icon-list"
-        //     }
-        // }];
-
-        // this.state.topBar.manually = true;
-
-        // this.stream = Player.stream;
-        // this.playlist = this.state.querySelector("#playlist");
-        // this.playlistTopBar = this.state.querySelector(".bar.bar__top");
         this.elements["tbar"].doOn("tap", RecentState.onPlaylistBar.bind(this));
     }
-
+    /**
+     * On state instructions
+     */
+    on() {
+        this.generate();
+        super.on();
+    }
+    /**
+     * Playlist state top bar handler
+    */
+    static onPlaylistBar() {
+        this.off();
+    }
     /**
      * Playlist generator method
      */
@@ -57,6 +47,12 @@ export class RecentState extends State {
         // past to the DOM
         this.elements["list"].innerHTML = html;
     }
+
+
+
+
+
+
     /**
      * Playlist item click handler
      * @param {MouseEvent|TouchEvent} event
@@ -80,12 +76,6 @@ export class RecentState extends State {
         Player.select(item.getAttribute("data-trackindex"));
     }
     /**
-     * Playlist state top bar handler
-    */
-    static onPlaylistBar() {
-        this.off();
-    }
-    /**
      * Changing current class of playlist item
      */
     onCanPlayThrough() {
@@ -100,13 +90,6 @@ export class RecentState extends State {
         } finally {
             this.playlist.querySelector(`[data-trackindex='${this.stream.current}']`).classList.add("playlist-item__current");
         }
-    }
-    /**
-     * On state instructions
-     */
-    on() {
-        this.generate();
-        super.on();
     }
 
     init() {
