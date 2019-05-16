@@ -12,7 +12,11 @@ export class PlayerState extends State {
      */
     constructor(options) {
         super("player", options);
-
+    }
+    /**
+     * Init
+     */
+    init() {
         /**
          * Player state elements handlers
          */
@@ -27,8 +31,8 @@ export class PlayerState extends State {
         /**
          * Player state elements onetime handlers
          */
-        this.onPlayBtnOnce_         = PlayerState.onPlayBtnOnce.bind(this);
-        this.elements["play"]       .doOn("tap", this.onPlayBtnOnce_);
+        this._onPlayBtnOnce_         = PlayerState.onPlayBtnOnce.bind(this);
+        this.elements["play"]       .doOn("tap", this._onPlayBtnOnce_);
         /**
          * Player events handlers
          */
@@ -38,11 +42,7 @@ export class PlayerState extends State {
         this.player                 .onTimeUpdate(PlayerState.onTimeUpdate.bind(this));
         this.player                 .onMetadataLoaded(PlayerState.onMetadataLoaded.bind(this));
         this.player                 .onEnded(PlayerState.onPlayEnded.bind(this));
-    }
-    /**
-     * Init
-     */
-    init() {
+
         return this;
     }
     /**
@@ -138,9 +138,9 @@ export class PlayerState extends State {
         // TODO: uncomment after recent state will be implemented
         // this.elements["bbar"]     .removeAttribute("hide");
         // remove handler from play button
-        this.elements["play"]       .doOff("tap", this.onPlayBtnOnce_);
+        this.elements["play"]       .doOff("tap", this._onPlayBtnOnce_);
         // delete backup handler
-        delete this.onPlayBtnOnce_;
+        delete this._onPlayBtnOnce_;
 
     }
     /** 
