@@ -5,16 +5,23 @@ import { DELAY } from "./moti-on.settings.js";
  */
 class TapEvent {
     /**
-     * 
      * @param {Object} options Event options
-     * @param {Number} options.screenX Screen X value
-     * @param {Number} options.screenY Screen Y value
+     * @param {Number} options.x Screen X value
+     * @param {Number} options.y Screen Y value
      * @param {HTMLElement} options.target Target element
      */
     constructor(options) {
+        /**
+         * @property {number} x Screen X
+         */
         this.x = options.x;
+        /**
+         * @property {number} y Screen Y
+         */
         this.y = options.y;
-        this.delay = options.dT;
+        /**
+         * @property {HTMLElement} target Target element
+         */
         this.target = options.target;
     }
 }
@@ -66,7 +73,6 @@ function Tap (handler) {
                 element.call(targetElement, new TapEvent({
                     x: e.x,
                     y: e.y,
-                    dT: dT,
                     target: e.target
                 }));
             });

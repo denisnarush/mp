@@ -7,7 +7,7 @@ import { Hold } from "./moti-on.hold.js";
  * @returns {string}
  */
 function detectAction (name) {
-    let action;
+    let action = name;
 
     switch(name) {
 

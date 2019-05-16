@@ -13,20 +13,31 @@ export class PlayerState extends State {
     constructor(options) {
         super("player", options);
 
+        /**
+         * Player state elements handlers
+         */
+        this.elements["genre"]      .doOn("tap", PlayerState.onGenreTap.bind(this));
+        this.elements["genre"]      .doOn("blur", PlayerState.onGenreBlur.bind(this));
+        this.elements["genre"]      .doOn("keydown", PlayerState.onGenreKey.bind(this));
         this.elements["trackbar"]   .doOn("tap", PlayerState.onTrackbar.bind(this));
         this.elements["play"]       .doOn("tap", PlayerState.onPlayBtn.bind(this));
         this.elements["pause"]      .doOn("tap", PlayerState.onPauseBtn.bind(this));
         this.elements["next"]       .doOn("tap", PlayerState.onNextBtn.bind(this));
         this.elements["prev"]       .doOn("tap", PlayerState.onPrevBtn.bind(this));
-
-        this.onPlayBtnOnce_ = PlayerState.onPlayBtnOnce.bind(this);
+        /**
+         * Player state elements onetime handlers
+         */
+        this.onPlayBtnOnce_         = PlayerState.onPlayBtnOnce.bind(this);
         this.elements["play"]       .doOn("tap", this.onPlayBtnOnce_);
-
+        /**
+         * Player events handlers
+         */
         this.player                 .onPlay(PlayerState.onPlay.bind(this));
         this.player                 .onPause(PlayerState.onPause.bind(this));
         this.player                 .onLoadStart(PlayerState.onLoadStart.bind(this));
         this.player                 .onTimeUpdate(PlayerState.onTimeUpdate.bind(this));
         this.player                 .onMetadataLoaded(PlayerState.onMetadataLoaded.bind(this));
+        this.player                 .onEnded(PlayerState.onPlayEnded.bind(this));
     }
     /**
      * Init
@@ -35,8 +46,37 @@ export class PlayerState extends State {
         return this;
     }
     /**
+     * Genre tap handler
+     */
+    static onGenreTap() {
+        this.elements["genre"]      .setAttribute("contenteditable", true);
+    }
+    /**
+     * Apply typed genre
+     */
+    static onGenreBlur() {
+        this.elements["genre"]      .removeAttribute("contenteditable");
+        if (Settings.genre !== this.elements["genre"].innerHTML) {
+            Settings.genre = this.elements["genre"].innerHTML;
+            this.player.getTracks();
+        }
+    }
+    /**
+     * Key handler
+     * @param {KeyboardEvent} event
+     */
+    static onGenreKey(event) {
+        // prevents track time navigation
+        event.stopPropagation();
+        // apply changes
+        if (event.code === "Enter") {
+            event.preventDefault();
+            event.target.blur();
+        }
+    }
+    /**
      * Trackbar handler
-     * @param {} event
+     * @param {TapEvent} event
      */
     static onTrackbar(event) {
         if (this.elements["trackbar"] !== event.target || !this.player.isReady) {
@@ -131,6 +171,12 @@ export class PlayerState extends State {
      */
     static onMetadataLoaded() {
         this.player.play();
+    }
+    /**
+     * Track playing ended
+     */
+    static onPlayEnded() {
+        this.player.getTracks();
     }
     /**
      * Update current track time if not equals last value
