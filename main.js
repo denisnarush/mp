@@ -1,6 +1,7 @@
 import "../modules/moti-on.js";
 
 import { PlayerState } from "./states/player.state.js";
+import { RecentState } from "./states/recent.state.js";
 import { Player } from "./modules/player.js";
 
 if ("serviceWorker" in navigator && "nw" in window === false) {
@@ -14,6 +15,9 @@ if ("serviceWorker" in navigator && "nw" in window === false) {
 class Main {
     constructor() {
         this.player = new Player();
+        this.recent = new RecentState({
+            player: this.player
+        });
 
         window.addEventListener("keydown", Main.onKeydown.bind(this));
     }
@@ -21,6 +25,7 @@ class Main {
     init() {
         new PlayerState({
             player: this.player,
+            recent: this.recent,
             background: document.querySelector("#streamBgArtwork")
         }).init();
     }

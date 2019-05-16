@@ -28,6 +28,7 @@ export class PlayerState extends State {
         this.elements["pause"]      .doOn("tap", PlayerState.onPauseBtn.bind(this));
         this.elements["next"]       .doOn("tap", PlayerState.onNextBtn.bind(this));
         this.elements["prev"]       .doOn("tap", PlayerState.onPrevBtn.bind(this));
+        this.elements["bbar"]       .doOn("tap", PlayerState.onRecentBar.bind(this));
         /**
          * Player state elements onetime handlers
          */
@@ -113,6 +114,15 @@ export class PlayerState extends State {
     static onPrevBtn() {
         this.player.getTracks();
     }
+    /**
+     * Recent bar handler
+     */
+    static onRecentBar() {
+        console.log(this);
+        // TODO: subscribe attribute changing on recent state container by using DOM MutationObserver
+        this.elements["bbar"]       .setAttribute("hide", "");
+        this.recent.on();
+    }
     /** 
      * Stream resumed
     */
@@ -135,8 +145,8 @@ export class PlayerState extends State {
         this.elements["next"]       .removeAttribute("hide");
         // show top bar
         this.elements["tbar"]       .removeAttribute("hide");
-        // TODO: uncomment after recent state will be implemented
-        // this.elements["bbar"]     .removeAttribute("hide");
+        // show bottom bar
+        this.elements["bbar"]       .removeAttribute("hide");
         // remove handler from play button
         this.elements["play"]       .doOff("tap", this._onPlayBtnOnce_);
         // delete backup handler

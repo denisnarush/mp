@@ -7,10 +7,9 @@
 }
 .state[data-state="recent"][off]{
 	transform: translate3d(0, 99.9%, 1px);
-	margin-top: -59px;
 }
 .state[data-state="recent"][off] .bar{
-	padding-top: 14px;
+	visibility: hidden;
 }
 .state[data-state="recent"] .icon-list{
 	font-size: 2em;

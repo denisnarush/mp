@@ -1,34 +1,33 @@
 import { State } from "../modules/state.js";
 import { Settings } from "../modules/settings.js";
-import { default as Player } from "../modules/player.js";
 
-class Recent extends State {
-    constructor() {
-        super("recent", {
-            topBarElement: ".bar.bar__top"
-        });
 
-        this.state.topBar = [{
-            icon: {
-                type: "icon-list"
-            }
-        }, {
-            push: "right"
-        }, {
-            title: "Recent"
-        }, {
-            push: "right"
-        }, {
-            icon: {
-                type: "icon-list"
-            }
-        }];
+export class RecentState extends State {
+    constructor(options) {
+        super("recent", options);
 
-        this.state.topBar.manually = true;
+        // this.state.topBar = [{
+        //     icon: {
+        //         type: "icon-list"
+        //     }
+        // }, {
+        //     push: "right"
+        // }, {
+        //     title: "Recent"
+        // }, {
+        //     push: "right"
+        // }, {
+        //     icon: {
+        //         type: "icon-list"
+        //     }
+        // }];
 
-        this.stream = Player.stream;
-        this.playlist = this.state.querySelector("#playlist");
-        this.playlistTopBar = this.state.querySelector(".bar.bar__top");
+        // this.state.topBar.manually = true;
+
+        // this.stream = Player.stream;
+        // this.playlist = this.state.querySelector("#playlist");
+        // this.playlistTopBar = this.state.querySelector(".bar.bar__top");
+        this.elements["tbar"].doOn("tap", RecentState.onPlaylistBar.bind(this));
     }
 
     /**
@@ -46,7 +45,7 @@ class Recent extends State {
             time.setTime(itm.duration);
 
             // template
-            html += `<div class="playlist-item ${this.stream.current == i ? "playlist-item__current" : ""}" data-trackindex="${i}">
+            html += `<div class="playlist-item ${this.player.getTrackId() == itm.id ? "playlist-item__current" : ""}" data-trackindex="${i}">
                         <div class="playlist-item-s playlist-item-s__left">
                             <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
                         </div>
@@ -56,7 +55,7 @@ class Recent extends State {
                     </div>`;
         }
         // past to the DOM
-        this.playlist.innerHTML = html;
+        this.elements["list"].innerHTML = html;
     }
     /**
      * Playlist item click handler
@@ -83,8 +82,8 @@ class Recent extends State {
     /**
      * Playlist state top bar handler
     */
-    onPlaylistBar() {
-        this.isOn() ? this.off() : this.on();
+    static onPlaylistBar() {
+        this.off();
     }
     /**
      * Changing current class of playlist item
@@ -143,5 +142,3 @@ class Recent extends State {
         });
     }
 }
-
-export default new Recent();

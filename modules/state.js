@@ -3,50 +3,54 @@
   * 
   * @author Denis Narush <child.denis@gmail.com>
  */
-class State {
+export class State {
     /**
      * State constructor
      * @param {String} name State's name
      * @param {any} options Options
      */
     constructor(name, options = {}) {
-        this.state = document.querySelector(`[data-state="${name}"]`);
+        let container = document.querySelector(`[data-state="${name}"]`);
 
-        if (!this.state) {
-            this.state = document.createElement("div");
-            this.state.classList.add("state");
-            this.state.setAttribute("data-state", name);
-            this.state.setAttribute("off", "");
-            document.body.appendChild(this.state);
+        if (!container) {
+            container = document.createElement("div");
+            container.classList.add("state");
+            container.setAttribute("data-state", name);
+            container.setAttribute("off", "");
+            document.body.appendChild(container);
         }
 
         Object.assign(this, options);
 
-         this.state.querySelectorAll(`[data-element]`).forEach((el) => {
-             this.elements = this.elements || {};
-             this.elements[el.getAttribute('data-element')] = el;
-         })
+        this.elements = {};
+        this.elements["container"] = container;
+
+        container.querySelectorAll(`[data-element]`).forEach((el) => {
+            this.elements[el.getAttribute('data-element')] = el;
+        })
+
     }
 
     /**
      * On
      */
     on () {
-        this.state.removeAttribute("off");
+        this.elements["container"].removeAttribute("off");
+        this.elements["container"].removeAttribute("hidden");
     }
 
     /**
      * Off
      */
     off () {
-        this.state.setAttribute("off", "");
+        this.elements["container"].setAttribute("off", "");
     }
 
     /**
      * isOn
      */
     isOn () {
-        return !this.state.hasAttribute("off");
+        return !this.elements["container"].hasAttribute("off");
     }
 
     /**
@@ -87,8 +91,3 @@ class State {
         this.off();
     }
 }
-
-/**
- * Export
- */
-export { State };

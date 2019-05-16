@@ -74,11 +74,17 @@
 		</div>
 	</div>
 	<!-- Recent State-->
-	<div class="state" data-state="recent" off hidden>
-		<div class="bar bar__top bar__local bar__bg"></div>
+	<div class="state" data-state="recent" off>
+		<div data-element="tbar" class="bar bar__bg">
+			<div class="bar-icon"><i class="icon icon-list"></i></div>
+			<div class="bar-push bar-push__right"></div>
+			<div class="bar-title">Recent</div>
+			<div class="bar-push bar-push__right"></div>
+			<div class="bar-icon"><i class="icon icon-list"></i></div>
+		</div>
 		<div class="playlist playlist__line">
 			<div class="playlist-scroll" style="top: 30%" hidden></div>
-			<div id="playlist"></div>
+			<div data-element="list"></div>
 		</div>
 	</div>
 </body>

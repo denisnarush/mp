@@ -254,6 +254,9 @@ export class Player {
     getCover() {
         return (this.stream.track.artwork_url ? this.stream.track.artwork_url.replace(new RegExp("large","g"),"t500x500") : this.stream.track.user.avatar_url);
     }
+    getTrackId() {
+        return this.stream.track.id;
+    }
     getTrackTitle() {
         return this.stream.track.title;
     }
