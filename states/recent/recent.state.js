@@ -21,13 +21,10 @@ export class RecentState extends State {
 
         this.elements["tbar"]       .doOn("tap", RecentState.onPlaylistBar.bind(this));
         this.elements["container"]  .doOn("transitionend", RecentState.onTransitionEnd.bind(this));
-    }
-    /**
-     * On state instructions
-     */
-    on() {
+
+        this.player                 .onMetadataLoaded(RecentState.onMetadataLoaded.bind(this));
+
         this.generate();
-        super.on();
     }
     /**
      * On state closed custom event subsrcibtion
@@ -77,6 +74,12 @@ export class RecentState extends State {
         if (!this.isOn()) {
             this.elements["container"].dispatchEvent(RecentState.onStateClosedEvent);
         }
+    }
+    /**
+     * Player metadata is loaded
+     */
+    static onMetadataLoaded() {
+        this.generate();
     }
 
 

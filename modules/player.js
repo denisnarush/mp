@@ -17,6 +17,7 @@ export class Player {
         const container = document.createElement("audio");
 
         this.stream = container;
+        this.stream.track = {};
 
         container.setAttribute("preload", "auto");
         container.volume = Settings.volume;
