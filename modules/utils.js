@@ -43,6 +43,23 @@ export function request (obj) {
     });
 }
 
+export function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+export function getRandomStartCharForQuery() {
+    const collection = [
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+        'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+        'u', 'v', 'w', 'x', 'y', 'z'
+    ];
+
+    return collection[getRandomInt(0, collection.length)];
+}
+
 export function assignToPlayedGenre (source) {
     let target = {};
     let src;

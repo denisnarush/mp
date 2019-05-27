@@ -1,5 +1,5 @@
 import { Settings } from "./settings.js";
-import { request, assignToPlayedGenre } from "./utils.js";
+import { request, assignToPlayedGenre, getRandomStartCharForQuery } from "./utils.js";
 /**
   * Class representing a Player
   * 
@@ -55,9 +55,16 @@ export class Player {
 
         // request params
         const params = {
+            duration: {
+                from: 120000,
+                to: 600000
+            },
+            q: getRandomStartCharForQuery(),
             genres: Settings.genre,
             client_id: Settings.scKey,
+            order: 'created_at',
             offset: offset,
+            format: 'json',
             limit: 1
         };
 
@@ -81,8 +88,8 @@ export class Player {
 
                 let track = tracks[0];
 
-                // no longer then 7.5 min
-                if (track.duration > Settings.duration) {
+                // no less then 2.0 min
+                if (track.duration < 120000) {
                     return this.getTracks();
                 }
 
