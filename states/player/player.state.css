@@ -50,6 +50,8 @@ img.player-cover-picture{
     transform: translateX(-50%) translateY(-50%);
     padding-top: 0;
 	visibility: initial;
+	mask: url(/assets/interface/vinil_mask.png) 50% 50% no-repeat;
+    mask-size: 100%;
 	-webkit-mask: url(/assets/interface/vinil_mask.png) 50% 50% no-repeat;
     -webkit-mask-size: 100%;
 }
