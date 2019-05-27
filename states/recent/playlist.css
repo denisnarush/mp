@@ -31,7 +31,7 @@
 	opacity: 1;
 }
 .playlist-item.playlist-item__current:before{
-	background-image: url('../assets/interface/icon-bars.png');
+	background-image: url('/assets/interface/icon-bars.png');
 	background-size: 100% 100%;
 
 	content: '';
@@ -44,7 +44,7 @@
 	height: 22px;
 }
 	.playlist__line .playlist-item{
-		background: url('../assets/interface/playlist-item-bg.png') 5% 0 no-repeat;
+		background: url('/assets/interface/playlist-item-bg.png') 5% 0 no-repeat;
 		background-size: 110% 100%;
 		height: 78px;
 	}
