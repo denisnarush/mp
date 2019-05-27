@@ -45,6 +45,7 @@ body{
 
 	z-index: -1;
 
+	filter: blur(10px);
 	-webkit-filter: blur(10px);
 }
 .bg:before{
