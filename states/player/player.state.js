@@ -1,5 +1,5 @@
-import { State } from "../modules/state.js";
-import { Settings } from "../modules/settings.js";
+import { State } from "/modules/state.js";
+import { Settings } from "/modules/settings.js";
 /**
   * Class representing a Player State
   * 
@@ -8,7 +8,7 @@ import { Settings } from "../modules/settings.js";
  */
 export class PlayerState extends State {
     /**
-     * Player State constructor
+     * Player state constructor
      */
     constructor(options) {
         super("player", options);
@@ -28,7 +28,6 @@ export class PlayerState extends State {
         this.elements["pause"]      .doOn("tap", PlayerState.onPauseBtn.bind(this));
         this.elements["next"]       .doOn("tap", PlayerState.onNextBtn.bind(this));
         this.elements["prev"]       .doOn("tap", PlayerState.onPrevBtn.bind(this));
-        this.elements["bbar"]       .doOn("tap", PlayerState.onRecentBar.bind(this));
         /**
          * Player state elements onetime handlers
          */
@@ -118,9 +117,8 @@ export class PlayerState extends State {
      * Recent bar handler
      */
     static onRecentBar() {
-        console.log(this);
-        // TODO: subscribe attribute changing on recent state container by using DOM MutationObserver
         this.elements["bbar"]       .setAttribute("hide", "");
+        this.recent.show();
         this.recent.on();
     }
     /** 
@@ -139,6 +137,14 @@ export class PlayerState extends State {
      * Once on play button handler
      */
     static onPlayBtnOnce() {
+        // apply handler for bottom bar of player state
+        this.elements["bbar"]       .doOn("tap", PlayerState.onRecentBar.bind(this));
+        this.recent.init();
+        // apply handler on recent State Closed
+        this.recent.onClosed(() => {
+            this.elements["bbar"]   .removeAttribute("hide");
+            this.recent.hide();
+        });
         // show prev button
         this.elements["prev"]       .removeAttribute("hide");
         // show next button

@@ -30,51 +30,39 @@ export class State {
         })
 
     }
-
+    /**
+     * On state Closed custom event
+     */
+    static onStateClosedEvent = new CustomEvent("onstateclosed");
     /**
      * On
      */
     on () {
         this.elements["container"].removeAttribute("off");
-        this.elements["container"].removeAttribute("hidden");
     }
-
     /**
      * Off
      */
     off () {
         this.elements["container"].setAttribute("off", "");
     }
-
+    /**
+     * Show
+     */
+    show() {
+        this.elements["container"].removeAttribute("hide", "");
+    }
+    /**
+     * Hide
+     */
+    hide() {
+        this.elements["container"].setAttribute("hide", "");
+    }
     /**
      * isOn
      */
     isOn () {
         return !this.elements["container"].hasAttribute("off");
-    }
-
-    /**
-     * Switches to state by name
-     * @param {String} state
-     * @param {Objecte} optionsq
-     */
-    switchTo (state, options) {
-        let params = options || {};
-
-        params.init = params.init === undefined ? true : params.init;
-
-        try {
-            import(`../states/${state}.state.js`).then((module) => {
-                if (params.init) {
-                    module.default.init();
-                } else {
-                    module.default.on();
-                }
-                this.destroy();
-            });
-        } catch (Errror) {
-            // console.log(`Can't import state ${state}`);
-        }
     }
 
     /**

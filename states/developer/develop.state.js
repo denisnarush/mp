@@ -1,22 +1,9 @@
-import { State } from "../modules/state.js";
-import { Settings } from "../modules/settings.js";
+import { State } from "/modules/state.js";
+import { Settings } from "/modules/settings.js";
 
 class DevelopState extends State {
-    constructor() {
-        super("develop");
-
-        this.state.topBar = [{
-            icon: {
-                type: "icon-arrow-left",
-                handler: () => {
-                    this.switchTo("player", {init: false});
-                }
-            }
-        }, {
-            title: "Develop"
-        }, {
-            push: "right"
-        }];
+    constructor(options) {
+        super("develop", options);
     }
 
     init() {

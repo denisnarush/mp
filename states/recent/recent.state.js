@@ -1,11 +1,26 @@
-import { State } from "../modules/state.js";
-import { Settings } from "../modules/settings.js";
-
-
+import { State } from "/modules/state.js";
+import { Settings } from "/modules/settings.js";
+/**
+  * Class representing a Recent State
+  * 
+  * @author Denis Narush <child.denis@gmail.com>
+  * @extends State
+ */
 export class RecentState extends State {
+    /**
+     * Recent state constructor
+     */
     constructor(options) {
         super("recent", options);
-        this.elements["tbar"].doOn("tap", RecentState.onPlaylistBar.bind(this));
+    }
+    /**
+     * Init
+     */
+    init() {
+        this.elements["container"]  .removeAttribute("hidden");
+
+        this.elements["tbar"]       .doOn("tap", RecentState.onPlaylistBar.bind(this));
+        this.elements["container"]  .doOn("transitionend", RecentState.onTransitionEnd.bind(this));
     }
     /**
      * On state instructions
@@ -15,10 +30,11 @@ export class RecentState extends State {
         super.on();
     }
     /**
-     * Playlist state top bar handler
-    */
-    static onPlaylistBar() {
-        this.off();
+     * On state closed custom event subsrcibtion
+     * @param {Function} fn Callback functions
+     */
+    onClosed(fn) {
+        this.elements["container"].doOn("onstateclosed", fn.bind(this));
     }
     /**
      * Playlist generator method
@@ -46,6 +62,21 @@ export class RecentState extends State {
         }
         // past to the DOM
         this.elements["list"].innerHTML = html;
+    }
+    /**
+     * Recent state top bar handler
+    */
+    static onPlaylistBar() {
+        this.off();
+    }
+    /**
+     * Recetn state transition end handler
+     */
+    static onTransitionEnd() {
+        // check if state closed to dispatch event
+        if (!this.isOn()) {
+            this.elements["container"].dispatchEvent(RecentState.onStateClosedEvent);
+        }
     }
 
 
@@ -92,7 +123,7 @@ export class RecentState extends State {
         }
     }
 
-    init() {
+    _init() {
         let onTop = true;
         let onBot = false;
         let y = 0;

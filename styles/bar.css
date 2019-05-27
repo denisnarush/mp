@@ -24,7 +24,7 @@
 }
 
 .bar__bg{
-	background: url('../img/interface/playlist-item-bg.png') 0 0 no-repeat, rgba(29, 39, 44, 0.9);
+	background: url('../assets/interface/playlist-item-bg.png') 0 0 no-repeat, rgba(29, 39, 44, 0.9);
 	background-size: 105% 100%;
 	background-position: 5% -5%;
 	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);

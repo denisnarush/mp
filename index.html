@@ -2,36 +2,37 @@
 <html lang="en">
 <head>
 	<title>Mp</title>
+	<base href="/">
 	<style>@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500");</style>
-	<style>@import url("icomoon/style.css");</style>
+	<style>@import url("/assets/icomoon/style.css");</style>
 	<style>@import url("styles/var.css");</style>
 	<style>@import url("styles/common.css");</style>
 	<style>@import url("styles/icon.css");</style>
-	<style>@import url("styles/playlist.css");</style>
+	
 	<style>@import url("styles/bar.css");</style>
 	<style>@import url("styles/state.css");</style>
-	<style>@import url("states/player.state.css");</style>
-	<style>@import url("states/recent.state.css");</style>
+	<style>@import url("states/player/player.state.css");</style>
+	<style>@import url("states/recent/recent.state.css");</style>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="application-name" content="MPLSC">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="apple-mobile-web-app-title" content="MPLSC">
-	<link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="192x192" href="favicons/android-chrome-192x192.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
-	<link rel="mask-icon" href="favicons/safari-pinned-tab.svg" color="#d5c15b">
-	<link rel="shortcut icon" href="favicons/favicon.ico">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicons/android-chrome-192x192.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+	<link rel="mask-icon" href="/assets/favicons/safari-pinned-tab.svg" color="#d5c15b">
+	<link rel="shortcut icon" href="/assets/favicons/favicon.ico">
 	<meta name="theme-color" content="#000000">
 	<meta name="msapplication-TileColor" content="#000000">
-	<meta name="msapplication-TileImage" content="favicons/mstile-144x144.png">
-	<meta name="msapplication-config" content="favicons/browserconfig.xml">
-	<link rel="manifest" href="favicons/manifest.json">
+	<meta name="msapplication-TileImage" content="/assets/favicons/mstile-144x144.png">
+	<meta name="msapplication-config" content="/assets/favicons/browserconfig.xml">
+	<link rel="manifest" href="/assets/favicons/manifest.json">
 	<meta property="og:title" content="MediaPlayer - radio with SoundCloud API v1.0">
 	<meta property="og:image" content="screens.png">
-	<script src="./main.js" async="true" type="module"></script>
+	<script src="/main.js" async="true" type="module"></script>
 </head>
 <body>
 	<!-- Background from artwork -->
@@ -45,7 +46,7 @@
 		</div>
 		<div class="player">
 			<div class="player-cover">
-				<img src="./img/interface/vinil.png" class="player-cover-placeholder">
+				<img src="/assets/interface/vinil.png" class="player-cover-placeholder">
 				<img data-element="artwork" class="player-cover-picture">
 			</div>
 			<p data-element="genre" class="player-title" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></p>
@@ -74,7 +75,7 @@
 		</div>
 	</div>
 	<!-- Recent State-->
-	<div class="state" data-state="recent" off>
+	<div class="state" data-state="recent" off hide hidden>
 		<div data-element="tbar" class="bar bar__bg">
 			<div class="bar-icon"><i class="icon icon-list"></i></div>
 			<div class="bar-push bar-push__right"></div>
