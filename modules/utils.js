@@ -22,6 +22,10 @@ export function request (obj) {
             obj.options = null;
         }
 
+        if (obj.method === "POST") {
+            obj.options = toURLencoded(obj.options);
+        }
+
         xhr.open(
             obj.method || "GET",
             obj.url,
@@ -29,6 +33,10 @@ export function request (obj) {
             obj.user || null,
             obj.password || null
         );
+
+        if (obj.headers) {
+            obj.headers.forEach(idx => xhr.setRequestHeader(idx[0], idx[1]));
+        }
 
         xhr.onload = () => {
             if (xhr.status >= 200 && xhr.status < 300) {

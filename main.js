@@ -1,8 +1,8 @@
-import "../modules/moti-on.js";
+import "./modules/moti-on.js";
+import { Player } from "./modules/player.js";
 
 import { PlayerState } from "./states/player/player.state.js";
 import { RecentState } from "./states/recent/recent.state.js";
-import { Player } from "./modules/player.js";
 
 if ("serviceWorker" in navigator && "nw" in window === false) {
     navigator.serviceWorker.register("service-worker.js");

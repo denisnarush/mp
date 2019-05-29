@@ -6,7 +6,7 @@ const key = "settings";
  * SoundCloud
  */
 const SCKEY = "7172aa9d8184ed052cf6148b4d6b8ae6";
-const SCURL = ("nw" in window === false ? "//api.soundcloud.com" : "http://api.soundcloud.com");
+const SCURL = "https://api.soundcloud.com";
 
 /**
  * Getter
@@ -113,13 +113,7 @@ export const Settings = {
     get scKey () {
         return SCKEY;
     },
-    set scKey (value) {
-        return SCKEY;
-    },
     get scURL () {
-        return SCURL;
-    },
-    set scURL (value) {
         return SCURL;
     }
 };
