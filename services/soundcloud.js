@@ -1,3 +1,8 @@
+/**
+  * SoundCloud Service
+  *
+  * @author Denis Narush <child.denis@gmail.com>
+ */
 import { request } from "./../modules/utils.js";
 import { SoundCloudEnv } from "./../envs/soundcloud.js"
 /**
@@ -40,12 +45,29 @@ export function me (token) {
 }
 /**
  * 
+ * @param {} params
  */
 export function tracks (params) {
     return request(
         {
             method: "GET",
             url: `${SoundCloudEnv.url}/tracks`,
+            options: {
+                'client_id': SoundCloudEnv.client_id,
+                ...params
+            }
+        }
+    );
+}
+/**
+ *
+ * @param {number} id Track ID
+ */
+export function getTrack (id) {
+    return request(
+        {
+            method: "GET",
+            url: `${SoundCloudEnv.url}/tracks/${id}`,
             options: {
                 'client_id': SoundCloudEnv.client_id
             }
@@ -58,5 +80,6 @@ export function tracks (params) {
 export const SoundCloudService = {
     token: token,
     me: me,
-    tracks: tracks
+    tracks: tracks,
+    getTrack: getTrack
 }

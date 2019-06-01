@@ -21,36 +21,37 @@ export class RecentState extends State {
 
         this.elements["tbar"]       .doOn("tap", RecentState.onPlaylistBar.bind(this));
         this.elements["container"]  .doOn("transitionend", RecentState.onTransitionEnd.bind(this));
+        this.elements["list"]       .doOn("tap", RecentState.onListTap.bind(this));
 
         this.player                 .onMetadataLoaded(RecentState.onMetadataLoaded.bind(this));
 
-        this.generate();
+        this.generateList();
     }
     /**
      * On state closed custom event subsrcibtion
-     * @param {Function} fn Callback functions
+     * @param {Function} fn Callback function
      */
     onClosed(fn) {
-        this.elements["container"].doOn("onstateclosed", fn.bind(this));
+        this.elements["container"]  .doOn("onstateclosed", fn.bind(this));
     }
     /**
      * Playlist generator method
      */
-    generate() {
+    generateList() {
         let html = "";
 
         let i = Settings.recent.length;
         while (i--) {
-            let itm = Settings.recent[i];
+            const item = Settings.recent[i];
+            const time = new Date();
 
-            let time = new Date();
             // track time
-            time.setTime(itm.duration);
+            time.setTime(item.duration);
 
             // template
-            html += `<div class="playlist-item ${this.player.getTrackId() == itm.id ? "playlist-item__current" : ""}" data-trackindex="${i}">
+            html += `<div class="playlist-item ${this.player.getTrackId() == item.id ? "playlist-item__current" : ""}" track-id="${item.id}">
                         <div class="playlist-item-s playlist-item-s__left">
-                            <p class="playlist-item-title">${itm.user.username}<span class="playlist-item-author">${itm.title}</span></p>
+                            <p class="playlist-item-title">${item.user.username}<span class="playlist-item-author">${item.title}</span></p>
                         </div>
                         <div class="playlist-item-s playlist-item-s__right">
                             <p class="playlist-item-time">${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}</p>
@@ -79,26 +80,20 @@ export class RecentState extends State {
      * Player metadata is loaded
      */
     static onMetadataLoaded() {
-        this.generate();
+        this.generateList();
     }
-
-
-
-
-
-
     /**
-     * Playlist item click handler
-     * @param {MouseEvent|TouchEvent} event
+     * @param {TapEvent} evt
      */
-    onPlaylistItem(event) {
+    static onListTap(evt) {
         let item = "",
-            current = event.target;
+            current = evt.target;
 
-        while(this.playlist !== current) {
-            if (current.parentElement === this.playlist) {
+        while(this.elements["list"] !== current) {
+            if (current.parentElement === this.elements["list"]) {
                 item = current;
             }
+            // next step
             current = current.parentElement;
         }
 
@@ -106,56 +101,6 @@ export class RecentState extends State {
             return;
         }
 
-
-        Player.select(item.getAttribute("data-trackindex"));
-    }
-    /**
-     * Changing current class of playlist item
-     */
-    onCanPlayThrough() {
-        if (!this.isOn()) {
-            return;
-        }
-
-        try {
-            this.playlist.querySelector(".playlist-item__current").classList.remove("playlist-item__current");
-        } catch (error) {
-            // no any previous setted current class
-        } finally {
-            this.playlist.querySelector(`[data-trackindex='${this.stream.current}']`).classList.add("playlist-item__current");
-        }
-    }
-
-    _init() {
-        let onTop = true;
-        let onBot = false;
-        let y = 0;
-
-        // playlist item tap
-        this.playlist.doOn("tap", (event) => {this.onPlaylistItem(event);});
-        // playlist top bar tap
-        this.playlistTopBar.doOn("tap", (event) => {this.onPlaylistBar(event);});
-
-        this.stream.addEventListener("canplaythrough", () => {this.onCanPlayThrough();});
-        // render bar to local element before `on` event
-        this.topBar.to(this.state.topBar || []);
-
-
-
-
-        this.playlist.addEventListener("touchstart", (event) => {
-            onTop = (this.playlist.scrollTop === 0);
-            onBot = (this.playlist.scrollTop + this.playlist.clientHeight === this.playlist.scrollHeight);
-            y = event.layerY;
-        });
-
-        this.playlist.addEventListener("touchmove", (event) => {
-            let movingUp = y < event.layerY;
-            let movingDown = y > event.layerY;
-
-            if ((movingUp && onTop) || (movingDown && onBot)) {
-                event.preventDefault();
-            }
-        });
+        this.player.getTrackById(item.getAttribute('track-id'));
     }
 }

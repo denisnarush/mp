@@ -1,5 +1,6 @@
 import { Settings } from "./settings.js";
-import { request, assignToPlayedGenre, getRandomStartCharForQuery } from "./utils.js";
+import { assignToPlayedGenre, getRandomStartCharForQuery } from "./utils.js";
+import { SoundCloudService } from "./../services/soundcloud.js";
 /**
   * Class representing a Player
   * 
@@ -72,7 +73,7 @@ export class Player {
             offset: Settings.played[Settings.genre].offset += Settings.limit
         });
 
-        request({ url: Settings.scURL + "/tracks", options: params})
+        SoundCloudService.tracks(params)
             .then((tracks) => {
                 // response has no tracks
                 if (!tracks.length) {
@@ -117,6 +118,18 @@ export class Player {
                 this.start();
             }, () => {
                 return this.getTracks();
+            });
+    }
+    /**
+     * Get Track by track Id and play
+     * @param {number} id Track id
+     */
+    getTrackById(id) {
+        SoundCloudService.getTrack(id)
+            .then(track => {
+                this.stop();
+                this.stream.track = track;
+                this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
             });
     }
     /**
