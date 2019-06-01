@@ -25,12 +25,14 @@
     "height": 640
   },
   "scripts": {
-    "prestart": "npm outdated",
+    "prestart": "npm outdated && tsc -p ./tsconfig.json",
     "start": "http-server .",
     "test": "eslint --init",
-    "test:ui:init": "backstop init",
-    "test:ui:test": "backstop test",
-    "test:ui:approve": "backstop approve"
+      "test:ui:init": "backstop init",
+      "test:ui:test": "backstop test",
+      "test:ui:approve": "backstop approve",
+    
+    "build": "tsc -p ./tsconfig.json"
   },
   "devDependencies": {
     "backstopjs": "^4.0.6",
@@ -40,6 +42,7 @@
     "mocha": "^6.1.4"
   },
   "dependencies": {
-    "three": "^0.105.1"
+    "three": "^0.105.1",
+    "typescript": "^3.5.1"
   }
 }
