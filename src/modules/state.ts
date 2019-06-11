@@ -1,10 +1,10 @@
 import { Player } from "./player";
 
-interface StateElements {
+export interface StateElements {
     [key: string]: Element;
 }
 
-interface StateOptions {
+export interface StateOptions {
     player?: Player;
 }
 
