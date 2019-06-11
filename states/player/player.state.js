@@ -137,27 +137,29 @@ export class PlayerState extends State {
      * Once on play button handler
      */
     static onPlayBtnOnce() {
-        // apply handler for bottom bar of player state
-        this.elements["bbar"]       .doOn("tap", PlayerState.onRecentBar.bind(this));
-        this.recent.init();
-        // apply handler on recent State Closed
-        this.recent.onClosed(() => {
-            this.elements["bbar"]   .removeAttribute("hide");
-            this.recent.hide();
+        this.player.preloadRandomTracks().then(() => {
+            this.player.start();
+            // apply handler for bottom bar of player state
+            this.elements["bbar"]       .doOn("tap", PlayerState.onRecentBar.bind(this));
+            this.recent.init();
+            // apply handler on recent State Closed
+            this.recent.onClosed(() => {
+                this.elements["bbar"]   .removeAttribute("hide");
+                this.recent.hide();
+            });
+            // show prev button
+            this.elements["prev"]       .removeAttribute("hide");
+            // show next button
+            this.elements["next"]       .removeAttribute("hide");
+            // show top bar
+            this.elements["tbar"]       .removeAttribute("hide");
+            // show bottom bar
+            this.elements["bbar"]       .removeAttribute("hide");
+            // remove handler from play button
+            this.elements["play"]       .doOff("tap", this._onPlayBtnOnce_);
+            // delete backup handler
+            delete this._onPlayBtnOnce_;
         });
-        // show prev button
-        this.elements["prev"]       .removeAttribute("hide");
-        // show next button
-        this.elements["next"]       .removeAttribute("hide");
-        // show top bar
-        this.elements["tbar"]       .removeAttribute("hide");
-        // show bottom bar
-        this.elements["bbar"]       .removeAttribute("hide");
-        // remove handler from play button
-        this.elements["play"]       .doOff("tap", this._onPlayBtnOnce_);
-        // delete backup handler
-        delete this._onPlayBtnOnce_;
-
     }
     /** 
      * Fires when data starts fetching, we can start populate UI

@@ -1,328 +1,202 @@
 import { Settings } from "./settings.js";
-import { assignToPlayedGenre, getRandomStartCharForQuery } from "./utils.js";
-import { SoundCloudService } from "./../services/soundcloud.js";
-/**
-  * Class representing a Player
-  * 
-  * @author Denis Narush <child.denis@gmail.com>
- */
+import { PlayerService } from "../services/player.js";
+
+
 export class Player {
-    /**
-     * Player constructor
-     */
     constructor() {
-
-        this.LIMIT = Settings.limit;
-        this.CLIENT_ID = Settings.scKey;
-
+        this.elements = {};
+        // preloaded tracks
+        this.tracks = [];
+        // selected service
+        this.service = new PlayerService();
+        // player main container element
         const container = document.createElement("audio");
-
-        this.stream = container;
-        this.stream.track = {};
-
+        // setting container element params
         container.setAttribute("preload", "auto");
         container.volume = Settings.volume;
-
         // volume change
         container.addEventListener("volumechange", () => {
             this.onVolumeChange();
         });
-
+        // appending to body
         document.body.appendChild(container);
-    }
-    /**
-     * Get list of tracks from SoundCloud
-     */
-    getTracks() {
-        // init playing genre in settings
-        if (!Settings.played[Settings.genre]) {
-            assignToPlayedGenre({
-                offset: 50,
-                id: []
-            });
-        }
-
-        let offset = Math.floor(Math.random() * (Settings.played[Settings.genre].offset)) + 1;
-
-        // if track allready founded once
-        if (Settings.played[Settings.genre].id.indexOf(offset) !== -1) {
-            if (Settings.played[Settings.genre].id.length == 1) {
-                assignToPlayedGenre({
-                    offset: Settings.played[Settings.genre].offset += Settings.limit
-                });
-            }
-            return this.getTracks();
-        }
-
-        // request params
-        const params = {
-            duration: {
-                from: 120000,
-                to: 600000
-            },
-            q: getRandomStartCharForQuery(),
-            genres: Settings.genre,
-            client_id: Settings.scKey,
-            order: 'created_at',
-            offset: offset,
-            format: 'json',
-            limit: 1
-        };
-
-        assignToPlayedGenre({
-            offset: Settings.played[Settings.genre].offset += Settings.limit
-        });
-
-        SoundCloudService.tracks(params)
-            .then((tracks) => {
-                // response has no tracks
-                if (!tracks.length) {
-                    return this.getTracks();
-                }
-
-                let ids = Settings.played[Settings.genre].id;
-                ids.push(params.offset);
-
-                assignToPlayedGenre({
-                    id: ids
-                });
-
-                let track = tracks[0];
-
-                // no less then 2.0 min
-                if (track.duration < 120000) {
-                    return this.getTracks();
-                }
-
-                // get recent array from Settings
-                let recent = Settings.recent;
-                // store information about track with only necessary values
-                recent.unshift({
-                    id: track.id,
-                    duration: track.duration,
-                    artwork_url: track.artwork_url,
-                    stream_url: track.stream_url,
-                    title: track.title,
-                    genre: track.genre,
-                    user: {
-                        username: track.user.username,
-                        avatar_url: track.user.avatar_url
-                    }
-                });
-                // save modified recent array
-                Settings.recent = recent;
-
-                this.stream.tracks = Settings.recent;
-                this.stream.current = 0;
-
-                this.start();
-            }, () => {
-                return this.getTracks();
-            });
-    }
-    /**
-     * Get Track by track Id and play
-     * @param {number} id Track id
-     */
-    getTrackById(id) {
-        SoundCloudService.getTrack(id)
-            .then(track => {
-                this.stop();
-                this.stream.track = track;
-                this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
-            });
-    }
-    /**
-     * Play
-     */
-    play() {
-        if (isNaN(this.stream.duration)) {
-            return this.getTracks();
-        }
-
-        if (!this.stream.paused) {
-            return;
-        }
-
-        const promise = this.stream.play();
-
-        if (promise !== undefined) {
-            promise.catch(() => {
-                /**
-                * iOS 11 play() is a promise.
-                */
-            });
-        }
+        // appending to elements
+        this.elements["container"] = container;
     }
     /**
      * Start
      */
-    start() {
+    start(idx = 0) {
         // important pause!
         this.stop();
-
-        let track = this.stream.tracks[this.stream.current];
-
-        if (!track) {return;}
-
-        // detecting if track was paused
-        if (this.stream.currentTime && this.stream.src === track.stream_url + "?client_id=" + this.CLIENT_ID) {
-            // and resume
-            return this.stream.play();
+        if (this.tracks.length === 0) {
+            // skip
+            return this;
         }
-
-        this.stream.track = track;
-        this.stream.src = track.stream_url + "?client_id=" + this.CLIENT_ID;
+        // current is empty
+        if (!this.track) {
+            //set current by index
+            this.track = this.tracks[idx];
+        }
+        // detecting if current track the same as new
+        if (this.elements["container"].src === this.track.src) {
+            // skip
+            return this;
+        }
+        // setting source
+        this.elements["container"].src = this.track.src;
     }
     /**
      * Stop
      */
     stop() {
-        setTimeout(() => {this.stream.pause();}, 0);
+        setTimeout(() => {this.elements["container"].pause();}, 0);
     }
     /**
-     * Next
+     * Play
      */
-    next() {
-        let last = this.stream.current;
-
-        if (this.stream.shuffled) {
-            let i = Math.floor(Math.random() * (this.stream.tracks.length - 0)) + 0;
-            ( this.stream.current === i ? this.stream.current++ : this.stream.current = i );
-        } else {
-            this.stream.current++;
+    play() {
+        // is tracks not prealoded 
+        if (this.tracks.length === 0) {
+            // skip
+            return this;
         }
-
-        ( this.stream.current === this.stream.tracks.length ?  this.stream.current = 0 :  this.stream.current );
-
-        if (this.stream.current !== last) {
-            this.stream.currentTime = 0;
+        // is track playing ?
+        if (!this.isPaused()) {
+            // skip
+            return this;
         }
-
-        this.start();
+        // is no current track 
+        if (this.track === void 0) {
+            // skip
+            return this;
+        }
+        // resume or start playing
+        const promise = this.elements["container"].play();
+        // iOS 11 play() is a promise.
+        if (promise !== undefined) {
+            promise.catch(() => {});
+        }
     }
     /**
-     * Prev
+     * 
      */
-    prev() {
-        let last = this.stream.current;
-
-        if (this.stream.shuffled) {
-            let i = Math.floor(Math.random() * (this.stream.tracks.length - 0)) + 0;
-            ( this.stream.current === i ? this.stream.current-- : this.stream.current = i );
-        } else {
-            this.stream.current--;
-        }
-
-        ( this.stream.current <= 0 ?  this.stream.current = this.stream.tracks.length - 1 : this.stream.current );
-
-        if (this.stream.current !== last) {
-            this.stream.currentTime = 0;
-        }
-
-        this.start();
+    preloadRandomTracks() {
+        return this.service.getTracks().then((tracks) => {
+            this.tracks = tracks;
+            return tracks;
+        });
+    }
+    /**
+     * Is current Track playing paused
+     */
+    isPaused() {
+        return this.elements["container"].paused;
+    }
+    /**
+     * Get Track Id
+     */
+    getTrackId() {
+        return this.track ? this.track.id : void 0;
+    }
+    /**
+     * Get Track cover
+     */
+    getCover() {
+        return this.track.cover;
+    }
+    /**
+     * Get Track title
+     */
+    getTrackTitle() {
+        return this.track.title;
+    }
+    /**
+     * Get Track genre
+     */
+    getTrackGenre() {
+        return this.track.genre;
+    }
+    /**
+     * Get Track duration
+     * @returns {number} Track duration in ms
+     */
+    getTrackDuration() {
+        return this.track.duration;
+    }
+    /**
+     * Get Track duration string representation
+     */
+    getTrackDurationString() {
+        const time = new Date(this.getTrackDuration());
+        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
+    }
+    /**
+     * Get Track time string representation
+     */
+    getCurrentTimeString() {
+        const time = new Date(this.elements["container"].currentTime * 1000);
+        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
+    }
+    /**
+     * Get Track time percent representation
+     */
+    getCurrentTimePercent() {
+        return `${this.getTrackDuration() ? this.elements["container"].currentTime * 100000 / this.getTrackDuration() : 0}%`;
     }
     /**
      * Volume changed
      */
     onVolumeChange() {
-        Settings.volume = this.stream.volume;
-    }
-
-
-
-    /**
-     * @returns {number} Player volume
-     */
-    get volume() {
-        return this.stream.volume;
+        Settings.volume = this.elements["container"].volume;
     }
     /**
-     * @param {number} value Set player volume
+     * OnProgress
+     * @param {Function} fn 
      */
-    set volume(value) {
-        let volume = this.stream.volume * 100 + value;
-
-        if (volume >= 100) {
-            volume = 100;
-        }
-        if (volume <= 0) {
-            volume = 0;
-        }
-
-        this.stream.volume = volume / 100;
-    }
-    /**
-     * @returns {boolean} Returns true if audio element is HAVE_ENOUGH_DATA
-     */
-    get isReady() {
-        // 4 HAVE_ENOUGH_DATA Enough data is available—and the download rate
-        // is high enough—that the media can be played through to the end without interruption.
-        return this.stream.readyState === 4;
-    }
-    /**
-     * @returns {number} audio element current time
-     */
-    get currentTime() {
-        return this.stream.currentTime;
-    }
-    /**
-     * @param {number} value Should be as audio element time value
-     */
-    set currentTime(value) {
-        this.stream.currentTime = value;
-    }
-    getCover() {
-        return (this.stream.track.artwork_url ? this.stream.track.artwork_url.replace(new RegExp("large","g"),"t500x500") : this.stream.track.user.avatar_url);
-    }
-    getTrackId() {
-        return this.stream.track.id;
-    }
-    getTrackTitle() {
-        return this.stream.track.title;
-    }
-    getTrackGenre() {
-        return this.stream.track.genre;
-    }
-    getCurrentTimeString() {
-        const time = new Date(this.currentTime * 1000);
-        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
-    }
-    getCurrentTimePercent() {
-        return `${this.getTrackDuration() ? this.currentTime * 100000 / this.getTrackDuration() : 0}%`;
-    }
-    getDuration() {
-        return this.stream.duration;
-    }
-    getTrackDuration() {
-        return this.stream.track.duration;
-    }
-    getTrackDurationString() {
-        const time = new Date(this.getTrackDuration());
-        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
-    }
-    togglePlaying() {
-        this.stream.paused ? this.play() : this.stop();
-    }
     onProgress(fn) {
-        this.stream.addEventListener("progress", fn);
+        this.elements["container"].addEventListener("progress", fn);
     }
+    /**
+     * OnLoadStart
+     * @param {Function} fn 
+     */
     onLoadStart(fn) {
-        this.stream.addEventListener("loadstart", fn);
+        this.elements["container"].addEventListener("loadstart", fn);
     }
+    /**
+     * OnMetadataLoaded
+     * @param {Function} fn 
+     */
     onMetadataLoaded(fn) {
-        this.stream.addEventListener("loadedmetadata", fn);
+        this.elements["container"].addEventListener("loadedmetadata", fn);
     }
+    /**
+     * OnPlay
+     * @param {Function} fn 
+     */
     onPlay(fn) {
-        this.stream.addEventListener("play", fn);
+        this.elements["container"].addEventListener("play", fn);
     }
+    /**
+     * OnPause
+     * @param {Function} fn 
+     */
     onPause(fn) {
-        this.stream.addEventListener("pause", fn);
+        this.elements["container"].addEventListener("pause", fn);
     }
+    /**
+     * OnEnded
+     * @param {Function} fn 
+     */
     onEnded(fn) {
-        this.stream.addEventListener("ended", fn);
+        this.elements["container"].addEventListener("ended", fn);
     }
+    /**
+     * OnTimeUpdate
+     * @param {Function} fn 
+     */
     onTimeUpdate(fn) {
-        this.stream.addEventListener("timeupdate", fn);
+        this.elements["container"].addEventListener("timeupdate", fn);
     }
 }

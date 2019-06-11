@@ -28,10 +28,9 @@
     "prestart": "npm outdated && tsc -p ./tsconfig.json",
     "start": "http-server .",
     "test": "eslint --init",
-      "test:ui:init": "backstop init",
-      "test:ui:test": "backstop test",
-      "test:ui:approve": "backstop approve",
-    
+    "test:ui:init": "backstop init",
+    "test:ui:test": "backstop test",
+    "test:ui:approve": "backstop approve",
     "build": "tsc -p ./tsconfig.json"
   },
   "devDependencies": {
@@ -42,7 +41,7 @@
     "mocha": "^6.1.4"
   },
   "dependencies": {
-    "three": "^0.105.1",
+    "three": "^0.105.2",
     "typescript": "^3.5.1"
   }
 }

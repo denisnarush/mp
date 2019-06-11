@@ -3,15 +3,15 @@
   *
   * @author Denis Narush <child.denis@gmail.com>
  */
-import { request } from "./../modules/utils.js";
+import { Request } from "./../modules/utils.js";
 import { SoundCloudEnv } from "./../envs/soundcloud.js"
 /**
  * 
  * @param {string} username Username
  * @param {string} password Password
  */
-export function token (username, password) {
-    return request(
+export function token(username, password) {
+    return Request(
         {
             method: "POST",
             url: `${SoundCloudEnv.url}/oauth2/token`,
@@ -22,9 +22,9 @@ export function token (username, password) {
                 'username': username,
                 'password': password
             },
-            headers: [
-                ["Content-Type", "application/x-www-form-urlencoded"]
-            ]
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
         }
     );
 }
@@ -32,8 +32,8 @@ export function token (username, password) {
  * 
  * @param {string} token Access token
  */
-export function me (token) {
-    return request(
+export function me(token) {
+    return Request(
         {
             method: "GET",
             url: `${SoundCloudEnv.url}/me`,
@@ -47,8 +47,8 @@ export function me (token) {
  * 
  * @param {} params
  */
-export function tracks (params) {
-    return request(
+export function getTracks(params) {
+    return Request(
         {
             method: "GET",
             url: `${SoundCloudEnv.url}/tracks`,
@@ -57,14 +57,22 @@ export function tracks (params) {
                 ...params
             }
         }
+    ).then(
+        data => data.map(
+            track => {
+                    track.cover     = track.artwork_url ? track.artwork_url.replace("large","t500x500") : track.user.avatar_url;
+                    track.src       = `${track.stream_url}?client_id=${SoundCloudEnv.client_id}`;
+                    return track;
+                }
+            )
     );
 }
 /**
  *
  * @param {number} id Track ID
  */
-export function getTrack (id) {
-    return request(
+export function getTrack(id) {
+    return Request(
         {
             method: "GET",
             url: `${SoundCloudEnv.url}/tracks/${id}`,
@@ -72,6 +80,8 @@ export function getTrack (id) {
                 'client_id': SoundCloudEnv.client_id
             }
         }
+    ).then(
+        data => data.map(track => track.src = `${track.stream_url}?client_id=${SoundCloudEnv.client_id}`)
     );
 }
 /**
@@ -80,6 +90,6 @@ export function getTrack (id) {
 export const SoundCloudService = {
     token: token,
     me: me,
-    tracks: tracks,
+    getTracks: getTracks,
     getTrack: getTrack
 }

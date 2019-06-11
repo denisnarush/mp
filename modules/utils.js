@@ -11,44 +11,17 @@ export function toURLencoded (element, key, list) {
     return list.join("&");
 }
 
-export function request (obj) {
-    return new Promise((resolve, reject) => {
-        let xhr = new XMLHttpRequest();
+export function Request(obj) {
+    let options = {};
+    let url = "";
 
-        obj.method = obj.method || "GET";
+    options.method = obj.method || "GET";
 
-        if (obj.method === "GET") {
-            obj.url += "?" + toURLencoded(obj.options);
-            obj.options = null;
-        }
+    if (options.method === "GET") {
+        url = obj.url + "?" + toURLencoded(obj.options);
+    }
 
-        if (obj.method === "POST") {
-            obj.options = toURLencoded(obj.options);
-        }
-
-        xhr.open(
-            obj.method || "GET",
-            obj.url,
-            obj.async || true,
-            obj.user || null,
-            obj.password || null
-        );
-
-        if (obj.headers) {
-            obj.headers.forEach(idx => xhr.setRequestHeader(idx[0], idx[1]));
-        }
-
-        xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-                resolve(JSON.parse(xhr.response));
-            } else {
-                reject(xhr.statusText);
-            }
-        };
-        xhr.onerror = () => reject(xhr.statusText);
-
-        xhr.send(obj.options);
-    });
+    return fetch(url, options).then(response => response.json());
 }
 
 export function getRandomInt(min, max) {

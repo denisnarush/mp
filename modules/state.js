@@ -64,14 +64,12 @@ export class State {
     isOn () {
         return !this.elements["container"].hasAttribute("off");
     }
-
     /**
      * Init
      */
     init () {
         this.on();
     }
-
     /**
      * Destroy
      */
