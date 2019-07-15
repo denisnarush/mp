@@ -4,7 +4,5 @@
     "workbench.editor.showTabs": false,
     "window.zoomLevel": -0.6,
     "editor.renderWhitespace": "boundary",
-    "eslint.autoFixOnSave": true,
-    "eslint.alwaysShowStatus": true,
     "editor.minimap.enabled": false
 }

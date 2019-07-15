@@ -56,9 +56,12 @@ export class PlayerState extends State {
      */
     static onGenreBlur() {
         this.elements["genre"]      .removeAttribute("contenteditable");
-        if (Settings.genre !== this.elements["genre"].innerHTML) {
-            Settings.genre = this.elements["genre"].innerHTML;
-            this.player.getTracks();
+        if (this.player.settings.genres !== this.elements["genre"].innerHTML) {
+            this.player.settings = { genres: this.elements["genre"].innerHTML };
+
+            this.player.preloadRandomTracks().then(() => {
+                this.player.start();
+            });
         }
     }
     /**
@@ -105,13 +108,27 @@ export class PlayerState extends State {
      * Next button handler
      */
     static onNextBtn() {
-        this.player.getTracks();
+        this.player.preloadRandomTracks().then((tracks) => {
+            let found = false;
+            let i = 0;
+            for (let i = 0; i < tracks.length; i++) {
+                if (tracks[i].genre) {
+                    found = true;
+                    return this.player.start(i);
+                }
+                this.player.settings = { offset: this.player.settings.offset + 1 };
+                i = i + 1;
+            };
+            if (!found) {
+                return PlayerState.onNextBtn.call(this);
+            }
+        });
     }
     /**
      * Prev button handler
      */
     static onPrevBtn() {
-        this.player.getTracks();
+        return PlayerState.onNextBtn.call(this);
     }
     /**
      * Recent bar handler
@@ -194,7 +211,7 @@ export class PlayerState extends State {
      * Track playing ended
      */
     static onPlayEnded() {
-        this.player.getTracks();
+        return PlayerState.onNextBtn.call(this);
     }
     /**
      * Update current track time if not equals last value

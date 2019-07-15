@@ -88,8 +88,5 @@ export function getTrack(id) {
  * 
  */
 export const SoundCloudService = {
-    token: token,
-    me: me,
-    getTracks: getTracks,
-    getTrack: getTrack
+    token, me, getTrack, getTracks
 }

@@ -19,6 +19,22 @@ class Main {
             player: this.player
         });
 
+        const defaultSettings = {
+            genres: "chillout",
+            volume: 1.0,
+            limit: 200,
+            duration: {
+                from: 90000,
+                to: 600000
+            },
+            offset: 0,
+            ...this.player.settings
+        }
+
+        this.player.volume = defaultSettings.volume;
+        this.player.settings = defaultSettings;
+
+
         window.addEventListener("keydown", Main.onKeydown.bind(this));
     }
 
@@ -46,10 +62,10 @@ class Main {
         this.player.currentTime -= 5;
             break;
         case "ArrowUp":
-            this.player.volume += 5;
+            this.player.volume += 0.05;
             break;
         case "ArrowDown":
-            this.player.volume -=5;
+            this.player.volume -=0.05;
             break;
         }
     }

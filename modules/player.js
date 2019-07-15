@@ -1,4 +1,3 @@
-import { Settings } from "./settings.js";
 import { PlayerService } from "../services/player.js";
 
 
@@ -13,11 +12,10 @@ export class Player {
         const container = document.createElement("audio");
         // setting container element params
         container.setAttribute("preload", "auto");
-        container.volume = Settings.volume;
         // volume change
         container.addEventListener("volumechange", () => {
             this.onVolumeChange();
-        });
+    });
         // appending to body
         document.body.appendChild(container);
         // appending to elements
@@ -33,11 +31,8 @@ export class Player {
             // skip
             return this;
         }
-        // current is empty
-        if (!this.track) {
-            //set current by index
-            this.track = this.tracks[idx];
-        }
+        //set current by index
+        this.track = this.tracks[idx];
         // detecting if current track the same as new
         if (this.elements["container"].src === this.track.src) {
             // skip
@@ -82,8 +77,11 @@ export class Player {
      * 
      */
     preloadRandomTracks() {
-        return this.service.getTracks().then((tracks) => {
-            this.tracks = tracks;
+        const { limit, offset, duration } = this.settings;
+
+        return this.service.getTracks( { limit, offset, duration } ).then((tracks) => {
+            this.tracks = tracks
+            this.settings = { offset: offset + 1 };
             return tracks;
         });
     }
@@ -92,6 +90,64 @@ export class Player {
      */
     isPaused() {
         return this.elements["container"].paused;
+    }
+    get settings() {
+        let settings;
+        try {
+            settings = JSON.parse(localStorage.getItem("player-settings"));
+        } catch (error) {
+            settings = {};
+        }
+        return settings;
+    }
+    set settings(params) {
+        let settings = {
+            ...this.settings,
+            ...params
+        }
+        try {
+            localStorage.setItem("player-settings", JSON.stringify(settings));
+        } catch (error) {
+            localStorage.setItem("player-settings", JSON.stringify({}));
+        }
+    }
+    /**
+     * @returns {boolean} Returns true if audio element is HAVE_ENOUGH_DATA
+     */
+    get isReady() {
+        // 4 HAVE_ENOUGH_DATA Enough data is available—and the download rate
+        // is high enough—that the media can be played through to the end without interruption.
+        return this.elements["container"].readyState === 4;
+    }
+    /**
+     * @returns {number} Player volume
+     */
+    get volume() {
+        return this.elements["container"].volume;
+    }
+    /**
+     * @param {number} value Set player volume
+     */
+    set volume(value) {
+        if (value >= 1) {
+            value = 1;
+        } else if (value <= 0) {
+            value = 0;
+        }
+
+        this.elements["container"].volume = value.toFixed(2);
+    }
+    /**
+     * @returns {number} audio element current time
+     */
+    get currentTime() {
+        return this.elements["container"].currentTime;
+    }
+    /**
+     * @param {number} value Should be as audio element time value
+     */
+    set currentTime(value) {
+        this.elements["container"].currentTime = value;
     }
     /**
      * Get Track Id
@@ -135,20 +191,28 @@ export class Player {
      * Get Track time string representation
      */
     getCurrentTimeString() {
-        const time = new Date(this.elements["container"].currentTime * 1000);
+        const time = new Date(this.currentTime * 1000);
         return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
     }
     /**
      * Get Track time percent representation
      */
     getCurrentTimePercent() {
-        return `${this.getTrackDuration() ? this.elements["container"].currentTime * 100000 / this.getTrackDuration() : 0}%`;
+        return `${this.getTrackDuration() ? this.currentTime * 100000 / this.getTrackDuration() : 0}%`;
+    }
+    /**
+     *
+     */
+    getDuration() {
+        return this.elements["container"].duration;
     }
     /**
      * Volume changed
      */
     onVolumeChange() {
-        Settings.volume = this.elements["container"].volume;
+        this.settings = {
+            volume: this.volume
+        };
     }
     /**
      * OnProgress
