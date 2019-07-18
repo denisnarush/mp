@@ -20,7 +20,7 @@ class Main {
         });
 
         const defaultSettings = {
-            genres: "chillout",
+            genres: ["Chillout", "Chill", "Ambient", "Techno", "House", "Deep House", "Minimal"],
             volume: 1.0,
             limit: 200,
             duration: {

@@ -108,27 +108,13 @@ export class PlayerState extends State {
      * Next button handler
      */
     static onNextBtn() {
-        this.player.preloadRandomTracks().then((tracks) => {
-            let found = false;
-            let i = 0;
-            for (let i = 0; i < tracks.length; i++) {
-                if (tracks[i].genre) {
-                    found = true;
-                    return this.player.start(i);
-                }
-                this.player.settings = { offset: this.player.settings.offset + 1 };
-                i = i + 1;
-            };
-            if (!found) {
-                return PlayerState.onNextBtn.call(this);
-            }
-        });
+        this.preloadRandomTracks();
     }
     /**
      * Prev button handler
      */
     static onPrevBtn() {
-        return PlayerState.onNextBtn.call(this);
+        this.preloadRandomTracks();
     }
     /**
      * Recent bar handler
@@ -153,30 +139,29 @@ export class PlayerState extends State {
     /**
      * Once on play button handler
      */
-    static onPlayBtnOnce() {
-        this.player.preloadRandomTracks().then(() => {
-            this.player.start();
-            // apply handler for bottom bar of player state
-            this.elements["bbar"]       .doOn("tap", PlayerState.onRecentBar.bind(this));
-            this.recent.init();
-            // apply handler on recent State Closed
-            this.recent.onClosed(() => {
-                this.elements["bbar"]   .removeAttribute("hide");
-                this.recent.hide();
-            });
-            // show prev button
-            this.elements["prev"]       .removeAttribute("hide");
-            // show next button
-            this.elements["next"]       .removeAttribute("hide");
-            // show top bar
-            this.elements["tbar"]       .removeAttribute("hide");
-            // show bottom bar
-            this.elements["bbar"]       .removeAttribute("hide");
-            // remove handler from play button
-            this.elements["play"]       .doOff("tap", this._onPlayBtnOnce_);
-            // delete backup handler
-            delete this._onPlayBtnOnce_;
+    static async onPlayBtnOnce() {
+        await this.preloadRandomTracks();
+
+        // apply handler for bottom bar of player state
+        this.elements["bbar"]       .doOn("tap", PlayerState.onRecentBar.bind(this));
+        this.recent.init();
+        // apply handler on recent State Closed
+        this.recent.onClosed(() => {
+            this.elements["bbar"]   .removeAttribute("hide");
+            this.recent.hide();
         });
+        // show prev button
+        this.elements["prev"]       .removeAttribute("hide");
+        // show next button
+        this.elements["next"]       .removeAttribute("hide");
+        // show top bar
+        this.elements["tbar"]       .removeAttribute("hide");
+        // show bottom bar
+        this.elements["bbar"]       .removeAttribute("hide");
+        // remove handler from play button
+        this.elements["play"]       .doOff("tap", this._onPlayBtnOnce_);
+        // delete backup handler
+        delete this._onPlayBtnOnce_;
     }
     /** 
      * Fires when data starts fetching, we can start populate UI
@@ -235,5 +220,21 @@ export class PlayerState extends State {
     static showPauseBtn() {
         this.elements["play"]       .setAttribute("hidden", "");
         this.elements["pause"]      .removeAttribute("hidden");
+    }
+
+    async preloadRandomTracks() {
+        let found = false;
+        let tracks = await this.player.preloadRandomTracks();
+        for (let i = 0; i < tracks.length; i++) {
+            if (tracks[i].genre && this.player.settings.genres.indexOf(tracks[i].genre) !== -1) {
+                found = true;
+                console.info(`${tracks[i].genre}\n${tracks[i].title}`, );
+                return this.player.start(i);
+            }
+            this.player.settings = { offset: this.player.settings.offset + 1 };
+        };
+        if (!found) {
+            return this.preloadRandomTracks.call(this);
+        }
     }
 }
