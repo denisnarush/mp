@@ -1,13 +1,14 @@
-import { PlayerService } from "../services/player.js";
+import { PlayerService } from "../services/player-service.js";
 
 
 export class Player {
-    constructor() {
+    constructor(options) {
+        const { service } = options;
         this.elements = {};
         // preloaded tracks
         this.tracks = [];
         // selected service
-        this.service = new PlayerService();
+        this.service = new PlayerService(service);
         // player main container element
         const container = document.createElement("audio");
         // setting container element params
@@ -25,21 +26,23 @@ export class Player {
      * Start
      */
     start(idx = 0) {
-        // important pause!
-        this.stop();
         if (this.tracks.length === 0) {
+            console.warn("Tracks list is epmty");
             // skip
             return this;
         }
         //set current by index
-        this.track = this.tracks[idx];
+        this.track = Object.assign({}, this.tracks[idx]);
         // detecting if current track the same as new
-        if (this.elements["container"].src === this.track.src) {
+        if (this.elements["container"].src === this.tracks[idx].src) {
+            console.warn("You are trying to start an already playing track");
             // skip
             return this;
         }
+        // important pause!
+        this.stop();
         // setting source
-        this.elements["container"].src = this.track.src;
+        this.elements["container"].src = this.tracks[idx].src;
     }
     /**
      * Stop
@@ -74,16 +77,11 @@ export class Player {
         }
     }
     /**
-     * 
+     * Preload random tracks
      */
     preloadRandomTracks() {
         const { limit, offset, duration } = this.settings;
-
-        return this.service.getTracks( { limit, offset, duration } ).then((tracks) => {
-            this.tracks = tracks
-            this.settings = { offset: offset + 1 };
-            return tracks;
-        });
+        return this.service.getTracks( { limit, offset, duration } ).then((tracks) => tracks);
     }
     /**
      * Is current Track playing paused
@@ -108,7 +106,7 @@ export class Player {
         try {
             localStorage.setItem("player-settings", JSON.stringify(settings));
         } catch (error) {
-            localStorage.setItem("player-settings", JSON.stringify({}));
+            console.warn(error);
         }
     }
     /**

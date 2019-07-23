@@ -57,11 +57,7 @@ export class PlayerState extends State {
     static onGenreBlur() {
         this.elements["genre"]      .removeAttribute("contenteditable");
         if (this.player.settings.genres !== this.elements["genre"].innerHTML) {
-            this.player.settings = { genres: this.elements["genre"].innerHTML };
-
-            this.player.preloadRandomTracks().then(() => {
-                this.player.start();
-            });
+            // TODO: Apply genres
         }
     }
     /**
@@ -124,6 +120,13 @@ export class PlayerState extends State {
         this.recent.show();
         this.recent.on();
     }
+    /**
+     * Recent onClose handler
+     */
+    static onRecentClose() {
+        this.elements["bbar"]   .removeAttribute("hide");
+        this.recent.hide();
+    }
     /** 
      * Stream resumed
     */
@@ -141,27 +144,28 @@ export class PlayerState extends State {
      */
     static async onPlayBtnOnce() {
         await this.preloadRandomTracks();
-
-        // apply handler for bottom bar of player state
-        this.elements["bbar"]       .doOn("tap", PlayerState.onRecentBar.bind(this));
-        this.recent.init();
-        // apply handler on recent State Closed
-        this.recent.onClosed(() => {
-            this.elements["bbar"]   .removeAttribute("hide");
-            this.recent.hide();
-        });
         // show prev button
         this.elements["prev"]       .removeAttribute("hide");
         // show next button
         this.elements["next"]       .removeAttribute("hide");
         // show top bar
         this.elements["tbar"]       .removeAttribute("hide");
-        // show bottom bar
-        this.elements["bbar"]       .removeAttribute("hide");
         // remove handler from play button
         this.elements["play"]       .doOff("tap", this._onPlayBtnOnce_);
         // delete backup handler
         delete this._onPlayBtnOnce_;
+        // checks and init recent state
+        if (!this.recent) {
+            console.warn("Recent State Not Found");
+        } else {
+            // apply handler for bottom bar of player state
+            this.elements["bbar"]   .doOn("tap", PlayerState.onRecentBar.bind(this));
+            // show player state bottom bar
+            this.elements["bbar"]   .removeAttribute("hide");
+            // apply handler for bottom bar of recent state
+            this.recent             .onClosed(PlayerState.onRecentClose.bind(this));
+            this.recent.init();
+        }
     }
     /** 
      * Fires when data starts fetching, we can start populate UI
@@ -221,20 +225,33 @@ export class PlayerState extends State {
         this.elements["play"]       .setAttribute("hidden", "");
         this.elements["pause"]      .removeAttribute("hidden");
     }
-
+    /**
+     * Preload Random tracks
+     */
     async preloadRandomTracks() {
+        // TODO: can be used for blocking content
         let found = false;
         let tracks = await this.player.preloadRandomTracks();
+
+        // TODO: should be moved out and logic increased
         for (let i = 0; i < tracks.length; i++) {
-            if (tracks[i].genre && this.player.settings.genres.indexOf(tracks[i].genre) !== -1) {
+            if (this.player.track) {
+                if (this.player.track.id === tracks[i].id) {
+                    continue;
+                }
+            }
+            // increase offset
+            if (tracks[i].genre && tracks[i].duration > this.player.settings.duration.from && this.player.settings.genres.indexOf(tracks[i].genre) !== -1) {
                 found = true;
-                console.info(`${tracks[i].genre}\n${tracks[i].title}`, );
+                console.info(`${tracks[i].genre}\n${tracks[i].title}`);
+                this.player.settings = { offset: this.player.settings.offset + i };
+                this.player.tracks = Object.assign([], tracks);
                 return this.player.start(i);
             }
-            this.player.settings = { offset: this.player.settings.offset + 1 };
         };
         if (!found) {
-            return this.preloadRandomTracks.call(this);
+            this.player.settings = { offset: this.player.settings.offset + tracks.length };
+            return await this.preloadRandomTracks.call(this);
         }
     }
 }

@@ -3,8 +3,8 @@
   *
   * @author Denis Narush <child.denis@gmail.com>
  */
-import { Request } from "./../modules/utils.js";
-import { SoundCloudEnv } from "./../envs/soundcloud.js"
+import { Request } from "../modules/utils.js";
+import { SoundCloudEnv } from "../envs/soundcloud.js"
 /**
  * 
  * @param {string} username Username

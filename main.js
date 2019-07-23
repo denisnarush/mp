@@ -14,13 +14,16 @@ if ("serviceWorker" in navigator && "nw" in window === false) {
  */
 class Main {
     constructor() {
-        this.player = new Player();
-        this.recent = new RecentState({
-            player: this.player
+        this.player = new Player({
+            service: "SoundCloud"
         });
+        // TODO: use recent state {0}
+        // this.recent = new RecentState({
+        //     player: this.player
+        // });
 
         const defaultSettings = {
-            genres: ["Chillout", "Chill", "Ambient", "Techno", "House", "Deep House", "Minimal"],
+            genres: ["Chillout", "Chill", "Deep House", "Minimal"],
             volume: 1.0,
             limit: 200,
             duration: {
@@ -41,7 +44,8 @@ class Main {
     init() {
         new PlayerState({
             player: this.player,
-            recent: this.recent,
+            // TODO: use recent state {1}
+            // recent: this.recent,
             background: document.querySelector("#streamBgArtwork")
         }).init();
     }

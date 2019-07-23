@@ -4,5 +4,6 @@
     "workbench.editor.showTabs": false,
     "window.zoomLevel": -0.6,
     "editor.renderWhitespace": "boundary",
-    "editor.minimap.enabled": false
+    "editor.minimap.enabled": false,
+    "eslint.enable": false
 }
