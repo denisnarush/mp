@@ -6,8 +6,8 @@
         "./node_modules"
     ],
     "compilerOptions": {
-        "declaration": true,
+        "declaration": false,
         "outDir": "./dist",
-        "target": "es6"
+        "target": "es5"
     }
 }

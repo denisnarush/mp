@@ -1,7 +1,15 @@
-import { State, StateOptions } from "../../modules/state";
+import { State } from "../../modules/state";
+import { Player } from "../../modules/player";
 
 export class PlayerState extends State {
-    constructor(name: string, options: StateOptions) {
-        super(name, options);
+    constructor(
+        options: {
+            player: Player,
+            background: HTMLElement
+        }) {
+
+        super("player", options);
     }
+
+    init() {}
 }

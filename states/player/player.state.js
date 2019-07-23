@@ -1,5 +1,4 @@
 import { State } from "/modules/state.js";
-import { Settings } from "./../../modules/settings.js";
 /**
   * Class representing a Player State
   * 
