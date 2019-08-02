@@ -5,5 +5,21 @@
     "window.zoomLevel": -0.6,
     "editor.renderWhitespace": "boundary",
     "editor.minimap.enabled": false,
-    "eslint.enable": false
+    "eslint.enable": false,
+
+    "todo-tree.excludeGlobs": ["test", "sandbox"],
+    "todo-tree.defaultHighlight": {
+        "type": "line",
+        "foreground": "lightblue",
+        "background": "black",
+        "opacity": 50
+    },
+    "todo-tree.customHighlight": {
+        "TODO": {
+            "icon": "check"
+        },
+        "FIXME": {
+            "icon": "alert"
+        }
+    }
 }

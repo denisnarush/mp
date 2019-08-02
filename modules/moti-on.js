@@ -60,7 +60,7 @@ HTMLElement.prototype.doOn = function (eventName, handler, options) {
         return;
     }
 
-    /* TODO: Move this out */
+    // TODO: Move this out
     function wrapper (event) {
         if (wrap) {
             let params = {};
@@ -84,7 +84,7 @@ HTMLElement.prototype.doOn = function (eventName, handler, options) {
             }
 
 
-            // TODO: Debug property
+            // FIXME: Debug property
             params._event = event;
 
             handler.call(targetElement, params);
