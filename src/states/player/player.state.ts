@@ -1,15 +1,15 @@
-import { State } from "../../modules/state";
-import { Player } from "../../modules/player";
+import { State, StateOptionsInterface } from "../../modules/state.js";
+import { Player } from "../../modules/player.js";
+
 
 export class PlayerState extends State {
-    constructor(
-        options: {
-            player: Player,
-            background: HTMLElement
-        }) {
+    private player: Player
 
-        super("player", options);
+    constructor(options: StateOptionsInterface) {
+        super(`player`, options);
     }
 
-    init() {}
+    init() {
+        console.log(this.player.preloadRandomTracks(), 123);
+    }
 }
