@@ -19,14 +19,13 @@ export interface PlayerOptionsInterface {
 const PLAYER_SETTINGS_KEY = "player-settings";
 export class Player {
     private elements: ElementsInterface = {};
-    // FIXME: Types
-    private service: any;
+
+    private service: PlayerService;
 
     constructor(options: PlayerOptionsInterface = {service: PlayerServiceEmum.SoundCloud}) {
 
         // selected service
         this.service = new PlayerService(PlayerServiceEmum.SoundCloud);
-        console.log(this.service);
         // player main container element
         const container = document.createElement("audio");
         // setting container element params
@@ -37,6 +36,7 @@ export class Player {
         this.elements["container"] = container;
     }
 
+    // TODO: Player finish preloadRandomTracks()
     public preloadRandomTracks() {
         const { limit, offset, duration } = this.settings;
         return this.service.getTracks( { limit, offset, duration } );

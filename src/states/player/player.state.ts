@@ -9,7 +9,5 @@ export class PlayerState extends State {
         super(`player`, options);
     }
 
-    init() {
-        console.log(this.player.preloadRandomTracks(), 123);
-    }
+    init() {}
 }

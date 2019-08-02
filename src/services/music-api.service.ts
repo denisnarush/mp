@@ -8,6 +8,8 @@ interface MusicServiceInterface {
 }
 
 export class MusicServices {
+    public getTracks: Function;
+
     constructor(service: PlayerServiceEmum) {
         let _service: MusicServiceInterface;
 
