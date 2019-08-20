@@ -5,6 +5,11 @@
     "window.zoomLevel": -0.6,
     "editor.renderWhitespace": "boundary",
     "editor.minimap.enabled": false,
+
+    "editor.lineNumbers": "off",
+    "editor.folding": false,
+    "editor.glyphMargin": false,
+
     "eslint.enable": false,
 
     "todo-tree.excludeGlobs": ["test", "sandbox"],
