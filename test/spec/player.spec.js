@@ -18,7 +18,7 @@ describe(`Player`, () => {
     })
 
     it(`is a Class`, () => {
-        chai.assert.instanceOf(new Player(), Player, `eq`)
+        chai.assert.instanceOf(new Player(), Player)
     })
 
     it(`each new Player() creates new <audio> element`, () => {
