@@ -1,15 +1,15 @@
-import { ElementsInterface } from "./state";
-import { PlayerServiceEmum, PlayerService } from "../services/player.service";
+import { ElementsInterface } from "./state.js";
+import { PlayerServiceEmum, PlayerService } from "../services/player.service.js";
 
 export interface PlayerSettingsInterface {
     genres?: string[];
     volume?: number;
     limit?: number;
-    duration: {
+    offset?: number;
+    duration?: {
         from: number;
         to: number
-    },
-    offset: number;
+    };
 }
 
 export interface PlayerOptionsInterface {
@@ -30,6 +30,12 @@ export class Player {
         const container = document.createElement("audio");
         // setting container element params
         container.setAttribute("preload", "auto");
+        // volume change
+        container.addEventListener("volumechange", () => {
+            this.settings = {
+                volume: this.volume
+            }
+        })
         // appending to body
         document.body.appendChild(container);
         // appending to elements

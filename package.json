@@ -27,16 +27,16 @@
   "scripts": {
     "prestart": "npm outdated && tsc -p ./tsconfig.json",
     "start": "http-server .",
-    "test": "eslint --init",
     "test:ui:init": "backstop init",
     "test:ui:test": "backstop test",
     "test:ui:approve": "backstop approve",
+    "test": "tsc -p ./tsconfig.test.json",
     "build": "tsc -p ./tsconfig.json"
   },
   "devDependencies": {
     "backstopjs": "^4.1.12",
     "chai": "^4.2.0",
-    "eslint": "^6.1.0",
+    "eslint": "^6.2.1",
     "http-server": "^0.11.1",
     "mocha": "^6.2.0"
   },

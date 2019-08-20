@@ -3,9 +3,32 @@ import { Player } from "./modules/player.js";
 import { PlayerState } from "./states/player/player.state.js";
 import { PlayerServiceEmum } from "./services/player.service.js";
 
+
+function onKeydown(event: KeyboardEvent) {
+    switch (event.code) {
+    case `Space`:
+        // TODO: `Space` key kode
+        // this.player.togglePlaying();
+        break;
+    case `ArrowRight`:
+        // TODO: `ArrowRight` key kode
+        // this.player.currentTime += 5;
+        break;
+    case `ArrowLeft`:
+        // TODO: `ArrowLeft` key kode
+    // this.player.currentTime -= 5;
+        break;
+    case `ArrowUp`:
+        this.player.volume += 0.05;
+        break;
+    case `ArrowDown`:
+        this.player.volume -=0.05;
+        break;
+    }
+}
+
 class Main {
     public player: Player;
-    static player: Player;
 
     constructor() {
         this.player = new Player({
@@ -26,7 +49,7 @@ class Main {
 
         this.player.settings = defaultSettings;
 
-        window.addEventListener(`keydown`, Main.onKeydown.bind(this));
+        window.addEventListener(`keydown`, onKeydown.bind(this));
     }
 
     public init() {
@@ -34,26 +57,6 @@ class Main {
             player: this.player,
             background: document.querySelector(`#streamBgArtwork`)
         }).init()
-    }
-
-    static onKeydown(event: KeyboardEvent) {
-        switch (event.code) {
-        case `Space`:
-            // this.player.togglePlaying();
-            break;
-        case `ArrowRight`:
-            // this.player.currentTime += 5;
-            break;
-        case `ArrowLeft`:
-        // this.player.currentTime -= 5;
-            break;
-        case `ArrowUp`:
-            this.player.volume += 0.05;
-            break;
-        case `ArrowDown`:
-            this.player.volume -=0.05;
-            break;
-        }
     }
 }
 

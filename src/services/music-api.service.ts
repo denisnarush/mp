@@ -1,5 +1,5 @@
-import { PlayerServiceEmum } from "./player.service";
-import { SoundCloudService } from "./soundcloud.service";
+import { PlayerServiceEmum } from "./player.service.js";
+import { SoundCloudService } from "./soundcloud.service.js";
 
 // FIXME: MusicServiceInterface
 interface MusicServiceInterface {

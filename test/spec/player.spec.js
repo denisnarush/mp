@@ -1,65 +1,72 @@
-/* eslint no-unused-vars: "off" */
+import { Player } from "./../../dist/modules/player.js";
 
-describe("Player", function () {
-    let Settings, Player;
+describe(`Player`, () => {
+    const clean = () => {
+        document.querySelectorAll('audio').forEach((e) => {
+            e.remove();
+        })
+        localStorage.removeItem('player-settings');
+    }
 
-    // runs before each test in this block
-    beforeEach(function(done) {        
-        // create player element
-        const stream = document.createElement("audio");
-        stream.setAttribute("id", "stream");
-        document.body.appendChild(stream);
-
-        // load modules
-        Promise.all([
-            "./../../modules/player.js"
-        ]
-            .map(x => import(x)))
-            .then(([player]) => {
-                Player = player.default;
-
-                done();
-            });
+    afterEach(() => {
+        clean();
     });
 
-    /**
-     * Should be applyed with <audio id=\"stream\">
-     */
-    it("Should be applyed with <audio> HTML element and have id=\"stream\"", function () {
-        chai.expect(Player).to.have.property("stream");
-        chai.expect(Player.stream).to.be.an.instanceof(HTMLAudioElement);
-    });
-    /**
-     * Should get tracks
-     */
-    it("Should get tracks", function (done) {
+    it (`Init`, () => {
+        new Player();
+        chai.assert.exists(Player);
+    })
 
-        let f = () => {
-            chai.expect(Player.stream.tracks).to.be.an("array");
+    it(`is a Class`, () => {
+        chai.assert.instanceOf(new Player(), Player, `eq`)
+    })
 
-            Player.stream.removeEventListener("loadstart", f);
-            done();
-        };
+    it(`each new Player() creates new <audio> element`, () => {
+        new Player();
+        new Player();
+        const elements = document.querySelectorAll(`audio`);
+        chai.assert.lengthOf(elements, 2);
+    })
 
-        Player.getTracks();
-        Player.stream.addEventListener("loadstart", f);
-    });
-    /**
-     * Should play track
-     */
-    it("Should play track", function (done) {
-        this.timeout(2000);
+    it(`<audio> should creates with preload="auto" attribute`, () => {
+        new Player();
+        const elements = document.querySelector(`audio`);
+        chai.assert.isTrue(elements.hasAttribute(`preload`));
+        chai.assert.equal(elements.getAttribute(`preload`), `auto`);
+    })
 
-        let t = () => {
-            if (Player.stream.currentTime !== 0) {
-                Player.stream.removeEventListener("timeupdate", t);
-                Player.stop();
-                done();
-            }
-        };
+    it(`.settings is a Setter`, () => {
+        const player = new Player();
+        const fn = () => { player.settings = {
+            volume: 4
+        }; }
+        chai.assert.changes(fn, player, `settings`);
+    })
 
-        Player.getTracks();
-        Player.stream.addEventListener("canplay", () => Player.play());
-        Player.stream.addEventListener("timeupdate", t);
-    });
+    it(`.volume default value is 1`, () => {
+        const player = new Player();
+        chai.assert.equal(player.volume, 1);
+    })
+
+    it(`.volume is a Setter`, () => {
+        const player = new Player();
+        const fn = () => { player.volume = 0; }
+        chai.assert.changes(fn, player, `volume`);
+    })
+
+    it(`.volume can't be greate then 1`, () => {
+        const player = new Player();
+        player.volume = 0.5;
+        const fn = () => { player.volume = 2; }
+        chai.assert.changes(fn, player, `volume`);
+        chai.assert.equal(player.volume, 1);
+    })
+
+    it(`.volume can't be less then 0`, () => {
+        const player = new Player();
+        player.volume = 0.5;
+        const fn = () => { player.volume = -2; }
+        chai.assert.changes(fn, player, `volume`);
+        chai.assert.equal(player.volume, 0);
+    })
 });
