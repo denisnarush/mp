@@ -100,6 +100,69 @@ export class Player {
         (this.elements["container"] as HTMLAudioElement).volume = Number(value.toFixed(2));
     }
     /**
+     * 
+     */
+    get currentTime() {
+        return (this.elements["container"] as HTMLAudioElement).currentTime;
+    }
+    /**
+     * 
+     */
+    set currentTime(value) {
+        (this.elements["container"] as HTMLAudioElement).currentTime = value;
+    }
+    /**
+     * Get Track Id
+     */
+    getTrackId() {
+        return this.track ? this.track.id : void 0;
+    }
+    /**
+     * Get Track cover
+     */
+    getCover() {
+        return this.track.cover;
+    }
+    /**
+     * Get Track title
+     */
+    getTrackTitle() {
+        return this.track.title;
+    }
+    /**
+     * Get Track genre
+     */
+    getTrackGenre() {
+        return this.track.genre;
+    }
+    /**
+     * Get Track duration
+     * @returns {number} Track duration in ms
+     */
+    getTrackDuration() {
+        return this.track.duration;
+    }
+    /**
+     * Get Track duration string representation
+     */
+    getTrackDurationString() {
+        const time = new Date(this.getTrackDuration());
+        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
+    }
+    /**
+     * Get Track time string representation
+     */
+    getCurrentTimeString() {
+        const time = new Date(this.currentTime * 1000);
+        return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
+    }
+    /**
+     * Get Track time percent representation
+     */
+    getCurrentTimePercent() {
+        return `${this.getTrackDuration() ? this.currentTime * 100000 / this.getTrackDuration() : 0}%`;
+    }
+    /**
      * Stop
      */
     public stop() {
@@ -128,10 +191,40 @@ export class Player {
         (this.elements["container"] as HTMLAudioElement).src = this.tracks[idx].src;
     }
     /**
+     * OnLoadStart
+     */
+    onLoadStart(fn) {
+        this.elements["container"]  .addEventListener("loadstart", fn);
+    }
+    /**
      * OnMetadataLoaded
      */
-    public onMetadataLoaded(fn) {
-        this.elements["container"].addEventListener("loadedmetadata", fn);
+    onMetadataLoaded(fn) {
+        this.elements["container"]  .addEventListener("loadedmetadata", fn);
+    }
+    /**
+     * OnPlay
+     */
+    onPlay(fn) {
+        this.elements["container"]  .addEventListener("play", fn);
+    }
+    /**
+     * OnPause
+     */
+    onPause(fn) {
+        this.elements["container"]  .addEventListener("pause", fn);
+    }
+    /**
+     * OnEnded
+     */
+    onEnded(fn) {
+        this.elements["container"]  .addEventListener("ended", fn);
+    }
+    /**
+     * OnTimeUpdate
+     */
+    onTimeUpdate(fn) {
+        this.elements["container"]  .addEventListener("timeupdate", fn);
     }
     /**
      * Play
