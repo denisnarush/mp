@@ -1,14 +1,21 @@
 import { PlayerServiceEmum } from "./player.service.js";
 import { SoundCloudService } from "./soundcloud.service.js";
+import { TrackInterface } from "../modules/player.js";
 
-// FIXME: MusicServiceInterface
-interface MusicServiceInterface {
-    getTracks: any;
-    getTrack: any
+export interface MusicServicesGetTracksOptionsInterface {
+    limit?: number;
+    offset?: number
+    duration?: {
+        from: number,
+        to: number
+    }
+}
+export interface MusicServiceInterface {
+    getTracks(options?: MusicServicesGetTracksOptionsInterface): Promise<TrackInterface[]>;
 }
 
 export class MusicServices {
-    public getTracks: Function;
+    private service: MusicServiceInterface;
 
     constructor(service: PlayerServiceEmum) {
         let _service: MusicServiceInterface;
@@ -18,6 +25,10 @@ export class MusicServices {
                 _service = SoundCloudService
         }
 
-        Object.assign(this, _service);
+        this.service = _service;
+    }
+
+    protected getTracks(options?: MusicServicesGetTracksOptionsInterface): Promise<TrackInterface[]> {
+        return this.service.getTracks.call(this, options);
     }
 }

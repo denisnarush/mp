@@ -1,33 +1,51 @@
 import { SoundCloudEnv } from "../envs/common.js";
 import { toURLencoded } from "../modules/utils.js";
+import { MusicServiceInterface, MusicServicesGetTracksOptionsInterface } from "./music-api.service.js";
+import { TrackInterface } from "../modules/player.js";
 
-interface USER_INTERFACE {
+interface API_USER_INTERFACE {
     avatar_url: string;
 }
 
-interface TRACK_INTERFACE {
+interface API_TRACKS_INTERFACE {
+    id: number;
     genre: string;
     title: string;
     artwork_url: string;
     stream_url: string;
     duration: number;
-    user: USER_INTERFACE;
+    user: API_USER_INTERFACE;
 }
 
-// TODO: interace for getTracks params
-function getTracks(options: any) {
-    const params = `?${toURLencoded({
+interface API_TRACKS_SETTINGS_INTERFACE {
+    client_id: string;
+    limit?: number;
+    offset?: number;
+    durations?: {
+        from: number;
+        to: number;
+    }
+}
+
+function getTracks(options: MusicServicesGetTracksOptionsInterface) {
+    const settings: API_TRACKS_SETTINGS_INTERFACE = {
         'client_id': SoundCloudEnv.client_id,
-        ...options
-    })}`;
+    }
+
+    settings.limit = options.limit;
+    settings.offset = options.offset;
+    settings.durations = options.duration;
+
+    const params = `?${toURLencoded(settings)}`;
 
     return fetch(`${SoundCloudEnv.url}/tracks${params}`, {
             method: `GET`
         })
         .then(response => response.json())
-
-        .then(data => data.map(
-            (track: TRACK_INTERFACE) => ({
+        // mapping
+        .then(data => <TrackInterface[]>data.map(
+            (track: API_TRACKS_INTERFACE) => <TrackInterface>({
+                id: track.id,
                 genre: track.genre,
                 title: track.title,
                 duration: track.duration,
@@ -36,11 +54,7 @@ function getTracks(options: any) {
             }))
         );
 }
-// TODO: SoundCloudService getTrack
-function getTrack() {
-    return fetch(`/`).then(response => response.json());
-}
 
-export const SoundCloudService = {
-    getTracks, getTrack
+export const SoundCloudService: MusicServiceInterface = {
+    getTracks
 }

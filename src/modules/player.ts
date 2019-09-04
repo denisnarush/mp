@@ -15,6 +15,10 @@ export interface PlayerSettingsInterface {
 
 export interface TrackInterface {
     id: number;
+    cover: string;
+    genre: string;
+    duration: number;
+    title: string;
     src: string;
 }
 
@@ -54,10 +58,12 @@ export class Player {
         this.elements["container"] = container;
     }
 
-    // TODO: Player finish preloadRandomTracks()
     public preloadRandomTracks() {
-        const { limit, offset, duration } = this.settings;
-        return this.service.getTracks( { limit, offset, duration } );
+        return this.service.preloadTracks({
+            limit: this.settings.limit,
+            offset: this.settings.offset,
+            duration: this.settings.duration
+        });
     }
 
     public get settings(): PlayerSettingsInterface {
