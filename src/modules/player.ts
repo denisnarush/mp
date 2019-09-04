@@ -102,65 +102,70 @@ export class Player {
     /**
      * 
      */
-    get currentTime() {
+    public get currentTime() {
         return (this.elements["container"] as HTMLAudioElement).currentTime;
     }
     /**
      * 
      */
-    set currentTime(value) {
+    public set currentTime(value) {
         (this.elements["container"] as HTMLAudioElement).currentTime = value;
     }
     /**
      * Get Track Id
      */
-    getTrackId() {
+    public getTrackId() {
         return this.track ? this.track.id : void 0;
     }
     /**
      * Get Track cover
      */
-    getCover() {
+    public getCover() {
         return this.track.cover;
     }
     /**
      * Get Track title
      */
-    getTrackTitle() {
+    public getTrackTitle() {
         return this.track.title;
     }
     /**
      * Get Track genre
      */
-    getTrackGenre() {
+    public getTrackGenre() {
         return this.track.genre;
     }
     /**
      * Get Track duration
-     * @returns {number} Track duration in ms
      */
-    getTrackDuration() {
+    public getTrackDuration() {
         return this.track.duration;
     }
     /**
      * Get Track duration string representation
      */
-    getTrackDurationString() {
+    public getTrackDurationString() {
         const time = new Date(this.getTrackDuration());
         return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
     }
     /**
      * Get Track time string representation
      */
-    getCurrentTimeString() {
+    public getCurrentTimeString() {
         const time = new Date(this.currentTime * 1000);
         return `${(time.getUTCHours() ? time.toUTCString().slice(17, 25) : time.toUTCString().slice(20, 25))}`;
     }
     /**
      * Get Track time percent representation
      */
-    getCurrentTimePercent() {
+    public getCurrentTimePercent() {
         return `${this.getTrackDuration() ? this.currentTime * 100000 / this.getTrackDuration() : 0}%`;
+    }
+    /**
+     * 
+     */
+    public togglePlaying() {
+        this.isPaused() ? this.play() : this.stop();
     }
     /**
      * Stop
@@ -193,37 +198,37 @@ export class Player {
     /**
      * OnLoadStart
      */
-    onLoadStart(fn) {
+    public onLoadStart(fn) {
         this.elements["container"]  .addEventListener("loadstart", fn);
     }
     /**
      * OnMetadataLoaded
      */
-    onMetadataLoaded(fn) {
+    public onMetadataLoaded(fn) {
         this.elements["container"]  .addEventListener("loadedmetadata", fn);
     }
     /**
      * OnPlay
      */
-    onPlay(fn) {
+    public onPlay(fn) {
         this.elements["container"]  .addEventListener("play", fn);
     }
     /**
      * OnPause
      */
-    onPause(fn) {
+    public onPause(fn) {
         this.elements["container"]  .addEventListener("pause", fn);
     }
     /**
      * OnEnded
      */
-    onEnded(fn) {
+    public onEnded(fn) {
         this.elements["container"]  .addEventListener("ended", fn);
     }
     /**
      * OnTimeUpdate
      */
-    onTimeUpdate(fn) {
+    public onTimeUpdate(fn) {
         this.elements["container"]  .addEventListener("timeupdate", fn);
     }
     /**
