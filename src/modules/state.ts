@@ -1,4 +1,5 @@
 import { Player } from "./player.js";
+import { RecentState } from "../states/recent/recent.state.js";
 
 export interface ElementsInterface {
     [key: string]: Element|HTMLElement|HTMLAudioElement;
@@ -6,11 +7,12 @@ export interface ElementsInterface {
 
 export interface StateOptionsInterface {
     player?: Player;
+    recentState?: RecentState;
     background?: HTMLElement;
 }
 
 export class State {
-    private elements: ElementsInterface = {};
+    public elements: ElementsInterface = {};
 
     constructor(name: string, options: StateOptionsInterface = {}) {
         let container = document.querySelector(`[data-state=${name}]`);

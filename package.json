@@ -34,14 +34,14 @@
     "build": "tsc -p ./tsconfig.json"
   },
   "devDependencies": {
-    "backstopjs": "^4.1.12",
+    "backstopjs": "^4.3.2",
     "chai": "^4.2.0",
-    "eslint": "^6.2.1",
+    "eslint": "^6.3.0",
     "http-server": "^0.11.1",
     "mocha": "^6.2.0"
   },
   "dependencies": {
-    "three": "^0.107.0",
-    "typescript": "^3.5.3"
+    "three": "^0.108.0",
+    "typescript": "^3.6.2"
   }
 }

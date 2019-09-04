@@ -1,7 +1,8 @@
-
+import "./modules/motion.js";
 import { Player } from "./modules/player.js";
 import { PlayerState } from "./states/player/player.state.js";
 import { PlayerServiceEmum } from "./services/player.service.js";
+import { RecentState } from "./states/recent/recent.state.js";
 
 
 function onKeydown(event: KeyboardEvent) {
@@ -29,12 +30,18 @@ function onKeydown(event: KeyboardEvent) {
 
 class Main {
     public player: Player;
+    public recentState: RecentState;
 
     constructor() {
         this.player = new Player({
             service: PlayerServiceEmum.SoundCloud
         });
 
+        this.recentState = new RecentState({
+            player: this.player
+        });
+
+        // TODO: Export to evns
         const defaultSettings = {
             genres: [`Chillout`, `Chill`, `Deep House`, `Minimal`],
             volume: 1.0,
@@ -55,6 +62,7 @@ class Main {
     public init() {
         new PlayerState({
             player: this.player,
+            recentState: this.recentState,
             background: document.querySelector(`#streamBgArtwork`)
         }).init()
     }
