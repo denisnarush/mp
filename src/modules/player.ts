@@ -112,6 +112,14 @@ export class Player {
         (this.elements["container"] as HTMLAudioElement).currentTime = value;
     }
     /**
+     * Returns true if audio element is HAVE_ENOUGH_DATA
+     */
+    public get isReady() {
+        // 4 HAVE_ENOUGH_DATA Enough data is available—and the download rate
+        // is high enough—that the media can be played through to the end without interruption.
+        return (this.elements["container"] as HTMLAudioElement).readyState === 4;
+    }
+    /**
      * Get Track Id
      */
     public getTrackId() {
@@ -160,6 +168,12 @@ export class Player {
      */
     public getCurrentTimePercent() {
         return `${this.getTrackDuration() ? this.currentTime * 100000 / this.getTrackDuration() : 0}%`;
+    }
+    /**
+     *
+     */
+    public getDuration() {
+        return (this.elements["container"] as HTMLAudioElement).duration;
     }
     /**
      * 

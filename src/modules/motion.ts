@@ -3,8 +3,8 @@ import { Tap } from "./motion-tap.js";
 declare global {
     // megring to Element interface
     interface Element {
-        doOn(eventName: "tap", handler: Function, options?: any): Element;
-        doOff(eventName: "tap", handler: Function, options?: any): Element;
+        doOn(eventName: string, handler: Function, options?: any): Element;
+        doOff(eventName: string, handler: Function, options?: any): Element;
     }
 }
 

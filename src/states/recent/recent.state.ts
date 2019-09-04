@@ -4,4 +4,8 @@ export class RecentState extends State {
     constructor(options: StateOptionsInterface) {
         super(`recent`, options);
     }
+
+    init() {
+        return this;
+    }
 }

@@ -29,6 +29,12 @@ export class PlayerState extends State {
          */
         this.elements["play"]       .doOn("tap", this.playTap.bind(this))
         this.elements["pause"]      .doOn("tap", this.pauseTap.bind(this));
+        this.elements["next"]       .doOn("tap", this.nextTap.bind(this));
+        this.elements["prev"]       .doOn("tap", this.prevTap.bind(this));
+        this.elements["genre"]      .doOn("tap", this.genreTap.bind(this));
+        this.elements["genre"]      .doOn("blur", this.genreBlur.bind(this));
+        this.elements["genre"]      .doOn("keydown", this.genreKeyDown.bind(this));
+        this.elements["trackbar"]   .doOn("tap", this.trackbarTap.bind(this));
         /**
          * Player state elements onetime handlers
          */
@@ -42,6 +48,9 @@ export class PlayerState extends State {
         this.player                 .onLoadStart(this.playerLoadStart.bind(this));
         this.player                 .onTimeUpdate(this.playerTimeUpdate.bind(this));
         this.player                 .onMetadataLoaded(this.playerMetadataLoaded.bind(this));
+        this.player                 .onEnded(this.onPlayEnded.bind(this));
+
+        return this;
     }
     /**
      * Play button handler
@@ -55,7 +64,59 @@ export class PlayerState extends State {
     private pauseTap() {
         this.player.stop();
     }
-    /** 
+    /**
+     * Next button handler
+     */
+    private nextTap() {
+        this.preloadRandomTracks();
+    }
+    /**
+     * Prev button handler
+     */
+    private prevTap() {
+        this.preloadRandomTracks();
+    }
+    /**
+     * Genre tap handler
+     */
+    public genreTap() {
+        this.elements["genre"]      .setAttribute("contenteditable", "true");
+    }
+    /**
+     * Apply typed genre
+     */
+    public genreBlur() {
+        this.elements["genre"]      .removeAttribute("contenteditable");
+        // TODO: Apply genres
+    }
+    /**
+     * Key handler
+     */
+    public genreKeyDown(event: KeyboardEvent) {
+        // prevents track time navigation
+        event.stopPropagation();
+        // apply changes
+        if (event.code === "Enter") {
+            event.preventDefault();
+            (event.target as HTMLElement).blur();
+        }
+    }
+    /**
+     * Trackbar handler
+     */
+    // TODO: apply type for event argument
+    public trackbarTap(event: any) {
+        if (this.elements["trackbar"] !== event.target || !this.player.isReady) {
+            return;
+        }
+
+        const w = event.target.offsetWidth;
+        const x = event.x;
+        const d = x / w;
+
+        this.player.currentTime = this.player.getDuration() * d;
+    }
+    /**
      * Fires when data starts fetching, we can start populate UI
     */
     private playerLoadStart() {
@@ -83,6 +144,12 @@ export class PlayerState extends State {
      */
     private playerMetadataLoaded() {
         this.player.play();
+    }
+    /**
+     * Track playing ended
+     */
+    private onPlayEnded() {
+        return this.nextTap();
     }
     /** 
      * Player metadata resumed handler
@@ -114,7 +181,24 @@ export class PlayerState extends State {
      * Update current track time if not equals last value
      */
     private updateCurentTime() {
-        this.elements["ctime"]  .innerHTML = this.player.getCurrentTimeString();
+        this.elements["ctime"]      .innerHTML = this.player.getCurrentTimeString();
+    }
+        /**
+     * Recent bar handler
+     */
+    private recentBarTap() {
+        this.elements["bbar"]       .setAttribute("hide", "");
+        // TODO: uncomment
+        // this.recentState.show();
+        // this.recentState.on();
+    }
+    /**
+     * Recent onClose handler
+     */
+    private recentStateClose() {
+        this.elements["bbar"]   .removeAttribute("hide");
+        // TODO: uncomment
+        // this.recentState.hide();
     }
     /**
      * Once on play button handler
@@ -122,11 +206,9 @@ export class PlayerState extends State {
     private async onPlayBtnOnce() {
         await this.preloadRandomTracks();
         // show prev button
-        // TODO: uncomment
-        // this.elements["prev"]       .removeAttribute("hide");
+        this.elements["prev"]       .removeAttribute("hide");
         // show next button
-        // TODO: uncomment
-        // this.elements["next"]       .removeAttribute("hide");
+        this.elements["next"]       .removeAttribute("hide");
         // show top bar
         this.elements["tbar"]       .removeAttribute("hide");
         // remove handler from play button
@@ -139,15 +221,13 @@ export class PlayerState extends State {
             console.warn("Recent State Not Found");
         } else {
             // apply handler for bottom bar of player state
-            // TODO: uncomment
-            // this.elements["bbar"]   .doOn("tap", PlayerState.onRecentBar.bind(this));
+            this.elements["bbar"]   .doOn("tap", this.recentBarTap);
             // show player state bottom bar
-            // TODO: uncomment
-            // this.elements["bbar"]   .removeAttribute("hide");
+            this.elements["bbar"]   .removeAttribute("hide");
             // apply handler for bottom bar of recent state
             // TODO: uncomment
-            // this.recent             .onClosed(PlayerState.onRecentClose.bind(this));
-            // this.recent.init();
+            // this.recentState        .onClosed(this.recentStateClose.bind(this));
+            this.recentState.init();
         }
     }
     /**
