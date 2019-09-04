@@ -75,7 +75,8 @@ export class PlayerState extends State {
             // TODO: uncomment
             // this.elements["bbar"]   .doOn("tap", PlayerState.onRecentBar.bind(this));
             // show player state bottom bar
-            this.elements["bbar"]   .removeAttribute("hide");
+            // TODO: uncomment
+            // this.elements["bbar"]   .removeAttribute("hide");
             // apply handler for bottom bar of recent state
             // TODO: uncomment
             // this.recent             .onClosed(PlayerState.onRecentClose.bind(this));
