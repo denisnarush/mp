@@ -18,12 +18,20 @@ export class PlayerState extends State {
      * Player state constructor
      */
     constructor(options: StateOptionsInterface) {
+        options = {
+            ...options,
+            styles: [
+                `/src/styles/player.state.css`,
+                `/src/styles/bar.css`
+            ]
+        }
         super(`player`, options);
     }
     /**
      * Init
      */
     init() {
+        this.loadStyles();
         /**
          * Player state elements handlers
          */
@@ -250,7 +258,8 @@ export class PlayerState extends State {
             // increase offset
             if (tracks[i].genre && tracks[i].duration > this.player.settings.duration.from && this.player.settings.genres.indexOf(tracks[i].genre) !== -1) {
                 found = true;
-                console.info(`${tracks[i].genre}\n${tracks[i].title}`);
+                // debug:
+                // console.info(`${tracks[i].genre}\n${tracks[i].title}`);
                 this.player.settings = { offset: this.player.settings.offset + i };
                 this.player.tracks = Object.assign([], tracks);
                 return this.player.start(i);

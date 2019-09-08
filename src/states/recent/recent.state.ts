@@ -6,12 +6,21 @@ export class RecentState extends State {
     private player: Player
 
     constructor(options: StateOptionsInterface) {
+        options = {
+            ...options,
+            styles: [
+                `/src/styles/recent.state.css`,
+                `/src/styles/bar.css`,
+                `/src/styles/playlist.css`
+            ]
+        }
         super(`recent`, options);
     }
     /**
      * Init
      */
     init() {
+        this.loadStyles();
         this.elements[`container`]  .removeAttribute(`hidden`);
 
         this.elements[`tbar`]       .doOn(`tap`, this.stateTopBarTap.bind(this));
@@ -27,13 +36,13 @@ export class RecentState extends State {
     /**
      * On state closed custom event subsrcibtion
      */
-    onClosed(fn : () => void) {
+    public onClosed(fn : () => void) {
         this.elements[`container`]  .doOn(`onstateclosed`, fn.bind(this));
     }
     /**
      * Playlist generator method
      */
-    generateList() {
+    private generateList() {
         let html = ``;
 
         let i = this.player.settings.recent.length;
@@ -60,13 +69,13 @@ export class RecentState extends State {
     /**
      * Recent state top bar handler
     */
-    stateTopBarTap() {
+    private stateTopBarTap() {
         this.off();
     }
     /**
      * Recetn state transition end handler
      */
-    onTransitionEnd() {
+    private onTransitionEnd() {
         // check if state closed to dispatch event
         if (!this.isOn()) {
             this.elements[`container`].dispatchEvent(State.onStateClosedEvent);
@@ -75,14 +84,14 @@ export class RecentState extends State {
     /**
      * Player metadata is loaded
      */
-    onMetadataLoaded() {
+    private onMetadataLoaded() {
         this.generateList();
     }
     /**
-     * 
+     * List item tap handler
      */
     // TODO: add Tap Event
-    listTap(event: any) {
+    private listTap(event: any) {
         let item,
             current = event.target;
 
@@ -98,7 +107,6 @@ export class RecentState extends State {
             return;
         }
 
-        // TODO: implement reciving element from recent list
         // this.player.getTrackById(item.getAttribute('track-id'));
     }
 }

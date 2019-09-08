@@ -1,6 +1,7 @@
 import { ElementsInterface } from "./state.js";
 import { PlayerServiceEmum, PlayerService } from "../services/player.service.js";
 import { PLAYER_SETTINGS_STORAGE_KEY } from "../envs/common.js";
+import { arrayOfObjectsDistinct } from "./utils.js";
 
 export interface PlayerSettingsInterface {
     genres?: string[];
@@ -55,8 +56,9 @@ export class Player {
             }
         })
         container.addEventListener(`loadstart`, () => {
+            // do not apply the same track to recent array
             this.settings = {
-                recent: this.settings.recent.concat([this.track])
+                recent: arrayOfObjectsDistinct(this.settings.recent.concat([this.track]))
             }
         })
         // appending to body
