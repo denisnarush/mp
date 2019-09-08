@@ -11,6 +11,7 @@ export interface PlayerSettingsInterface {
         from: number;
         to: number
     };
+    recent?: TrackInterface[];
 }
 
 export interface TrackInterface {
@@ -18,6 +19,7 @@ export interface TrackInterface {
     cover: string;
     genre: string;
     duration: number;
+    author: string;
     title: string;
     src: string;
 }
@@ -43,19 +45,24 @@ export class Player {
         // selected service
         this.service = new PlayerService(service);
         // player main container element
-        const container = document.createElement("audio");
+        const container = document.createElement(`audio`);
         // setting container element params
-        container.setAttribute("preload", "auto");
+        container.setAttribute(`preload`, `auto`);
         // volume change
-        container.addEventListener("volumechange", () => {
+        container.addEventListener(`volumechange`, () => {
             this.settings = {
                 volume: this.volume
+            }
+        })
+        container.addEventListener(`loadstart`, () => {
+            this.settings = {
+                recent: this.settings.recent.concat([this.track])
             }
         })
         // appending to body
         document.body.appendChild(container);
         // appending to elements
-        this.elements["container"] = container;
+        this.elements[`container`] = container;
     }
 
     public preloadRandomTracks() {
@@ -87,7 +94,7 @@ export class Player {
     }
 
     public get volume(): number {
-        return (this.elements["container"] as HTMLAudioElement).volume;
+        return (this.elements[`container`] as HTMLAudioElement).volume;
     }
 
     public set volume(value) {
@@ -97,19 +104,19 @@ export class Player {
             value = 0;
         }
 
-        (this.elements["container"] as HTMLAudioElement).volume = Number(value.toFixed(2));
+        (this.elements[`container`] as HTMLAudioElement).volume = Number(value.toFixed(2));
     }
     /**
      * 
      */
     public get currentTime() {
-        return (this.elements["container"] as HTMLAudioElement).currentTime;
+        return (this.elements[`container`] as HTMLAudioElement).currentTime;
     }
     /**
      * 
      */
     public set currentTime(value) {
-        (this.elements["container"] as HTMLAudioElement).currentTime = value;
+        (this.elements[`container`] as HTMLAudioElement).currentTime = value;
     }
     /**
      * Returns true if audio element is HAVE_ENOUGH_DATA
@@ -117,7 +124,7 @@ export class Player {
     public get isReady() {
         // 4 HAVE_ENOUGH_DATA Enough data is available—and the download rate
         // is high enough—that the media can be played through to the end without interruption.
-        return (this.elements["container"] as HTMLAudioElement).readyState === 4;
+        return (this.elements[`container`] as HTMLAudioElement).readyState === 4;
     }
     /**
      * Get Track Id
@@ -173,7 +180,7 @@ export class Player {
      *
      */
     public getDuration() {
-        return (this.elements["container"] as HTMLAudioElement).duration;
+        return (this.elements[`container`] as HTMLAudioElement).duration;
     }
     /**
      * 
@@ -185,65 +192,65 @@ export class Player {
      * Stop
      */
     public stop() {
-        setTimeout(() => {(this.elements["container"] as HTMLAudioElement).pause();}, 0);
+        setTimeout(() => {(this.elements[`container`] as HTMLAudioElement).pause();}, 0);
     }
     /**
      * Start
      */
     public start(idx = 0) {
         if (this.tracks.length === 0) {
-            console.warn("Tracks list is epmty");
+            console.warn(`Tracks list is epmty`);
             // skip
             return this;
         }
         //set current by index
         this.track = Object.assign({}, this.tracks[idx]);
         // detecting if current track the same as new
-        if ((this.elements["container"] as HTMLAudioElement).src === this.tracks[idx].src) {
-            console.warn("You are trying to start an already playing track");
+        if ((this.elements[`container`] as HTMLAudioElement).src === this.tracks[idx].src) {
+            console.warn(`You are trying to start an already playing track`);
             // skip
             return this;
         }
         // important pause!
         this.stop();
         // setting source
-        (this.elements["container"] as HTMLAudioElement).src = this.tracks[idx].src;
+        (this.elements[`container`] as HTMLAudioElement).src = this.tracks[idx].src;
     }
     /**
      * OnLoadStart
      */
-    public onLoadStart(fn) {
-        this.elements["container"]  .addEventListener("loadstart", fn);
+    public onLoadStart(fn : () => void) {
+        this.elements[`container`]  .addEventListener(`loadstart`, fn);
     }
     /**
      * OnMetadataLoaded
      */
-    public onMetadataLoaded(fn) {
-        this.elements["container"]  .addEventListener("loadedmetadata", fn);
+    public onMetadataLoaded(fn : () => void) {
+        this.elements[`container`]  .addEventListener(`loadedmetadata`, fn);
     }
     /**
      * OnPlay
      */
-    public onPlay(fn) {
-        this.elements["container"]  .addEventListener("play", fn);
+    public onPlay(fn : () => void) {
+        this.elements[`container`]  .addEventListener(`play`, fn);
     }
     /**
      * OnPause
      */
-    public onPause(fn) {
-        this.elements["container"]  .addEventListener("pause", fn);
+    public onPause(fn : () => void) {
+        this.elements[`container`]  .addEventListener(`pause`, fn);
     }
     /**
      * OnEnded
      */
-    public onEnded(fn) {
-        this.elements["container"]  .addEventListener("ended", fn);
+    public onEnded(fn : () => void) {
+        this.elements[`container`]  .addEventListener(`ended`, fn);
     }
     /**
      * OnTimeUpdate
      */
-    public onTimeUpdate(fn) {
-        this.elements["container"]  .addEventListener("timeupdate", fn);
+    public onTimeUpdate(fn : () => void) {
+        this.elements[`container`]  .addEventListener(`timeupdate`, fn);
     }
     /**
      * Play
@@ -265,7 +272,7 @@ export class Player {
             return this;
         }
         // resume or start playing
-        const promise = (this.elements["container"] as HTMLAudioElement).play();
+        const promise = (this.elements[`container`] as HTMLAudioElement).play();
         // iOS 11 play() is a promise.
         if (promise !== undefined) {
             promise.catch(() => {});
@@ -275,6 +282,6 @@ export class Player {
      * Is current Track playing paused
      */
     private isPaused(): boolean {
-        return (this.elements["container"] as HTMLAudioElement).paused;
+        return (this.elements[`container`] as HTMLAudioElement).paused;
     }
 }

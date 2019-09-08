@@ -34,4 +34,48 @@ export class State {
         })
 
     }
+    // Events
+    static get onStateClosedEvent() { return new CustomEvent("onstateclosed"); }
+    /**
+     * On
+     */
+    on() {
+        this.elements["container"]  .removeAttribute("off");
+    }
+    /**
+     * Off
+     */
+    off() {
+        this.elements["container"]  .setAttribute("off", "");
+    }
+    /**
+     * Show
+     */
+    show() {
+        this.elements["container"]  .removeAttribute("hide");
+    }
+    /**
+     * Hide
+     */
+    hide() {
+        this.elements["container"]  .setAttribute("hide", "");
+    }
+    /**
+     * isOn
+     */
+    isOn() {
+        return !this.elements["container"].hasAttribute("off");
+    }
+    /**
+     * Init
+     */
+    init() {
+        this.on();
+    }
+    /**
+     * Destroy
+     */
+    destroy() {
+        this.off();
+    }
 }

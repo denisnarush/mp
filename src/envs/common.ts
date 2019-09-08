@@ -1,9 +1,10 @@
 export const PLAYER_SETTINGS_STORAGE_KEY = "player-settings";
 
 export const DEFAULT_PLAYER_SETTINGS = {
-    genres: [`Chillout`, `Chill`, `Deep House`, `Minimal`],
+    genres: [`Electro Swing`, `Chillout`, `Chill`, `Deep House`, `Minimal`],
     volume: 1.0,
     limit: 200,
+    recent: [],
     duration: {
         from: 90000,
         to: 600000

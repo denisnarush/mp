@@ -6,7 +6,7 @@
         "./node_modules"
     ],
     "compilerOptions": {
-        "module": "amd",
+        "module": "es6",
         "declaration": false,
         "outDir": "./dist",
         "target": "es6"

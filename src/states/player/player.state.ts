@@ -27,19 +27,19 @@ export class PlayerState extends State {
         /**
          * Player state elements handlers
          */
-        this.elements["play"]       .doOn("tap", this.playTap.bind(this))
-        this.elements["pause"]      .doOn("tap", this.pauseTap.bind(this));
-        this.elements["next"]       .doOn("tap", this.nextTap.bind(this));
-        this.elements["prev"]       .doOn("tap", this.prevTap.bind(this));
-        this.elements["genre"]      .doOn("tap", this.genreTap.bind(this));
-        this.elements["genre"]      .doOn("blur", this.genreBlur.bind(this));
-        this.elements["genre"]      .doOn("keydown", this.genreKeyDown.bind(this));
-        this.elements["trackbar"]   .doOn("tap", this.trackbarTap.bind(this));
+        this.elements[`play`]       .doOn(`tap`, this.playTap.bind(this))
+        this.elements[`pause`]      .doOn(`tap`, this.pauseTap.bind(this));
+        this.elements[`next`]       .doOn(`tap`, this.nextTap.bind(this));
+        this.elements[`prev`]       .doOn(`tap`, this.prevTap.bind(this));
+        this.elements[`genre`]      .doOn(`tap`, this.genreTap.bind(this));
+        this.elements[`genre`]      .doOn(`blur`, this.genreBlur.bind(this));
+        this.elements[`genre`]      .doOn(`keydown`, this.genreKeyDown.bind(this));
+        this.elements[`trackbar`]   .doOn(`tap`, this.trackbarTap.bind(this));
         /**
          * Player state elements onetime handlers
          */
         this._onPlayBtnOnce_         = this.onPlayBtnOnce.bind(this);
-        this.elements["play"]       .doOn("tap", this._onPlayBtnOnce_);
+        this.elements[`play`]       .doOn(`tap`, this._onPlayBtnOnce_);
         /**
          * Player events handlers
          */
@@ -80,14 +80,14 @@ export class PlayerState extends State {
      * Genre tap handler
      */
     public genreTap() {
-        this.elements["genre"]      .setAttribute("contenteditable", "true");
+        this.elements[`genre`]      .setAttribute(`contenteditable`, `true`);
     }
     /**
      * Apply typed genre
      */
     public genreBlur() {
-        this.elements["genre"]      .removeAttribute("contenteditable");
         // TODO: Apply genres
+        this.elements[`genre`]      .removeAttribute(`contenteditable`);
     }
     /**
      * Key handler
@@ -96,7 +96,7 @@ export class PlayerState extends State {
         // prevents track time navigation
         event.stopPropagation();
         // apply changes
-        if (event.code === "Enter") {
+        if (event.code === `Enter`) {
             event.preventDefault();
             (event.target as HTMLElement).blur();
         }
@@ -106,7 +106,7 @@ export class PlayerState extends State {
      */
     // TODO: apply type for event argument
     public trackbarTap(event: any) {
-        if (this.elements["trackbar"] !== event.target || !this.player.isReady) {
+        if (this.elements[`trackbar`] !== event.target || !this.player.isReady) {
             return;
         }
 
@@ -124,10 +124,10 @@ export class PlayerState extends State {
         // update main background
         this.background.style.backgroundImage =`url("${this.player.getCover()}")`;
         // update track info
-        (this.elements["artwork"] as HTMLImageElement).src = this.player.getCover();
-        this.elements["title"]      .innerHTML = this.player.getTrackTitle();
-        this.elements["genre"]      .innerHTML = this.player.getTrackGenre();
-        this.elements["dtime"]      .innerHTML = this.player.getTrackDurationString();
+        (this.elements[`artwork`] as HTMLImageElement).src = this.player.getCover();
+        this.elements[`title`]      .innerHTML = this.player.getTrackTitle();
+        this.elements[`genre`]      .innerHTML = this.player.getTrackGenre();
+        this.elements[`dtime`]      .innerHTML = this.player.getTrackDurationString();
         // update curent time
         this.updateCurentTime();
     }
@@ -136,7 +136,7 @@ export class PlayerState extends State {
      */
     private playerTimeUpdate() {
         // trackbar moving
-        (this.elements["pindicator"] as HTMLElement).style.width = this.player.getCurrentTimePercent();
+        (this.elements[`pindicator`] as HTMLElement).style.width = this.player.getCurrentTimePercent();
         this.updateCurentTime();
     }
     /**
@@ -167,38 +167,38 @@ export class PlayerState extends State {
      * Show Play button
      */
     private showPlayBtn() {
-        this.elements["play"]       .removeAttribute("hidden");
-        this.elements["pause"]      .setAttribute("hidden", "");
+        this.elements[`play`]       .removeAttribute(`hidden`);
+        this.elements[`pause`]      .setAttribute(`hidden`, ``);
     }
     /**
      * Show Pause button
      */
     private showPauseBtn() {
-        this.elements["play"]       .setAttribute("hidden", "");
-        this.elements["pause"]      .removeAttribute("hidden");
+        this.elements[`play`]       .setAttribute(`hidden`, ``);
+        this.elements[`pause`]      .removeAttribute(`hidden`);
     }
     /**
      * Update current track time if not equals last value
      */
     private updateCurentTime() {
-        this.elements["ctime"]      .innerHTML = this.player.getCurrentTimeString();
+        this.elements[`ctime`]      .innerHTML = this.player.getCurrentTimeString();
     }
         /**
      * Recent bar handler
      */
     private recentBarTap() {
-        this.elements["bbar"]       .setAttribute("hide", "");
+        this.elements[`bbar`]       .setAttribute(`hide`, ``);
         // TODO: uncomment
-        // this.recentState.show();
-        // this.recentState.on();
+        this.recentState.show();
+        this.recentState.on();
     }
     /**
      * Recent onClose handler
      */
     private recentStateClose() {
-        this.elements["bbar"]   .removeAttribute("hide");
+        this.elements[`bbar`]   .removeAttribute(`hide`);
         // TODO: uncomment
-        // this.recentState.hide();
+        this.recentState.hide();
     }
     /**
      * Once on play button handler
@@ -206,27 +206,27 @@ export class PlayerState extends State {
     private async onPlayBtnOnce() {
         await this.preloadRandomTracks();
         // show prev button
-        this.elements["prev"]       .removeAttribute("hide");
+        this.elements[`prev`]       .removeAttribute(`hide`);
         // show next button
-        this.elements["next"]       .removeAttribute("hide");
+        this.elements[`next`]       .removeAttribute(`hide`);
         // show top bar
-        this.elements["tbar"]       .removeAttribute("hide");
+        this.elements[`tbar`]       .removeAttribute(`hide`);
         // remove handler from play button
         // TODO: uncomment
-        // this.elements["play"]       .doOff("tap", this._onPlayBtnOnce_);
+        this.elements[`play`]       .doOff(`tap`, this._onPlayBtnOnce_);
         // delete backup handler
         delete this._onPlayBtnOnce_;
         // checks and init recent state
         if (!this.recentState) {
-            console.warn("Recent State Not Found");
+            console.warn(`Recent State Not Found`);
         } else {
             // apply handler for bottom bar of player state
-            this.elements["bbar"]   .doOn("tap", this.recentBarTap);
+            this.elements[`bbar`]   .doOn(`tap`, this.recentBarTap.bind(this));
             // show player state bottom bar
-            this.elements["bbar"]   .removeAttribute("hide");
+            this.elements[`bbar`]   .removeAttribute(`hide`);
             // apply handler for bottom bar of recent state
             // TODO: uncomment
-            // this.recentState        .onClosed(this.recentStateClose.bind(this));
+            this.recentState        .onClosed(this.recentStateClose.bind(this));
             this.recentState.init();
         }
     }
