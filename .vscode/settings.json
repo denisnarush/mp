@@ -26,5 +26,19 @@
         "FIXME": {
             "icon": "alert"
         }
+    },
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {
+            "icon": "check"
+        },
+        "FIXME": {
+            "icon": "alert"
+        }
+    },
+    "todo-tree.highlights.defaultHighlight": {
+        "type": "line",
+        "foreground": "lightblue",
+        "background": "black",
+        "opacity": 50
     }
 }
