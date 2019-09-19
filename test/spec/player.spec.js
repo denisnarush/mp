@@ -11,7 +11,7 @@ describe(`Player`, () => {
         document.querySelectorAll('audio').forEach((e) => e.remove());
     }
 
-    before(clean);
+    before(clean)
 
     beforeEach(function() {
         if (localStorage.getItem(PLAYER_SETTINGS_KEY)) {
@@ -19,10 +19,7 @@ describe(`Player`, () => {
         }
     })
 
-    afterEach(() => {
-        clean();
-        console.clear();
-    })
+    afterEach(clean)
 
     describe(`Class`, () => {
         it(`is a class`, () => {

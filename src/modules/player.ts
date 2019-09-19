@@ -1,6 +1,6 @@
 import { ElementsInterface } from "./state.js";
 import { PlayerServiceEmum, PlayerService } from "../services/player.service.js";
-import { PLAYER_SETTINGS_STORAGE_KEY } from "../envs/common.js";
+import { PLAYER_SETTINGS_STORAGE_KEY, DEFAULT_PLAYER_SETTINGS } from "../envs/common.js";
 import { arrayOfObjectsDistinct } from "./utils.js";
 
 export interface PlayerSettingsInterface {
@@ -39,16 +39,7 @@ export class Player {
     // preloaded tracks
     public tracks: TrackInterface[] = [];
     // default parameters
-    static defaultSettings = {
-        genres: [`Chillout`, `Chill`, `Deep House`, `Minimal`],
-        volume: 1,
-        limit: 200,
-        duration: {
-            from: 90000,
-            to: 600000
-        },
-        offset: 0
-    }
+    static defaultSettings = DEFAULT_PLAYER_SETTINGS;
 
     constructor(options: PlayerOptionsInterface = {service: PlayerServiceEmum.SoundCloud}) {
 
@@ -62,11 +53,19 @@ export class Player {
         container.setAttribute(`preload`, `auto`);
         // volume change
         container.addEventListener(`volumechange`, () => {
+            if (this.settings === null) {
+                return this;
+            }
+            // apply volume value to settings
             this.settings = {
                 volume: this.volume
             }
         })
+        // load start
         container.addEventListener(`loadstart`, () => {
+            if (this.settings === null) {
+                return this;
+            }
             // do not apply the same track to recent array
             this.settings = {
                 recent: arrayOfObjectsDistinct(this.settings.recent.concat([this.track]))

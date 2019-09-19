@@ -3,7 +3,6 @@ import { Player } from "./modules/player.js";
 import { PlayerState } from "./states/player/player.state.js";
 import { PlayerServiceEmum } from "./services/player.service.js";
 import { RecentState } from "./states/recent/recent.state.js";
-import { DEFAULT_PLAYER_SETTINGS } from "./envs/common.js";
 
 if ("serviceWorker" in navigator && "nw" in window === false) {
     navigator.serviceWorker.register("service-worker.js");
