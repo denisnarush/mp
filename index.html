@@ -5,14 +5,10 @@
 	<base href="/">
 	<style>@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500");</style>
 	<style>@import url("/assets/icomoon/style.css");</style>
-	<style>@import url("styles/var.css");</style>
-	<style>@import url("styles/common.css");</style>
-	<style>@import url("styles/icon.css");</style>
-	
-	<style>@import url("styles/bar.css");</style>
-	<style>@import url("styles/state.css");</style>
-	<style>@import url("states/player/player.state.css");</style>
-	<style>@import url("states/recent/recent.state.css");</style>
+	<style>@import url("/src/styles/var.css");</style>
+	<style>@import url("/src/styles/icon.css");</style>
+	<style>@import url("/src/styles/common.css");</style>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="application-name" content="MPLSC">
@@ -33,7 +29,8 @@
 	<meta property="og:title" content="MediaPlayer - radio with SoundCloud API v1.0">
 	<meta property="og:image" content="screens.png">
 
-	<script data-main="!./dist/main.js" src="https://requirejs.org/docs/release/2.3.6/r.js"></script>
+	<!-- <script data-main="!./dist/main.js" src="https://requirejs.org/docs/release/2.3.6/r.js"></script> -->
+	<script src="./dist/main.js" type="module"></script>
 </head>
 <body>
 	<!-- Background from artwork -->

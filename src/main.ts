@@ -3,21 +3,22 @@ import { Player } from "./modules/player.js";
 import { PlayerState } from "./states/player/player.state.js";
 import { PlayerServiceEmum } from "./services/player.service.js";
 import { RecentState } from "./states/recent/recent.state.js";
+import { DEFAULT_PLAYER_SETTINGS } from "./envs/common.js";
 
+if ("serviceWorker" in navigator && "nw" in window === false) {
+    navigator.serviceWorker.register("service-worker.js");
+}
 
 function onKeydown(event: KeyboardEvent) {
     switch (event.code) {
     case `Space`:
-        // TODO: `Space` key kode
-        // this.player.togglePlaying();
+        this.player.togglePlaying();
         break;
     case `ArrowRight`:
-        // TODO: `ArrowRight` key kode
-        // this.player.currentTime += 5;
+        this.player.currentTime += 5;
         break;
     case `ArrowLeft`:
-        // TODO: `ArrowLeft` key kode
-    // this.player.currentTime -= 5;
+        this.player.currentTime -= 5;
         break;
     case `ArrowUp`:
         this.player.volume += 0.05;
@@ -41,16 +42,8 @@ class Main {
             player: this.player
         });
 
-        // TODO: Export to evns
         const defaultSettings = {
-            genres: [`Chillout`, `Chill`, `Deep House`, `Minimal`],
-            volume: 1.0,
-            limit: 200,
-            duration: {
-                from: 90000,
-                to: 600000
-            },
-            offset: 0,
+            ...DEFAULT_PLAYER_SETTINGS,
             ...this.player.settings
         }
 

@@ -3,14 +3,15 @@ import { Tap } from "./motion-tap.js";
 declare global {
     // megring to Element interface
     interface Element {
-        doOn(eventName: "tap", handler: Function, options?: any): Element;
-        doOff(eventName: "tap", handler: Function, options?: any): Element;
+        doOn(eventName: string, handler: () => void, options?: any): Element;
+        doOff(eventName: string, handler: () => void, options?: any): Element;
     }
 }
 
-Element.prototype.doOn = doOn;
-
-function doOn(eventName: "tap", handler: Function, options: any) {
+/**
+ * 
+ */
+function doOn(eventName: "tap", handler: () => void, options: any) {
     const targetElement = this;
     let wrap = (eventName[0] === "-");
     let action = detectAction(wrap ? eventName.slice(1) : eventName);
@@ -71,6 +72,56 @@ function doOn(eventName: "tap", handler: Function, options: any) {
 
     return this;
 }
+/**
+ * 
+ */
+function doOff (eventName: string, handler: () => void, options?: any) {
+    const targetElement = this;
+    let action = detectAction(eventName);
+
+    if (!action) {
+        return;
+    }
+
+    switch(action) {
+
+    case "tap":
+        if (targetElement.destroyTapHandler) {
+            targetElement.destroyTapHandler(handler);
+        }
+
+        return;
+
+    case "hold":
+        if (targetElement.destroyHoldHandler) {
+            targetElement.destroyHoldHandler(handler);
+        }
+
+        return;
+    }
+
+    let i = this.handlers[action].length;
+
+    while (i--){
+        let element = this.handlers[action][i];
+        // looking for handler
+        if (element[0] === handler) {
+            // remove listner
+            this.removeEventListener(action, element[1]);
+            // remove handler from array
+            this.handlers[action].splice(i, 1);
+            // exit from loop;
+            break;
+        }
+    }
+
+    if (this.handlers[action].length === 0) {
+        delete this.handlers[action];
+    }
+
+    return this;
+};
+
 
 function detectAction (name: string) {
     let action = name;
@@ -100,3 +151,6 @@ function detectAction (name: string) {
 
     return action;
 }
+
+Element.prototype.doOn = doOn;
+Element.prototype.doOff = doOff;

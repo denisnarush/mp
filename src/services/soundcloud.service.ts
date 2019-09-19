@@ -5,6 +5,7 @@ import { TrackInterface } from "../modules/player.js";
 
 interface API_USER_INTERFACE {
     avatar_url: string;
+    username: string;
 }
 
 interface API_TRACKS_INTERFACE {
@@ -44,14 +45,18 @@ function getTracks(options: MusicServicesGetTracksOptionsInterface) {
         .then(response => response.json())
         // mapping
         .then(data => <TrackInterface[]>data.map(
-            (track: API_TRACKS_INTERFACE) => <TrackInterface>({
-                id: track.id,
-                genre: track.genre,
-                title: track.title,
-                duration: track.duration,
-                cover: track.artwork_url ? track.artwork_url.replace("large","t500x500") : track.user.avatar_url,
-                src: `${track.stream_url}?client_id=${SoundCloudEnv.client_id}`
-            }))
+            (track: API_TRACKS_INTERFACE) => {
+                const data: TrackInterface = {
+                    id: track.id,
+                    genre: track.genre,
+                    author: track.user.username,
+                    title: track.title,
+                    duration: track.duration,
+                    cover: track.artwork_url ? track.artwork_url.replace("large","t500x500") : track.user.avatar_url,
+                    src: `${track.stream_url}?client_id=${SoundCloudEnv.client_id}`
+                }
+                return data;
+            })
         );
 }
 

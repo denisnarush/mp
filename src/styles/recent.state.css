@@ -1,5 +1,3 @@
-@import url("playlist.css");
-
 .state[data-state="recent"]{
 	transform: translate3d(0, 0, 1px);
 	padding-top: 0;
