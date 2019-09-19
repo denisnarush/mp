@@ -42,13 +42,6 @@ class Main {
             player: this.player
         });
 
-        const defaultSettings = {
-            ...DEFAULT_PLAYER_SETTINGS,
-            ...this.player.settings
-        }
-
-        this.player.settings = defaultSettings;
-
         window.addEventListener(`keydown`, onKeydown.bind(this));
     }
 

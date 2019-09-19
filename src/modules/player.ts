@@ -35,9 +35,20 @@ export class Player {
     // selected service
     private service: PlayerService;
     // current track
-    public track: TrackInterface;
+    public track: TrackInterface = null;
     // preloaded tracks
     public tracks: TrackInterface[] = [];
+    // default parameters
+    static defaultSettings = {
+        genres: [`Chillout`, `Chill`, `Deep House`, `Minimal`],
+        volume: 1,
+        limit: 200,
+        duration: {
+            from: 90000,
+            to: 600000
+        },
+        offset: 0
+    }
 
     constructor(options: PlayerOptionsInterface = {service: PlayerServiceEmum.SoundCloud}) {
 
@@ -61,6 +72,13 @@ export class Player {
                 recent: arrayOfObjectsDistinct(this.settings.recent.concat([this.track]))
             }
         })
+
+        const defaultSettings = {
+            ...Player.defaultSettings,
+            ...this.settings
+        }
+
+        this.settings = defaultSettings;
         // appending to body
         document.body.appendChild(container);
         // appending to elements
@@ -68,11 +86,17 @@ export class Player {
     }
 
     public preloadRandomTracks() {
-        return this.service.preloadTracks({
+        const promise = this.service.preloadTracks({
             limit: this.settings.limit,
             offset: this.settings.offset,
             duration: this.settings.duration
         });
+
+        promise.then(data => {
+            this.tracks = data;
+        })
+
+        return promise;
     }
 
     public get settings(): PlayerSettingsInterface {
@@ -132,7 +156,7 @@ export class Player {
      * Get Track Id
      */
     public getTrackId() {
-        return this.track ? this.track.id : void 0;
+        return this.track ? this.track.id : null;
     }
     /**
      * Get Track cover
@@ -205,14 +229,14 @@ export class Player {
             // skip
             return this;
         }
-        //set current by index
-        this.track = Object.assign({}, this.tracks[idx]);
         // detecting if current track the same as new
         if ((this.elements[`container`] as HTMLAudioElement).src === this.tracks[idx].src) {
             console.warn(`You are trying to start an already playing track`);
             // skip
             return this;
         }
+        //set current by index
+        this.track = Object.assign({}, this.tracks[idx]);
         // important pause!
         this.stop();
         // setting source
