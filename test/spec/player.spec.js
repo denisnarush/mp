@@ -161,7 +161,6 @@ describe(`Player`, () => {
 
     describe(`.getTrackId() <method>`, () => {
         let player = new Player();
-        player.preloadRandomTracks();
 
         it (`Is a method`, () => {
             chai.assert.isFunction(player.getTrackId)
@@ -171,7 +170,9 @@ describe(`Player`, () => {
             chai.assert.isNull(player.getTrackId());
         })
 
-        it(`or returns current composition ID as number`, () => {
+        it(`or returns current composition ID as number`, async () => {
+            player = new Player();
+            await player.preloadRandomTracks();
             player.start();
             chai.assert.isNumber(player.getTrackId());
         })
