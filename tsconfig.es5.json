@@ -6,9 +6,9 @@
         "./node_modules"
     ],
     "compilerOptions": {
-        "module": "es6",
+        "module": "amd",
         "declaration": false,
-        "outDir": "./dist",
-        "target": "esnext"
+        "outDir": "./build",
+        "target": "es5"
     }
 }

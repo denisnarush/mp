@@ -4,3 +4,4 @@
 #folders
 node_modules/
 dist/
+build/

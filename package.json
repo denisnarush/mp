@@ -31,7 +31,7 @@
     "test:ui:test": "backstop test",
     "test:ui:approve": "backstop approve",
     "test": "tsc -p ./tsconfig.test.json",
-    "build": "tsc -p ./tsconfig.json"
+    "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig.es5.json"
   },
   "devDependencies": {
     "backstopjs": "^4.3.2",
