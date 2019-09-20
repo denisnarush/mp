@@ -1,4 +1,4 @@
-import { MusicServices } from "./music-api.service.js";
+import { MusicServices, MusicServicesGetTracksOptionsInterface } from "./music-api.service.js";
 
 export enum PlayerServiceEmum {
     SoundCloud = "SoundCloudService"
@@ -9,9 +9,7 @@ export class PlayerService extends MusicServices {
         super(serviceName);
     }
 
-    preloadTracks(options: {limit: number, offset: number, duration: {from: number, to: number}}) {
-        const { limit, offset, duration } = options;
-        return this.getTracks( { limit, offset, duration } );
+    preloadTracks(options: MusicServicesGetTracksOptionsInterface) {
+        return this.getTracks( options );
     }
 }
-

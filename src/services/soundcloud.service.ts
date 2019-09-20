@@ -33,9 +33,9 @@ function getTracks(options: MusicServicesGetTracksOptionsInterface) {
         'client_id': SoundCloudEnv.client_id,
     }
 
-    settings.limit = options.limit;
-    settings.offset = options.offset;
-    settings.durations = options.duration;
+    options.offset      ? settings.offset       = options.offset    : settings;
+    options.limit       ? settings.limit        = options.limit     : settings;
+    options.duration    ? settings.durations    = options.duration  : settings;
 
     const params = `?${toURLencoded(settings)}`;
 

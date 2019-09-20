@@ -87,8 +87,7 @@ export class Player {
     public preloadRandomTracks() {
         const promise = this.service.preloadTracks({
             limit: this.settings.limit,
-            offset: this.settings.offset,
-            duration: this.settings.duration
+            offset: this.settings.offset
         });
 
         promise.then(data => {

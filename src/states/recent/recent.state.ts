@@ -1,3 +1,4 @@
+import { PLAYER_SETTINGS_RECENT_LIMIT } from "../../envs/common.js";
 import { State, StateOptionsInterface } from "../../modules/state.js";
 import { Player } from "../../modules/player.js";
 
@@ -45,6 +46,12 @@ export class RecentState extends State {
     private generateList() {
         let html = ``;
 
+        if (this.player.settings.recent.length > PLAYER_SETTINGS_RECENT_LIMIT) {
+            this.player.settings = {
+                recent: this.player.settings.recent.splice(0, PLAYER_SETTINGS_RECENT_LIMIT)
+            }
+        }
+
         let i = this.player.settings.recent.length;
         while (i--) {
             const item = this.player.settings.recent[i];
@@ -90,7 +97,7 @@ export class RecentState extends State {
     /**
      * List item tap handler
      */
-    // TODO: add Tap Event
+    // TODO: add Tap Event logic on recent list item
     private listTap(event: any) {
         let item,
             current = event.target;

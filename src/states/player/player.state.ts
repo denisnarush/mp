@@ -1,5 +1,5 @@
 import { State, StateOptionsInterface, ElementsInterface } from "../../modules/state.js";
-import { Player } from "../../modules/player.js";
+import { Player, TrackInterface } from "../../modules/player.js";
 import { RecentState } from "../recent/recent.state.js";
 
 
@@ -196,7 +196,6 @@ export class PlayerState extends State {
      */
     private recentBarTap() {
         this.elements[`bbar`]       .setAttribute(`hide`, ``);
-        // TODO: uncomment
         this.recentState.show();
         this.recentState.on();
     }
@@ -205,7 +204,6 @@ export class PlayerState extends State {
      */
     private recentStateClose() {
         this.elements[`bbar`]   .removeAttribute(`hide`);
-        // TODO: uncomment
         this.recentState.hide();
     }
     /**
@@ -220,7 +218,6 @@ export class PlayerState extends State {
         // show top bar
         this.elements[`tbar`]       .removeAttribute(`hide`);
         // remove handler from play button
-        // TODO: uncomment
         this.elements[`play`]       .doOff(`tap`, this._onPlayBtnOnce_);
         // delete backup handler
         delete this._onPlayBtnOnce_;
@@ -233,7 +230,6 @@ export class PlayerState extends State {
             // show player state bottom bar
             this.elements[`bbar`]   .removeAttribute(`hide`);
             // apply handler for bottom bar of recent state
-            // TODO: uncomment
             this.recentState        .onClosed(this.recentStateClose.bind(this));
             this.recentState.init();
         }
@@ -242,32 +238,60 @@ export class PlayerState extends State {
      * Preload Random tracks
      */
     private async preloadRandomTracks() {
-        // TODO: can be used for blocking content
-        let found = false;
+        // no data; stop
+        if ((await this.player.preloadRandomTracks()).length === 0) {
+            return false;
+        }
 
+        let isValid = true;
 
-        let tracks = await this.player.preloadRandomTracks();
+        for (let i = 0; i < this.player.tracks.length; i++) {
 
-        // TODO: should be moved out and logic increased
-        for (let i = 0; i < tracks.length; i++) {
             if (this.player.track) {
-                if (this.player.track.id === tracks[i].id) {
+                if (this.player.track.id === this.player.tracks[i].id) {
                     continue;
                 }
             }
-            // increase offset
-            if (tracks[i].genre && tracks[i].duration > this.player.settings.duration.from && this.player.settings.genres.indexOf(tracks[i].genre) !== -1) {
-                found = true;
-                // debug:
-                // console.info(`${tracks[i].genre}\n${tracks[i].title}`);
-                this.player.settings = { offset: this.player.settings.offset + i };
-                this.player.tracks = Object.assign([], tracks);
+
+            isValid = this.isTrackValid(this.player.tracks[i]);
+
+            if (isValid) {
+                this.player.settings = { offset: this.player.settings.offset + i + 1 };
                 return this.player.start(i);
             }
         };
-        if (!found) {
-            this.player.settings = { offset: this.player.settings.offset + tracks.length };
+
+        if (!isValid) {
+            this.player.settings = { offset: this.player.settings.offset + this.player.tracks.length };
             return await this.preloadRandomTracks.call(this);
+        }
+    }
+
+    private isTrackValid(track: TrackInterface) {
+        let properites = [`id`, `duration`, `genre`];
+        let isValid = true;
+
+        for (let i = 0; i < properites.length; i++) {
+            if (!this.isTrackProperyValid(properites[i], track)) {
+                isValid = false;
+                i = properites.length;
+            }
+        }
+
+        return isValid;
+    }
+
+    private isTrackProperyValid(property: string, track: TrackInterface) {
+        switch (property) {
+            case `id`:
+               // is recently played track
+               return !this.player.settings.recent.find(recent => recent.id === track.id)
+            case `duration`:
+                return track.duration > this.player.settings.duration.from && track.duration < this.player.settings.duration.to;
+            case `genre`:
+                return track.genre && this.player.settings.genres.indexOf(track.genre.toLocaleLowerCase()) !== -1;
+            default:
+                return true;
         }
     }
 }
