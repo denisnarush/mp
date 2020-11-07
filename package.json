@@ -25,16 +25,18 @@
     "height": 640
   },
   "scripts": {
-    "postinstall": "npm outdated",
+    "postinstall": "npm outdated && npm run postinstall:scripts",
+    "postinstall:scripts": "node node_modules/puppeteer/install.js",
     "install": "npm i --ignore-scripts --no-optional --no-audit",
-    "test:ui:init": "backstop init",
+    "test:ui:reference": "backstop reference",
     "test:ui:test": "backstop test",
-    "test:ui:approve": "backstop approve",
-    "test:js:start": "tsc -p ./tsconfig.test.json",
-    "tslint": "tslint -t stylish -c tslint.json src/**/*.ts",
-    "tslint:fix": "tslint -t stylish -c tslint.json src/**/*.ts --fix",
-    "format": "prettier --write --config=.prettierrc.json ./",
-    "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig.es5.json"
+    "test:ui:report": "backstop openReport",
+    "test:ts:lint": "tslint -t stylish -c tslint.json src/**/*.ts",
+    "test:ts:lint:fix": "tslint -t stylish -c tslint.json src/**/*.ts --fix",
+    "test:codestyle": "prettier --check --config=.prettierrc.json ./",
+    "test:codestyle:format": "prettier --write --config=.prettierrc.json ./",
+    "build": "prettier --check --config=.prettierrc.json ./ && tslint -t stylish -c tslint.json src/**/*.ts && tsc -p ./tsconfig.json",
+    "build:all": "npm run build && tsc -p ./tsconfig.es5.json"
   },
   "devDependencies": {
     "backstopjs": "^5.0.6",

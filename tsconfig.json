@@ -1,6 +1,6 @@
 {
   "include": ["./src/**/*.ts"],
-  "exclude": ["./node_modules"],
+  "exclude": ["./node_modules", "./backstop_data"],
   "compilerOptions": {
     "module": "es6",
     "declaration": false,

@@ -83,7 +83,7 @@ export class PlayerState extends State {
    * Player state constructor
    */
   public constructor(options: StateOptionsInterface) {
-    super(`player`, { ...options, ...styles });
+    super(`player`, { ...options, styles });
   }
 
   // TEMP

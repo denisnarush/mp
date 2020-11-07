@@ -1,6 +1,7 @@
 # Ignore artifacts:
 dist
 node_modules
+backstop_data
 
 # assets
 assets
