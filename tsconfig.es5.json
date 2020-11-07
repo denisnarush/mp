@@ -1,14 +1,11 @@
 {
-    "include": [
-        "./src/**/*.ts"
-    ],
-    "exclude": [
-        "./node_modules"
-    ],
-    "compilerOptions": {
-        "module": "amd",
-        "declaration": false,
-        "outDir": "./build",
-        "target": "es5"
-    }
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./node_modules"],
+  "compilerOptions": {
+    "module": "AMD",
+    "declaration": false,
+    "outDir": "./dist/es5",
+    "lib": ["ESNext", "DOM"],
+    "target": "es5"
+  }
 }

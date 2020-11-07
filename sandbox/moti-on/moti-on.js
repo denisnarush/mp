@@ -1,20 +1,21 @@
 import "./../../modules/moti-on.js";
 
-function activeToggle (e) {
-    e.target.classList.toggle("active");
+function activeToggle(e) {
+  e.target.classList.toggle("active");
 }
 
-function activeToggleAndRemove (e) {
-    activeToggle(e);
-    e.target.textContent = "Removed";
+function activeToggleAndRemove(e) {
+  activeToggle(e);
+  e.target.textContent = "Removed";
 
-    let action = e.constructor.name.replace("Event", "").toLowerCase();
-    e.target.doOff(action, activeToggleAndRemove);
+  let action = e.constructor.name.replace("Event", "").toLowerCase();
+  e.target.doOff(action, activeToggleAndRemove);
 }
 
-function textToggle (e) {
-    let action = e.constructor.name.replace("Event", "");
-    e.target.textContent = (e.target.textContent === action ? action + " +": action);
+function textToggle(e) {
+  let action = e.constructor.name.replace("Event", "");
+  e.target.textContent =
+    e.target.textContent === action ? action + " +" : action;
 }
 
 // 1.1

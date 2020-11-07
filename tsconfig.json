@@ -1,14 +1,11 @@
 {
-    "include": [
-        "./src/**/*.ts"
-    ],
-    "exclude": [
-        "./node_modules"
-    ],
-    "compilerOptions": {
-        "module": "es6",
-        "declaration": false,
-        "outDir": "./dist",
-        "target": "esnext"
-    }
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./node_modules"],
+  "compilerOptions": {
+    "module": "es6",
+    "declaration": false,
+    "outDir": "./dist/",
+    "lib": ["ESNext", "DOM"],
+    "target": "esnext"
+  }
 }

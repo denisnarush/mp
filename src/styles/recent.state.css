@@ -1,18 +1,18 @@
-.state[data-state="recent"]{
-	transform: translate3d(0, 0, 1px);
-	padding-top: 0;
-	position: fixed;
-	right: 0;
-	top: 0;
-	z-index: 6;
+.state[data-state="recent"] {
+  transform: translate3d(0, 0, 1px);
+  padding-top: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 6;
 }
-.state[data-state="recent"][off]{
-	transform: translate3d(0, calc(99.9% - 60px), 1px);
+.state[data-state="recent"][off] {
+  transform: translate3d(0, calc(99.9% - 60px), 1px);
 }
-.state[data-state="recent"] .icon-list{
-	font-size: 2em;
+.state[data-state="recent"] .icon-list {
+  font-size: 2em;
 }
-.state[data-state="recent"][hide]{
-	transition-duration: 0s;
-	transform: translate3d(0, calc(99.9%), 1px);
+.state[data-state="recent"][hide] {
+  transition-duration: 0s;
+  transform: translate3d(0, calc(99.9%), 1px);
 }

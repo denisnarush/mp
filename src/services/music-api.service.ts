@@ -3,32 +3,36 @@ import { SoundCloudService } from "./soundcloud.service.js";
 import { TrackInterface } from "../modules/player.js";
 
 export interface MusicServicesGetTracksOptionsInterface {
-    limit?: number;
-    offset?: number
-    duration?: {
-        from: number,
-        to: number
-    }
+  limit?: number;
+  offset?: number;
+  duration?: {
+    from: number;
+    to: number;
+  };
 }
 export interface MusicServiceInterface {
-    getTracks(options?: MusicServicesGetTracksOptionsInterface): Promise<TrackInterface[]>;
+  getTracks(
+    options?: MusicServicesGetTracksOptionsInterface
+  ): Promise<TrackInterface[]>;
 }
 
 export class MusicServices {
-    private service: MusicServiceInterface;
+  private service: MusicServiceInterface;
 
-    constructor(service: PlayerServiceEmum) {
-        let _service: MusicServiceInterface;
+  constructor(service: PlayerServiceEmum) {
+    let _service: MusicServiceInterface;
 
-        switch (service) {
-            case PlayerServiceEmum.SoundCloud:
-                _service = SoundCloudService
-        }
-
-        this.service = _service;
+    switch (service) {
+      case PlayerServiceEmum.SoundCloud:
+        _service = SoundCloudService;
     }
 
-    protected getTracks(options?: MusicServicesGetTracksOptionsInterface): Promise<TrackInterface[]> {
-        return this.service.getTracks.call(this, options);
-    }
+    this.service = _service;
+  }
+
+  protected getTracks(
+    options?: MusicServicesGetTracksOptionsInterface
+  ): Promise<TrackInterface[]> {
+    return this.service.getTracks.call(this, options);
+  }
 }
