@@ -1,26 +1,18 @@
-import { PLAYER_SETTINGS_RECENT_LIMIT } from "../../envs/common.js";
-import { State, StateOptionsInterface } from "../../modules/state.js";
-import { Player } from "../../modules/player.js";
+import { PLAYER_SETTINGS_RECENT_LIMIT } from "../../environments/environment.js";
+import { Player } from "../../modules/player/player.js";
+import { State, StateOptionsInterface } from "../../modules/state/state.js";
+
+const styles = [
+  `/src/states/recent/recent.state.css`,
+  `/src/styles/bar.css`,
+  `/src/styles/playlist.css`,
+];
 
 export class RecentState extends State {
-  // Player instance
-  private player: Player;
-
-  constructor(options: StateOptionsInterface) {
-    options = {
-      ...options,
-      styles: [
-        `/src/styles/recent.state.css`,
-        `/src/styles/bar.css`,
-        `/src/styles/playlist.css`,
-      ],
-    };
-    super(`recent`, options);
-  }
   /**
    * Init
    */
-  init() {
+  public init() {
     this.loadStyles();
     this.elements[`container`].removeAttribute(`hidden`);
     /**
@@ -45,6 +37,12 @@ export class RecentState extends State {
   public onClosed(fn: () => void) {
     this.elements[`container`].doOn(`onstateclosed`, fn.bind(this));
   }
+
+  public constructor(options: StateOptionsInterface) {
+    super(`recent`, { ...options, styles });
+  }
+  // Player instance
+  private player: Player;
   /**
    * Playlist generator method
    */
@@ -65,12 +63,12 @@ export class RecentState extends State {
       const item = this.player.settings.recent[i];
       const time = new Date();
 
-      // track time
+      // Track time
       time.setTime(item.duration);
 
-      // template
+      // Template
       html += `<div class="playlist-item ${
-        this.player.getTrackId() == item.id ? `playlist-item__current` : ``
+        this.player.getTrackId() === item.id ? `playlist-item__current` : ``
       }" track-id="${item.id}">
                         <div class="playlist-item-s playlist-item-s__left">
                             <p class="playlist-item-title">${
@@ -88,23 +86,30 @@ export class RecentState extends State {
                         </div>
                     </div>`;
     }
-    // past to the DOM
+    // Past to the DOM
     this.elements[`list`].innerHTML = html;
   }
   /**
-   * Recent state top bar handler
+   * List item tap handler
    */
-  private stateTopBarTap() {
-    this.off();
-  }
-  /**
-   * Recetn state transition end handler
-   */
-  private onTransitionEnd() {
-    // check if state closed to dispatch event
-    if (!this.isOn()) {
-      this.elements[`container`].dispatchEvent(State.onStateClosedEvent);
+  // TODO: add Tap Event logic on recent list item
+  private listTap(event) {
+    let item;
+    let current = event.target;
+
+    while (this.elements[`list`] !== current) {
+      if (current.parentElement === this.elements[`list`]) {
+        item = current;
+      }
+      // Next step
+      current = current.parentElement;
     }
+
+    if (!item) {
+      return;
+    }
+
+    // This.player.getTrackById(item.getAttribute('track-id'));
   }
   /**
    * Player metadata is loaded
@@ -113,25 +118,18 @@ export class RecentState extends State {
     this.generateList();
   }
   /**
-   * List item tap handler
+   * Recetn state transition end handler
    */
-  // TODO: add Tap Event logic on recent list item
-  private listTap(event: any) {
-    let item,
-      current = event.target;
-
-    while (this.elements[`list`] !== current) {
-      if (current.parentElement === this.elements[`list`]) {
-        item = current;
-      }
-      // next step
-      current = current.parentElement;
+  private onTransitionEnd() {
+    // Check if state closed to dispatch event
+    if (!this.isOn()) {
+      this.elements[`container`].dispatchEvent(State.onStateClosedEvent);
     }
-
-    if (!item) {
-      return;
-    }
-
-    // this.player.getTrackById(item.getAttribute('track-id'));
+  }
+  /**
+   * Recent state top bar handler
+   */
+  private stateTopBarTap() {
+    this.off();
   }
 }

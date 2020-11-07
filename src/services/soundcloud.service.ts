@@ -1,44 +1,50 @@
-import { SoundCloudEnv } from "../envs/common.js";
-import { toURLencoded } from "../modules/utils.js";
+import { SoundCloudEnv } from "../environments/environment.js";
+import { TrackInterface as ITrack } from "../modules/player/player.js";
+import { toURLencoded } from "../modules/utils/utils.js";
+
 import {
   MusicServiceInterface,
   MusicServicesGetTracksOptionsInterface,
 } from "./music-api.service.js";
-import { TrackInterface } from "../modules/player.js";
 
-interface API_USER_INTERFACE {
+interface IApiUser {
   avatar_url: string;
   username: string;
 }
 
-interface API_TRACKS_INTERFACE {
-  id: number;
-  genre: string;
-  title: string;
+interface IApiTracks {
   artwork_url: string;
-  stream_url: string;
   duration: number;
-  user: API_USER_INTERFACE;
+  genre: string;
+  id: number;
+  stream_url: string;
+  title: string;
+  user: IApiUser;
 }
 
-interface API_TRACKS_SETTINGS_INTERFACE {
+interface IApiTracksSettings {
   client_id: string;
-  limit?: number;
-  offset?: number;
   durations?: {
     from: number;
     to: number;
   };
+  limit?: number;
+  offset?: number;
 }
 
 function getTracks(options: MusicServicesGetTracksOptionsInterface) {
-  const settings: API_TRACKS_SETTINGS_INTERFACE = {
+  const settings: IApiTracksSettings = {
     client_id: SoundCloudEnv.client_id,
   };
 
-  options.offset ? (settings.offset = options.offset) : settings;
-  options.limit ? (settings.limit = options.limit) : settings;
-  options.duration ? (settings.durations = options.duration) : settings;
+  const {
+    offset = settings.offset,
+    limit = settings.limit,
+    duration = settings.durations,
+  } = options;
+  settings.offset = offset;
+  settings.limit = limit;
+  settings.durations = duration;
 
   const params = `?${toURLencoded(settings)}`;
 
@@ -47,22 +53,24 @@ function getTracks(options: MusicServicesGetTracksOptionsInterface) {
       method: `GET`,
     })
       .then((response) => response.json())
-      // mapping
+      // Mapping
       .then(
-        (data) => <TrackInterface[]>data.map((track: API_TRACKS_INTERFACE) => {
-            const data: TrackInterface = {
-              id: track.id,
-              genre: track.genre,
-              author: track.user.username,
-              title: track.title,
-              duration: track.duration,
-              cover: track.artwork_url
-                ? track.artwork_url.replace("large", "t500x500")
-                : track.user.avatar_url,
-              src: `${track.stream_url}?client_id=${SoundCloudEnv.client_id}`,
+        (data) =>
+          data.map((response: IApiTracks) => {
+            const track: ITrack = {
+              id: response.id,
+              genre: response.genre,
+              author: response.user.username,
+              title: response.title,
+              duration: response.duration,
+              cover: response.artwork_url
+                ? response.artwork_url.replace("large", "t500x500")
+                : response.user.avatar_url,
+              src: `${response.stream_url}?client_id=${SoundCloudEnv.client_id}`,
             };
-            return data;
-          })
+
+            return track;
+          }) as ITrack[]
       )
   );
 }

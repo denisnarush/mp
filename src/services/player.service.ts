@@ -8,11 +8,12 @@ export enum PlayerServiceEmum {
 }
 
 export class PlayerService extends MusicServices {
-  constructor(serviceName: PlayerServiceEmum = PlayerServiceEmum.SoundCloud) {
-    super(serviceName);
-  }
-
-  preloadTracks(options: MusicServicesGetTracksOptionsInterface) {
+  public preloadTracks(options: MusicServicesGetTracksOptionsInterface) {
     return this.getTracks(options);
+  }
+  public constructor(
+    serviceName: PlayerServiceEmum = PlayerServiceEmum.SoundCloud
+  ) {
+    super(serviceName);
   }
 }

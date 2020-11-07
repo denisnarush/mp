@@ -1,14 +1,15 @@
+import { TrackInterface } from "../modules/player/player.js";
+
 import { PlayerServiceEmum } from "./player.service.js";
 import { SoundCloudService } from "./soundcloud.service.js";
-import { TrackInterface } from "../modules/player.js";
 
 export interface MusicServicesGetTracksOptionsInterface {
-  limit?: number;
-  offset?: number;
   duration?: {
     from: number;
     to: number;
   };
+  limit?: number;
+  offset?: number;
 }
 export interface MusicServiceInterface {
   getTracks(
@@ -17,9 +18,7 @@ export interface MusicServiceInterface {
 }
 
 export class MusicServices {
-  private service: MusicServiceInterface;
-
-  constructor(service: PlayerServiceEmum) {
+  public constructor(service: PlayerServiceEmum) {
     let _service: MusicServiceInterface;
 
     switch (service) {
@@ -35,4 +34,5 @@ export class MusicServices {
   ): Promise<TrackInterface[]> {
     return this.service.getTracks.call(this, options);
   }
+  private service: MusicServiceInterface;
 }

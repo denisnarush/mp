@@ -1,20 +1,20 @@
 import { Tap } from "./motion-tap.js";
 
 declare global {
-  // megring to Element interface
+  // Megring to Element interface
   interface Element {
-    doOn(eventName: string, handler: () => void, options?: any): Element;
-    doOff(eventName: string, handler: () => void, options?: any): Element;
+    doOff(eventName: string, handler: () => void, options?): Element;
+    doOn(eventName: string, handler: () => void, options?): Element;
   }
 }
 
 /**
  *
  */
-function doOn(eventName: "tap", handler: () => void, options: any) {
+function doOn(eventName: "tap", handler: () => void, options) {
   const targetElement = this;
-  let wrap = eventName[0] === "-";
-  let action = detectAction(wrap ? eventName.slice(1) : eventName);
+  const wrap = eventName[0] === "-";
+  const action = detectAction(wrap ? eventName.slice(1) : eventName);
 
   if (!action) {
     return;
@@ -23,20 +23,21 @@ function doOn(eventName: "tap", handler: () => void, options: any) {
   switch (action) {
     case "tap":
       Tap.call(targetElement, handler);
+
       return;
 
-    // case "hold":
+    // Case "hold":
     //     Hold.call(targetElement, handler);
-    //     return;
+    //     Return;
     // }
   }
 
   // TODO: Move this out
   function wrapper(event) {
     if (wrap) {
-      let params: any = {};
+      let params = {};
 
-      // mouse
+      // Mouse
       if (event.type.indexOf("mouse") === 0) {
         params = {
           x: event.offsetX,
@@ -45,7 +46,7 @@ function doOn(eventName: "tap", handler: () => void, options: any) {
         };
       }
 
-      // touch
+      // Touch
       if (event.type.indexOf("touch") === 0) {
         params = {
           x: event.changedTouches[0].clientX - event.changedTouches[0].radiusX,
@@ -53,9 +54,6 @@ function doOn(eventName: "tap", handler: () => void, options: any) {
           target: event.changedTouches[0].target,
         };
       }
-
-      // FIXME: Debug property
-      params._event = event;
 
       handler.call(targetElement, params);
     } else {
@@ -74,9 +72,9 @@ function doOn(eventName: "tap", handler: () => void, options: any) {
 /**
  *
  */
-function doOff(eventName: string, handler: () => void, options?: any) {
+function doOff(eventName: string, handler: () => void, options?) {
   const targetElement = this;
-  let action = detectAction(eventName);
+  const action = detectAction(eventName);
 
   if (!action) {
     return;
@@ -101,14 +99,14 @@ function doOff(eventName: string, handler: () => void, options?: any) {
   let i = this.handlers[action].length;
 
   while (i--) {
-    let element = this.handlers[action][i];
-    // looking for handler
+    const element = this.handlers[action][i];
+    // Looking for handler
     if (element[0] === handler) {
-      // remove listner
+      // Remove listner
       this.removeEventListener(action, element[1]);
-      // remove handler from array
+      // Remove handler from array
       this.handlers[action].splice(i, 1);
-      // exit from loop;
+      // Exit from loop;
       break;
     }
   }

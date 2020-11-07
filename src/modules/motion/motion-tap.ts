@@ -1,20 +1,20 @@
 import { DELAY } from "./motion.settings.js";
 
 interface TapEventInterface {
+  target: Element | HTMLElement | HTMLAudioElement;
   x: number;
   y: number;
-  target: Element | HTMLElement | HTMLAudioElement;
 }
 
 /**
  * TapEvent
  */
 class TapEvent {
-  x: number;
-  y: number;
-  target: Element | HTMLElement | HTMLAudioElement;
+  public target: Element | HTMLElement | HTMLAudioElement;
+  public x: number;
+  public y: number;
 
-  constructor(options: TapEventInterface) {
+  public constructor(options: TapEventInterface) {
     this.x = options.x;
     this.y = options.y;
     this.target = options.target;
@@ -33,15 +33,21 @@ function Tap(handler) {
   const targetElement = this;
 
   targetElement.handlers = targetElement.handlers || {};
-  targetElement.handlers["tap"] = targetElement.handlers["tap"] || [];
-  targetElement.handlers["tap"].push(handler);
+  targetElement.handlers.tap = targetElement.handlers.tap || [];
+  targetElement.handlers.tap.push(handler);
 
-  // do not register new helper handlers
-  if (targetElement.handlers["tap"].length > 1) {
+  // Do not register new helper handlers
+  if (targetElement.handlers.tap.length > 1) {
     return;
   }
 
-  let sX, sY, dX, dY, sT, dT, sE;
+  let sX;
+  let sY;
+  let dX;
+  let dY;
+  let sT;
+  let dT;
+  let sE;
 
   function onTapStart(e) {
     sT = new Date().getTime();
@@ -57,10 +63,10 @@ function Tap(handler) {
     dY = sY - e.y < 0 ? -(sY - e.y) : sY - e.y;
     dT = new Date().getTime() - sT;
 
-    // console.log("dX:", dX + "px", "dY:", dY + "px", "dT:", dT + "ms");
+    // Console.log("dX:", dX + "px", "dY:", dY + "px", "dT:", dT + "ms");
 
     if (dT < DELAY && dX === 0 && dY === 0 && sE.target === e.target) {
-      targetElement.handlers["tap"].forEach((element) => {
+      targetElement.handlers.tap.forEach((element) => {
         element.call(
           targetElement,
           new TapEvent({
@@ -75,17 +81,17 @@ function Tap(handler) {
 
   targetElement.doOn("-end", onTapEnd);
 
-  targetElement.destroyTapHandler = function (handler) {
-    let index = targetElement.handlers["tap"].indexOf(handler);
+  targetElement.destroyTapHandler = (handlerFn: () => void) => {
+    const index = targetElement.handlers.tap.indexOf(handlerFn);
 
     if (index !== -1) {
-      // remove when matched
-      targetElement.handlers["tap"].splice(index, 1);
+      // Remove when matched
+      targetElement.handlers.tap.splice(index, 1);
     }
 
-    if (targetElement.handlers["tap"].length === 0) {
-      // full destroy when no any registered handlers
-      delete targetElement.handlers["tap"];
+    if (targetElement.handlers.tap.length === 0) {
+      // Full destroy when no any registered handlers
+      delete targetElement.handlers.tap;
       delete targetElement.destroyTapHandler;
 
       targetElement.doOff("start", onTapStart);

@@ -1,7 +1,7 @@
 import "./modules/motion.js";
-import { Player } from "./modules/player.js";
-import { PlayerState } from "./states/player/player.state.js";
+import { Player } from "./modules/player/player.js";
 import { PlayerServiceEmum } from "./services/player.service.js";
+import { PlayerState } from "./states/player/player.state.js";
 import { RecentState } from "./states/recent/recent.state.js";
 
 if ("serviceWorker" in navigator && "nw" in window === false) {
@@ -32,7 +32,15 @@ class Main {
   public player: Player;
   public recentState: RecentState;
 
-  constructor() {
+  public init() {
+    new PlayerState({
+      player: this.player,
+      recentState: this.recentState,
+      background: document.querySelector(`#streamBgArtwork`),
+    }).init();
+  }
+
+  public constructor() {
     this.player = new Player({
       service: PlayerServiceEmum.SoundCloud,
     });
@@ -46,14 +54,6 @@ class Main {
       this.init();
     }, 100);
   }
-
-  public init() {
-    new PlayerState({
-      player: this.player,
-      recentState: this.recentState,
-      background: document.querySelector(`#streamBgArtwork`),
-    }).init();
-  }
 }
 
-new Main();
+(() => new Main())();

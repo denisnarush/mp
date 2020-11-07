@@ -1,3 +1,4 @@
+// Common
 export const PLAYER_SETTINGS_STORAGE_KEY = "mp-settings";
 export const PLAYER_SETTINGS_RECENT_LIMIT = 25;
 
@@ -19,7 +20,13 @@ export const DEFAULT_PLAYER_SETTINGS = {
   },
   offset: 0,
 };
-export const SoundCloudEnv = {
-  url: "https://api.soundcloud.com",
-  client_id: "7172aa9d8184ed052cf6148b4d6b8ae6",
-};
+
+// Specific
+/**
+ * SoundCloudEnv = {
+ *   ulr: "%api-url%",
+ *   client_id: "%client_id%"
+ * }
+ */
+
+export * from "./environment.dev.js";

@@ -1,0 +1,92 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "completed-docs": false,
+    "typedef": false,
+    "no-empty": false,
+    "quotemark": false,
+    "variable-name": false,
+    "trailing-comma": false,
+    "interface-over-type-literal": false,
+    "no-magic-numbers": false,
+    "prefer-readonly": false,
+
+    "whitespace": {
+      "options": [
+        "check-branch",
+        "check-decl",
+        "check-operator",
+        "check-module",
+        "check-separator",
+        "check-type",
+        "check-typecast",
+        "check-preblock",
+        "check-type-operator",
+        "check-rest-spread"
+      ]
+    },
+    "type-literal-delimiter": true,
+    "space-within-parens": { "options": 0 },
+    "arrow-parens": true,
+    "prefer-const": true,
+    "curly": true,
+    "comment-format": {
+      "options": ["check-space", "check-uppercase"]
+    },
+    "ban-types": {
+      "options": [
+        ["Object", "Avoid using the `Object` type. Did you mean `object`?"],
+        [
+          "Function",
+          "Avoid using the `Function` type. Prefer a specific function type, like `() => void`."
+        ],
+        ["Boolean", "Avoid using the `Boolean` type. Did you mean `boolean`?"],
+        ["Number", "Avoid using the `Number` type. Did you mean `number`?"],
+        ["String", "Avoid using the `String` type. Did you mean `string`?"],
+        ["Symbol", "Avoid using the `Symbol` type. Did you mean `symbol`?"]
+      ]
+    },
+    "no-trailing-whitespace": true,
+    "newline-before-return": true,
+    "ordered-imports": {
+      "options": {
+        "grouped-imports": true,
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "case-insensitive",
+        "module-source-path": "full"
+      }
+    },
+    "semicolon": {
+      "options": ["always"]
+    },
+    "member-access": {
+      "options": [
+        "check-accessor",
+        "check-constructor",
+        "check-parameter-property"
+      ]
+    },
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-static-field",
+          "public-instance-field",
+          "public-instance-method",
+          "public-constructor",
+          "protected-instance-method",
+          "private-static-field",
+          "private-instance-field",
+          "private-instance-method"
+        ],
+        "alphabetize": true
+      }
+    ],
+    "no-any": [true, { "ignore-rest-args": true }],
+    "no-for-in": true,
+    "eofline": true
+  },
+  "linterOptions": {
+    "exclude": ["**/*.spec.ts"]
+  }
+}
