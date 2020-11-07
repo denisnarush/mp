@@ -26,6 +26,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm run install
     - run: npm run build:all
-    - run: npm run test:ui:test
     - run: npm run test:ts:lint
     - run: npm run test:codestyle
